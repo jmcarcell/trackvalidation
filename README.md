@@ -16,4 +16,7 @@ The SIM files for muons must be simulated with the script in `$ILCSoft/ClicPerfo
 
 #Generating 10 events of 10 GeV muons with the CLICdet oX_vXX
 ddsim --steeringFile $ILCSOFT/ClicPerformance/HEAD/clicConfig/clic_steer.py --compactFile $ILCSOFT/lcgeo/HEAD/CLIC/compact/CLIC_oX_vXX/CLIC_oX_vXX.xml --enableGun --gun.particle mu- --gun.energy 10*GeV --gun.distribution uniform --outputFile output.slcio --numberOfEvents 10
+
+#Open event display with the CLICdet oX_vXX for double-checking 
+ced2go -d $ILCSoft/ClicPerformance/HEAD/Visualisation/CLIC_oX_vXX_CED/CLIC_oX_vXX_CED.xml output.slcio
 ```
