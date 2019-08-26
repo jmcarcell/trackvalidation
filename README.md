@@ -18,5 +18,19 @@ The SIM files for muons must be simulated with the script in `$ILCSoft/ClicPerfo
 ddsim --steeringFile $ILCSOFT/ClicPerformance/HEAD/clicConfig/clic_steer.py --compactFile $ILCSOFT/lcgeo/HEAD/CLIC/compact/CLIC_oX_vXX/CLIC_oX_vXX.xml --enableGun --gun.particle mu- --gun.energy 10*GeV --gun.distribution uniform --outputFile output.slcio --numberOfEvents 10
 
 #Open event display with the CLICdet oX_vXX for double-checking 
-ced2go -d $ILCSoft/ClicPerformance/HEAD/Visualisation/CLIC_oX_vXX_CED/CLIC_oX_vXX_CED.xml output.slcio
+ced2go -d $ILCSOFT/ClicPerformance/HEAD/Visualisation/CLIC_oX_vXX_CED/CLIC_oX_vXX_CED.xml output.slcio
 ```
+
+## Reconstruction of the validation sample 
+
+The `SIM` slcio file produced in the previous step is given as input in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml` and the tracking is run using the `ConformalTracking` processor
+
+```
+Marlin $ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml --global.LCIOInputFiles fileInput.slcio
+```
+
+## Validation 
+
+The validation of the tracking is run using the module `ClicEfficiencyCalculator` in `$ILCSOFT/ClicPerformance/HEAD/Tracking`.
+This can be run again with `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml`.
+
