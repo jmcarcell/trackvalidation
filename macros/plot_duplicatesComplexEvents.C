@@ -24,7 +24,8 @@ const double thetaMin = 10;
 const double thetaMax = 170;
 const double ptMin = 1;
 
-TString path = "";
+TString path = "/home/ericabro/CLICstudies/2019/CPUtime_zcut/iLCSoft_2019-07-09/clicConfig/";
+//TString path = "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-07-09/efficiencies/";
 TString figuresFolder = "../figures/";
 
 TString treeName1 = "MyClicEfficiencyCalculator/puritytree";
@@ -134,11 +135,6 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 
   Int_t nEntries_2 = t_pur_2->GetEntries();
 
-  std::cout << t_pur_1->GetEntries() << std::endl;
-  std::cout << t_per_1->GetEntries() << std::endl;
-  std::cout << t_pur_2->GetEntries() << std::endl;
-  std::cout << t_per_2->GetEntries() << std::endl;
-
   //vs pt
   if(vsWhat.Contains(vsPt)){
 
@@ -167,19 +163,21 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       b_mc_simPt_1->GetEntry(per_entry);
       b_mc_simTheta_1->GetEntry(per_entry);
 
-      std::cout << "Loop on top of " << trk_purity_1->size() << " tracks." << std::endl;
+      //std::cout << "Loop on top of " << trk_purity_1->size() << " tracks." << std::endl;
       std::map<double, int> first_simTheta;
       std::set<int> iter_duplicates;
       for(UInt_t j = 0; j < mc_simTheta_1->size(); j++){ //loop over tracks
         
         //Fill total histo
-        h_total_1->Fill(trk_pt_1->at(j));
+      	if(trk_theta_1->at(j) > thetaMin && trk_theta_1->at(j) < thetaMax && trk_nhits_1->at(j) >= minNhits){
+          h_total_1->Fill(trk_pt_1->at(j));
+        }
 
       	double current_simTheta = mc_simTheta_1->at(j);
 
         std::map<double, int>::iterator it = first_simTheta.find(current_simTheta);
         if (it != first_simTheta.end()){
-	      // std::cout << "Multiple found : " << it->second << std::endl;
+	      //std::cout << "Multiple found : " << it->second << std::endl;
 	      //check also the simPt
 	      if(mc_simPt_1->at(j) == mc_simPt_1->at(it->second)){
 		      // std::cout << "Also same pt! " << std::endl;
@@ -221,19 +219,21 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       b_mc_simPt_2->GetEntry(per_entry);
       b_mc_simTheta_2->GetEntry(per_entry);
 
-      // std::cout << "Loop on top of " << trk_purity_2->size() << " tracks." << std::endl;
+      //std::cout << "Loop on top of " << trk_purity_2->size() << " tracks." << std::endl;
       std::map<double, int> first_simTheta;
       std::set<int> iter_duplicates;
       for(UInt_t j = 0; j < mc_simTheta_2->size(); j++){ //loop over tracks
         
         //Fill total histo
-        h_total_2->Fill(trk_pt_2->at(j));
+      	if(trk_theta_2->at(j) > thetaMin && trk_theta_2->at(j) < thetaMax && trk_nhits_2->at(j) >= minNhits){
+          h_total_2->Fill(trk_pt_2->at(j));
+        }
 
       	double current_simTheta = mc_simTheta_2->at(j);
 
         std::map<double, int>::iterator it = first_simTheta.find(current_simTheta);
         if (it != first_simTheta.end()){
-	      // std::cout << "Multiple found : " << it->second << std::endl;
+	      //std::cout << "Multiple found : " << it->second << std::endl;
 	      //check also the simPt
 	      if(mc_simPt_2->at(j) == mc_simPt_2->at(it->second)){
 		      // std::cout << "Also same pt! " << std::endl;
@@ -288,19 +288,21 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       b_mc_simPt_1->GetEntry(per_entry);
       b_mc_simTheta_1->GetEntry(per_entry);
 
-      std::cout << "Loop on top of " << trk_purity_1->size() << " tracks." << std::endl;
+      //std::cout << "Loop on top of " << trk_purity_1->size() << " tracks." << std::endl;
       std::map<double, int> first_simTheta;
       std::set<int> iter_duplicates;
       for(UInt_t j = 0; j < mc_simTheta_1->size(); j++){ //loop over tracks
         
         //Fill total histo
-        h_total_1->Fill(trk_theta_1->at(j));
+      	if(trk_pt_1->at(j) > ptMin && trk_nhits_1->at(j) >= minNhits){
+          h_total_1->Fill(trk_theta_1->at(j));
+        }
 
       	double current_simTheta = mc_simTheta_1->at(j);
 
         std::map<double, int>::iterator it = first_simTheta.find(current_simTheta);
         if (it != first_simTheta.end()){
-	      std::cout << "Multiple found : " << it->second << " with theta = " << current_simTheta << std::endl;
+	      //std::cout << "Multiple found : " << it->second << " with theta = " << current_simTheta << std::endl;
 	      //check also the simPt
 	      if(mc_simPt_1->at(j) == mc_simPt_1->at(it->second)){
 		      // std::cout << "Also same pt! " << std::endl;
@@ -342,22 +344,24 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       b_mc_simPt_2->GetEntry(per_entry);
       b_mc_simTheta_2->GetEntry(per_entry);
 
-      // std::cout << "Loop on top of " << trk_purity_2->size() << " tracks." << std::endl;
+      //std::cout << "Loop on top of " << trk_purity_2->size() << " tracks." << std::endl;
       std::map<double, int> first_simTheta;
       std::set<int> iter_duplicates;
       for(UInt_t j = 0; j < mc_simTheta_2->size(); j++){ //loop over tracks
         
         //Fill total histo
-        h_total_2->Fill(trk_theta_2->at(j));
+      	if(trk_pt_2->at(j) > ptMin && trk_nhits_2->at(j) >= minNhits){
+          h_total_2->Fill(trk_theta_2->at(j));
+        }
 
       	double current_simTheta = mc_simTheta_2->at(j);
 
         std::map<double, int>::iterator it = first_simTheta.find(current_simTheta);
         if (it != first_simTheta.end()){
-	      // std::cout << "Multiple found : " << it->second << std::endl;
+	      //std::cout << "Multiple found : " << it->second << std::endl;
 	      //check also the simPt
 	      if(mc_simPt_2->at(j) == mc_simPt_2->at(it->second)){
-		      // std::cout << "Also same pt! " << std::endl;
+		      //std::cout << "Also same pt! " << std::endl;
 		      iter_duplicates.insert(j);
 		      iter_duplicates.insert(it->second);
 	      }
@@ -368,8 +372,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       }
 
       for(auto j : iter_duplicates){ //loop over duplicates
-      	// std::cout << "Duplicates #" <<  j << std::endl;
-        // std::cout << " with theta = " << mc_simTheta_2->at(j) <<  "and pt = " << mc_simPt_2->at(j) << std::endl;
+      	//std::cout << "Duplicates #" <<  j << std::endl;
+        //std::cout << " with theta = " << mc_simTheta_2->at(j) <<  "and pt = " << mc_simPt_2->at(j) << std::endl;
       	if(trk_pt_2->at(j) > ptMin && trk_nhits_2->at(j) >= minNhits){
             h_duplicates_2->Fill(trk_theta_2->at(j));
         } else {
@@ -381,8 +385,9 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       iter_duplicates.clear();
 
     }
-   	std::cout << "Entries duplicates: " << h_duplicates_2->GetEntries() << std::endl;
-   	std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
+    std::cout << "Entries duplicates: " << h_duplicates_2->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
+
     TCanvas *c_h = new TCanvas();
     h_total_1->SetLineColor(kRed);
     h_total_1->Draw("hist");
@@ -554,7 +559,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
   h_efficiency_2->SetLineColor(kRed);
   h_efficiency_2->SetMarkerColor(kRed);
   h_efficiency_2->SetMarkerStyle(21);
-  //h_efficiency_2->Draw("samep");
+  h_efficiency_2->Draw("samep");
   gPad->Update();
   auto graph = h_efficiency_1->GetPaintedGraph();
   graph->SetMinimum(1e-4);
@@ -589,9 +594,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
   }
 
   legend0->AddEntry(h_efficiency_1,"No background","ep");
-  // legend0->AddEntry(h_efficiency_1,"ILCSoft-2019-02-20","ep");
   legend0->AddEntry(h_efficiency_2,"3 TeV #gamma#gamma#rightarrow hadrons background","ep");
-  // legend0->AddEntry(h_efficiency_2,"ILCSoft-2019-07-09","ep");
   legend0->Draw();
 
   TLatex *text = new TLatex();
