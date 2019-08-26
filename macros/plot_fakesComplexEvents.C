@@ -128,28 +128,6 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
 
   Int_t nEntries_2 = t_pur_2->GetEntries();
 
-  std::cout << t_pur_1->GetEntries() << std::endl;
-  std::cout << t_per_1->GetEntries() << std::endl;
-  std::cout << t_pur_2->GetEntries() << std::endl;
-  std::cout << t_per_2->GetEntries() << std::endl;
-
-  for(Int_t i=0; i < 10; i++){
-    Long64_t pur_entry = t_pur_1->LoadTree(i);
-    b_trk_purity_1->GetEntry(pur_entry);
-
-    Long64_t per_entry = t_per_1->LoadTree(i);
-    b_trk_pt_1->GetEntry(per_entry);
-    b_trk_theta_1->GetEntry(per_entry);
-    b_trk_nhits_1->GetEntry(per_entry);
-    b_mc_simPt_1->GetEntry(per_entry);
-    b_mc_simTheta_1->GetEntry(per_entry);
- 
-    for(UInt_t j = 0; j < trk_purity_1->size(); j++){
-    } 
-  }
-
-
- 
   //vs pt
   if(vsWhat.Contains(vsPt)){
 
