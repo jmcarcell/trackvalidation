@@ -2,7 +2,7 @@
 ////
 //// macro to plot tracking fake rate of single particles vs theta, phi and pT
 //// needs 3 input files (pt = 1, 10, 100 GeV) 
-//// input file example: /eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/reco/merged_muons_1GeV.root 
+//// input file example: /eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-07-09/efficiencies/merged_muons_1GeV.root 
 //// can plot muons, pions and electrons
 //// author: Erica Brondolin
 ////

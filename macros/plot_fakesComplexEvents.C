@@ -1,8 +1,8 @@
 //----------------------------------------------------------------
 ////
-//// macro to plot tracking efficiency of complex events
+//// macro to plot tracking fakerate of complex events
 //// needs 2 input files (without, with background overlay) 
-//// input file example: /eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/merged_ttbar3TeV_NoOverlay_conformal.root 
+//// input file example: /eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-07-09/efficiencies/merged_ttbar3TeV_NoOverlay_conformal.root 
 //// can plot Z->uds@500GeV, bbbar@3TeV and ttbar@3TeV,380GeV
 //// can plot vs pt, theta, phi, vertex radius
 //// author: Erica Brondolin
