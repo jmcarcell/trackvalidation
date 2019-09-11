@@ -6,10 +6,11 @@ Collect script and macros to validate tracking for new releases.
 
 For basic validation, both muons and ttbar are used.
 
-The SIM files for ttbar are usually produced centrally on the grid
+The SIM files for ttbar are usually produced centrally on the grid.
 
 The SIM files for muons must be simulated with the script in `$ILCSoft/ClicPerformance/HEAD/clicConfig/clic_steer.py`
 
+### Local
 ```
 #Sourcing the ILCSoft release 20XX_XX_XX
 /cvmfs/clicdp.cern.ch/iLCSoft/builds/20XX_XX_XX/x86_64-slc6-gcc62-opt/init_ilcsoft.sh
@@ -20,6 +21,18 @@ ddsim --steeringFile $ILCSOFT/ClicPerformance/HEAD/clicConfig/clic_steer.py --co
 #Open event display with the CLICdet oX_vXX for double-checking 
 ced2go -d $ILCSOFT/ClicPerformance/HEAD/Visualisation/CLIC_oX_vXX_CED/CLIC_oX_vXX_CED.xml output.slcio
 ```
+### On the Grid
+Get the `ClicPerformance` repository locally. Copy the steer files in a new folder called `steeringFiles` in the `clicConfig`.
+Modify the location in the scripts in `jobs_submission`
+```
+cp $ILCSoft/ClicPerformance/HEAD/clicConfig/clic_steer.py /local/path/CLICPerformance/clicConfig/steeringFiles/
+cp $ILCSoft/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml /local/path/CLICPerformance/clicConfig/steeringFiles/
+#Submit muon gun with theta fixed to 89 deg
+python submit_muons_gps_theta.py 89
+#Submit muon gun with pt fixed to 10 GeV
+python submit_muons_gun_energy.py 10
+```
+Nota Bene: Remember to set up the Dirac environment!
 
 ## Reconstruction of the validation sample 
 
