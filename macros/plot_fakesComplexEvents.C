@@ -9,7 +9,7 @@
 ////
 ////----------------------------------------------------------------
 //
-#include "../CLICdpStyle.C"
+#include "CLICdpStyle.C"
 
 #include <TH2.h>
 #include <TStyle.h>
@@ -25,7 +25,7 @@ const double thetaMax = 170;
 const double ptMin = 1;
 
 TString path = "";
-TString figuresFolder = "../figures/";
+TString figuresFolder = "";
 
 TString treeName1 = "MyClicEfficiencyCalculator/puritytree";
 TString treeName2 = "MyClicEfficiencyCalculator/perfTree";
@@ -144,8 +144,8 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
     h_fake_2->Sumw2();
     BinLogX(h_fake_2);
 
-	//for(Int_t i=0; i < 1; i++){
-	for(Int_t i=0; i < nEntries_1; i++){
+    std:: cout << "** No overlay"<< std::endl;
+    for(Int_t i=0; i < nEntries_1; i++){
 
       Long64_t pur_entry = t_pur_1->LoadTree(i);
       b_trk_purity_1->GetEntry(pur_entry);
@@ -172,7 +172,7 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
     std::cout << "Entries fake: " << h_fake_1->GetEntries() << std::endl;
     std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
 
-    //for(Int_t i=0; i < 1; i++){
+    std:: cout << "** With overlay"<< std::endl;
     for(Int_t i=0; i < nEntries_2; i++){
 
       Long64_t pur_entry = t_pur_2->LoadTree(i);
@@ -213,8 +213,8 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
     h_fake_2 = new TH1D("h_fake_2","h_fake_2",83,7,90);
     h_fake_2->Sumw2();
 
-    //for(Int_t i=0; i < 10; i++){
-	for(Int_t i=0; i < nEntries_1; i++){
+    std:: cout << "** No overlay"<< std::endl;
+    for(Int_t i=0; i < nEntries_1; i++){
 
       Long64_t pur_entry = t_pur_1->LoadTree(i);
       b_trk_purity_1->GetEntry(pur_entry);
@@ -232,22 +232,17 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
           h_total_1->Fill(trk_theta_1->at(j));
           if(trk_purity_1->at(j) <purityMin) {
             h_fake_1->Fill(trk_theta_1->at(j));
-//      if(j < 5)
-  //          std::cout << "is a fake!" << std::endl;
           }
         } else {
           //std::cout << "Not reconstructuble" << std::endl;
         }
       }
-   	//std::cout << "Entries fake: " << h_fake_1->GetEntries() << std::endl;
-   	//std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
-
     }
-   	std::cout << "Entries fake: " << h_fake_1->GetEntries() << std::endl;
-   	std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
+    std::cout << "Entries fake: " << h_fake_1->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
 
+    std:: cout << "** With overlay"<< std::endl;
     for(Int_t i=0; i < nEntries_2; i++){
-    //for(Int_t i=0; i < 10; i++){
 
       Long64_t pur_entry = t_pur_2->LoadTree(i);
       b_trk_purity_2->GetEntry(pur_entry);
@@ -268,13 +263,10 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
           //std::cout << "Not reconstructuble" << std::endl;
         }
       }
-    //  std::cout << "Entries fake: " << h_fake_2->GetEntries() << std::endl;
-   //   std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
-
     }
 
-   	std::cout << "Entries fake: " << h_fake_2->GetEntries() << std::endl;
-   	std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
+    std::cout << "Entries fake: " << h_fake_2->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
 
   }
   
@@ -289,7 +281,7 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
     h_total_2->Sumw2();
     h_fake_2 = new TH1D("h_fake_2","h_fake_2",360,-180,180);
     h_fake_2->Sumw2();
-  	std:: cout << "No overlay"<< std::endl;
+    std:: cout << "** No overlay"<< std::endl;
 
     for(Int_t i=0; i < nEntries_1; i++){
 
@@ -316,8 +308,9 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
 
     }
     std::cout << "Entries fake: " << h_fake_1->GetEntries() << std::endl;
-   	std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
-  	std:: cout << "With overlay"<< std::endl;
+    std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
+
+    std:: cout << "** With overlay"<< std::endl;
 
     for(Int_t i=0; i < nEntries_2; i++){
 
@@ -334,9 +327,6 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
       	
 
       	if(trk_pt_2->at(j) > ptMin && trk_theta_2->at(j) > thetaMin && trk_theta_2->at(j) < thetaMax && trk_nhits_2->at(j) >= minNhits){
-			if(trk_phi_2->at(j) > -1 && trk_phi_2->at(j) < 1){
-	      		std::cout << trk_nhits_2->at(j) << std::endl;
-		  	}
           h_total_2->Fill(trk_phi_2->at(j));
           if(trk_purity_2->at(j) < purityMin) {
             h_fake_2->Fill(trk_phi_2->at(j));
@@ -348,7 +338,7 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
 
     }
     std::cout << "Entries fake: " << h_fake_2->GetEntries() << std::endl;
-   	std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
 
   }
 
