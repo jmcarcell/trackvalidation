@@ -45,5 +45,10 @@ Marlin $ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml --global.
 ## Validation 
 
 The validation of the tracking is run using the module `ClicEfficiencyCalculator` in `$ILCSOFT/ClicPerformance/HEAD/Tracking`.
-This can be run again with `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml`.
+This can be run again including only this module in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml` on `REC` files.
+Modify the location of the new xml file in the scripts in `jobs_submission` and the sample number - you can use the same script w/o and w/overlay sample.
 
+### On the Grid
+```
+python jobs_submission/submit_ttbar_onlyClicEffCalculator.py
+```
