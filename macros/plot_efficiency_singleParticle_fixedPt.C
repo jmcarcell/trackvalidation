@@ -19,7 +19,7 @@
 #include "TEfficiency.h"
 #include <string>
 
-const char *path = "";
+TString path = "";
 TString figuresFolder = "../figures/";
 
 void plot_efficiency_singleParticle_fixedPt(TString file1 = "merged_muons_1GeV.root", TString file2 = "merged_muons_10GeV.root", TString file3 = "merged_muons_100GeV.root", int minNhits = 3){

@@ -21,7 +21,7 @@
 
 void BinLogX(TH1D *);
 
-const char *path = "";
+TString path = "";
 TString figuresFolder = "../figures/";
 
 void plot_efficiency_singleParticle_fixedTheta(TString file1 = "merged_Pow1_muons_10deg.root", TString file2 = "merged_Pow1_muons_30deg.root", TString file3 = "merged_Pow1_muons_89deg.root", int minNhits = 3){
