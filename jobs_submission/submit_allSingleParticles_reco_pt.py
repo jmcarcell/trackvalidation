@@ -4,22 +4,23 @@ import sys, getopt
 #####################################################################     
 #set general parameters 
 
-nJobs = 10000 #200 for muons and electrons 1-10GeV, 10000 for pions and electrons 100GeV
-nEvts = int(sys.argv[3])
+nJobs = 200 #200 for muons and electrons 1-10GeV, 10000 for pions and electrons 100GeV
+nEvts = 10000
 gunPt = sys.argv[2]
 gunPdg = sys.argv[1]
-nameTag = 'fixedPt_recoPaper_'+gunPdg+'_'+gunPt+'GeV'
+nameTag = 'reco_fixedPt_'+gunPdg+'_'+gunPt+'GeV'
 nameJobGroup = 'efficiencies'
-clicConfig = 'ILCSoft-2019-02-20'
-marlinVersion = 'ILCSoft-2019-02-20_gcc62'
+clicConfig = 'ILCSoft-2019-09-04'
+marlinVersion = 'ILCSoft-2019-09-04_gcc62'
 detectorModel =  'CLIC_o3_v14'
-baseSteeringMarlin = '/home/eleogran/2019-02-20/steeringFiles/clicReconstruction.xml'
-nameSteeringMarlin = 'clicReconstruction_final.xml'
+baseSteeringMarlin = 'local/path/CLICPerformance/clicConfig/steeringFiles/clicReconstruction.xml'
+nameSteeringMarlin = "local/path/CLICPerformance/clicConfig/clicReconstruction_final.xml"
 templateOutRoot = "histograms"
 #templateOutputRec = 'Output_REC'
 #templateOutputDst = 'Output_DST'
-nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/reco/files_'+nameTag
-path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-04-01/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV'
+nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
+path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV' 
+#path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-04-01/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV' #to use in case too many jobs fail 
 
 #####################################################################     
 #set environment 
@@ -68,7 +69,7 @@ for f in listdir(path):
 
     ma.setVersion(marlinVersion)
     ma.setDetectorModel(detectorModel)
-    ma.setInputFile('LFN:/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-04-01/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV/'+f)
+    ma.setInputFile('LFN:/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV/'+f)
     ma.setNumberOfEvents(nEvts)
     ma.setSteeringFile(nameSteeringMarlin)
     res = job.append(ma)
