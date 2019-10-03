@@ -28,7 +28,7 @@ const double vertexRMax = 50;
 const double distClosestMCPMin = 0.02;
 
 TString path = "";
-TString figuresFolder = "../figures/";
+TString figuresFolder = "";
 
 const char *treeName = "MyClicEfficiencyCalculator/simplifiedEfficiencyTree";
 const char *signalBranch = "m_signal";
@@ -147,6 +147,9 @@ void plot_efficiencyComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 	if(m_nHits_1 >= minNhits && m_reconstructed_1) h_reconstructed_1->Fill(m_pt_1);
       }
     }
+    std::cout << "Entries reconstructed: " << h_reconstructed_1->GetEntries() << std::endl;
+    std::cout << "Entries simulated: " << h_reconstructable_1->GetEntries() << std::endl;
+
     for(Int_t i=0; i<nEntries_2; i++){
       t_2->GetEntry(i);
       if(m_signal_2 && m_purity_2 >= purityMin && m_theta_2 > thetaMin && m_theta_2 < thetaMax 
@@ -155,6 +158,8 @@ void plot_efficiencyComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 	if(m_nHits_2 >= minNhits && m_reconstructed_2) h_reconstructed_2->Fill(m_pt_2);
       }
     }
+    std::cout << "Entries reconstructed: " << h_reconstructed_2->GetEntries() << std::endl;
+    std::cout << "Entries simulated: " << h_reconstructable_2->GetEntries() << std::endl;
 
   }
 
@@ -177,6 +182,9 @@ void plot_efficiencyComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 	if(m_nHits_1 >= minNhits && m_reconstructed_1) h_reconstructed_1->Fill(m_theta_1);
       }
     }
+    std::cout << "Entries reconstructed: " << h_reconstructed_1->GetEntries() << std::endl;
+    std::cout << "Entries simulated: " << h_reconstructable_1->GetEntries() << std::endl;
+
     for(Int_t i=0; i<nEntries_2; i++){
       t_2->GetEntry(i);
       if(m_signal_2 && m_purity_2 >= purityMin && m_pt_2 > ptMin && m_vertexR_2 < vertexRMax && m_distClosestMCPart_2 > distClosestMCPMin){
@@ -184,7 +192,8 @@ void plot_efficiencyComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 	if(m_nHits_2 >= minNhits && m_reconstructed_2) h_reconstructed_2->Fill(m_theta_2);
       }
     }
-
+    std::cout << "Entries reconstructed: " << h_reconstructed_2->GetEntries() << std::endl;
+    std::cout << "Entries simulated: " << h_reconstructable_2->GetEntries() << std::endl;
 
   }
 
