@@ -10,10 +10,10 @@ gunPt = sys.argv[2]
 gunPdg = sys.argv[3]
 nameTag = 'fixedPt_'+gunPdg+'_'+gunPt+'GeV'
 nameJobGroup = 'efficiencies'
-clicConfig = 'ILCSoft-2019-04-01'
-ddsimVersion = 'ILCSoft-2019-04-01_gcc62' 
+clicConfig = 'ILCSoft-2019-09-04'
+ddsimVersion = 'ILCSoft-2019-09-04_gcc62' 
 detectorModel =  'CLIC_o3_v14'
-baseSteeringGA = '/home/eleogran/2019-04-01/efficiencies/singleParticles/fixedPt/lcio_particle_gun.py'
+baseSteeringGA = '/home/ericabro/CLICstudies/2019/LowPtStudy/ILCSoft_2019-09-04/trackingvalidation/jobs_submission/sh/lcio_particle_gun.py'
 outputFile = 'mcparticles.slcio' #'fixedPt_'+gunPt+'GeV.slcio'
 nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
  
@@ -51,7 +51,7 @@ job.setSplitEvents(nEvts,nJobs)
 #generic application
 
 ga = GenericApplication()
-ga.setScript('run_lcio_particle_gun_'+gunPdg+'_'+gunPt+'GeV.sh')
+ga.setScript('sh/run_lcio_particle_gun_'+gunPdg+'_'+gunPt+'GeV.sh')
 #ga.setArguments()
 ga.setDependency({"ddsim":ddsimVersion})
 ga.setOutputFile(outputFile)
