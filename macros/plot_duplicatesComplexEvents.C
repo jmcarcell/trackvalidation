@@ -24,16 +24,16 @@ const double thetaMin = 10;
 const double thetaMax = 170;
 const double ptMin = 1;
 
-TString path = "/home/ericabro/CLICstudies/2019/CPUtime_zcut/iLCSoft_2019-07-09/clicConfig/";
-//TString path = "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-07-09/efficiencies/";
+TString path = "/home/ericabro/CLICstudies/2019/DuplicatesStudy/CLICPerformance/clicConfig/";
+//TString path = "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/";
 TString figuresFolder = "../figures/";
 
-TString treeName1 = "MyClicEfficiencyCalculator/puritytree";
-TString treeName2 = "MyClicEfficiencyCalculator/perfTree";
+TString treeName_pur = "MyClicEfficiencyCalculator/puritytree";
+TString treeName_per = "MyClicEfficiencyCalculator/perfTree";
 
 TString vsPt("pt");
+//vsTheta is also for vsPhi
 TString vsTheta("theta");
-TString vsPhi("phi");
 TString vsNHits("nhits");
 
 void BinLogX(TH1D *);
@@ -60,14 +60,14 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
   if(!f_2) return;
 
   TTree *t_pur_1;
-  f_1->GetObject(treeName1,t_pur_1);
+  f_1->GetObject(treeName_pur,t_pur_1);
   TTree *t_pur_2;
-  f_2->GetObject(treeName1,t_pur_2);
+  f_2->GetObject(treeName_pur,t_pur_2);
 
   TTree *t_per_1;
-  f_1->GetObject(treeName2,t_per_1);
+  f_1->GetObject(treeName_per,t_per_1);
   TTree *t_per_2;
-  f_2->GetObject(treeName2,t_per_2);
+  f_2->GetObject(treeName_per,t_per_2);
 
   // check events number in trees
 
@@ -127,13 +127,20 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 
   TH1D *h_total_1;
   TH1D *h_duplicates_1;
-
   Int_t nEntries_1 = t_pur_1->GetEntries();
+  std::cout << "nEntries (events) file#1 = " << nEntries_1 << std::endl;
+//  nEntries_1 = 7;
 
   TH1D *h_total_2;
   TH1D *h_duplicates_2;
-
   Int_t nEntries_2 = t_pur_2->GetEntries();
+  std::cout << "nEntries (events) file#2 = " << nEntries_2 << std::endl;
+//  nEntries_2 = 7;
+
+  TH1D *h_phi_total_1;
+  TH1D *h_phi_duplicates_1;
+  TH1D *h_phi_total_2;
+  TH1D *h_phi_duplicates_2;
 
   //vs pt
   if(vsWhat.Contains(vsPt)){
@@ -171,6 +178,9 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
         //Fill total histo
       	if(trk_theta_1->at(j) > thetaMin && trk_theta_1->at(j) < thetaMax && trk_nhits_1->at(j) >= minNhits){
           h_total_1->Fill(trk_pt_1->at(j));
+          //std::cout << "Reconstructuble" << std::endl;
+        } else {
+          //std::cout << "Not reconstructuble" << std::endl;
         }
 
       	double current_simTheta = mc_simTheta_1->at(j);
@@ -191,8 +201,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       }
 
       for(auto j : iter_duplicates){ //loop over duplicates
-      	// std::cout << "Duplicates #" <<  j << std::endl;
-        // std::cout << " with theta = " << mc_simTheta_1->at(j) <<  "and pt = " << mc_simPt_1->at(j) << std::endl;
+      	 //std::cout << "Duplicates #" <<  j << std::endl;
+         //std::cout << " with theta = " << mc_simTheta_1->at(j) <<  "and pt = " << mc_simPt_1->at(j) << std::endl;
       	if(trk_theta_1->at(j) > thetaMin && trk_theta_1->at(j) < thetaMax && trk_nhits_1->at(j) >= minNhits){
             h_duplicates_1->Fill(trk_pt_1->at(j));            
         } else {
@@ -264,7 +274,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
     std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
   }
   
-  //vs theta
+  //vs theta and phi
   else if(vsWhat.Contains(vsTheta)){
 
     h_total_1 = new TH1D("h_total_1","h_total_1",83,7,90);
@@ -276,6 +286,14 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
     h_duplicates_2 = new TH1D("h_duplicates_2","h_duplicates_2",83,7,90);
     h_duplicates_2->Sumw2();
  
+    h_phi_total_1 = new TH1D("h_phi_total_1","h_phi_total_1",360,-180,180);
+    h_phi_total_1->Sumw2();
+    h_phi_duplicates_1 = new TH1D("h_phi_duplicates_1","h_phi_duplicates_1",360,-180,180);
+    h_phi_duplicates_1->Sumw2();
+    h_phi_total_2 = new TH1D("h_phi_total_2","h_phi_total_2",360,-180,180);
+    h_phi_total_2->Sumw2();
+    h_phi_duplicates_2 = new TH1D("h_phi_duplicates_2","h_phi_duplicates_2",360,-180,180);
+    h_phi_duplicates_2->Sumw2();
     for(Int_t i=0; i < nEntries_1; i++){
 
       Long64_t pur_entry = t_pur_1->LoadTree(i);
@@ -284,6 +302,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       Long64_t per_entry = t_per_1->LoadTree(i);
       b_trk_pt_1->GetEntry(per_entry);
       b_trk_theta_1->GetEntry(per_entry);
+      b_trk_phi_1->GetEntry(per_entry);
       b_trk_nhits_1->GetEntry(per_entry);
       b_mc_simPt_1->GetEntry(per_entry);
       b_mc_simTheta_1->GetEntry(per_entry);
@@ -296,6 +315,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
         //Fill total histo
       	if(trk_pt_1->at(j) > ptMin && trk_nhits_1->at(j) >= minNhits){
           h_total_1->Fill(trk_theta_1->at(j));
+          h_phi_total_1->Fill(trk_phi_1->at(j));
         }
 
       	double current_simTheta = mc_simTheta_1->at(j);
@@ -316,10 +336,11 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       }
 
       for(auto j : iter_duplicates){ //loop over duplicates
-      	// std::cout << "Duplicates #" <<  j << std::endl;
-        // std::cout << " with theta = " << mc_simTheta_1->at(j) <<  "and pt = " << mc_simPt_1->at(j) << std::endl;
+      	 //std::cout << "Duplicates #" <<  j << std::endl;
+         //std::cout << " with theta = " << mc_simTheta_1->at(j) <<  ", pt = " << mc_simPt_1->at(j) <<  ", nHits = " << trk_nhits_1->at(j) << std::endl;
       	if(trk_pt_1->at(j) > ptMin && trk_nhits_1->at(j) >= minNhits){
-            h_duplicates_1->Fill(trk_theta_1->at(j));
+          h_duplicates_1->Fill(trk_theta_1->at(j));
+          h_phi_duplicates_1->Fill(trk_phi_1->at(j));
         } else {
           //std::cout << "Not in the range" << std::endl;
         }
@@ -340,6 +361,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       Long64_t per_entry = t_per_2->LoadTree(i);
       b_trk_pt_2->GetEntry(per_entry);
       b_trk_theta_2->GetEntry(per_entry);
+      b_trk_phi_2->GetEntry(per_entry);
       b_trk_nhits_2->GetEntry(per_entry);
       b_mc_simPt_2->GetEntry(per_entry);
       b_mc_simTheta_2->GetEntry(per_entry);
@@ -352,6 +374,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
         //Fill total histo
       	if(trk_pt_2->at(j) > ptMin && trk_nhits_2->at(j) >= minNhits){
           h_total_2->Fill(trk_theta_2->at(j));
+          h_phi_total_2->Fill(trk_phi_2->at(j));
         }
 
       	double current_simTheta = mc_simTheta_2->at(j);
@@ -375,7 +398,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       	//std::cout << "Duplicates #" <<  j << std::endl;
         //std::cout << " with theta = " << mc_simTheta_2->at(j) <<  "and pt = " << mc_simPt_2->at(j) << std::endl;
       	if(trk_pt_2->at(j) > ptMin && trk_nhits_2->at(j) >= minNhits){
-            h_duplicates_2->Fill(trk_theta_2->at(j));
+          h_duplicates_2->Fill(trk_theta_2->at(j));
+          h_phi_duplicates_2->Fill(trk_phi_2->at(j));
         } else {
           //std::cout << "Not in the range" << std::endl;
         }
@@ -388,86 +412,13 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
     std::cout << "Entries duplicates: " << h_duplicates_2->GetEntries() << std::endl;
     std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
 
-    TCanvas *c_h = new TCanvas();
-    h_total_1->SetLineColor(kRed);
-    h_total_1->Draw("hist");
-    h_duplicates_1->SetLineColor(kBlue);
-    h_duplicates_1->Draw("histsame");
+    //TCanvas *c_h = new TCanvas();
+    //h_total_1->SetLineColor(kRed);
+    //h_total_1->Draw("hist");
+    //h_duplicates_1->SetLineColor(kBlue);
+    //h_duplicates_1->Draw("histsame");
   }
   /*
-  //vs phi
-  else if(vsWhat.Contains(vsPhi)){
-
-    h_total_1 = new TH1D("h_total_1","h_total_1",360,-180,180);
-    h_total_1->Sumw2();
-    h_duplicates_1 = new TH1D("h_duplicates_1","h_duplicates_1",360,-180,180);
-    h_duplicates_1->Sumw2();
-    h_total_2 = new TH1D("h_total_2","h_total_2",360,-180,180);
-    h_total_2->Sumw2();
-    h_duplicates_2 = new TH1D("h_duplicates_2","h_duplicates_2",360,-180,180);
-    h_duplicates_2->Sumw2();
-  	std:: cout << "No overlay"<< std::endl;
-
-    for(Int_t i=0; i < nEntries_1; i++){
-
-      Long64_t pur_entry = t_pur_1->LoadTree(i);
-      b_trk_purity_1->GetEntry(pur_entry);
-
-      Long64_t per_entry = t_per_1->LoadTree(i);
-      b_trk_pt_1->GetEntry(per_entry);
-      b_trk_theta_1->GetEntry(per_entry);
-      b_trk_phi_1->GetEntry(per_entry);
-      b_trk_nhits_1->GetEntry(per_entry);
-
-      for(UInt_t j = 0; j < trk_purity_1->size(); j++){ //loop over tracks
-      	if(trk_pt_1->at(j) > ptMin && trk_theta_1->at(j) > thetaMin && trk_theta_1->at(j) < thetaMax && trk_nhits_1->at(j) >= minNhits){
-		  // std:: cout << trk_nhits_1->at(j) << ", ";
-          h_total_1->Fill(trk_phi_1->at(j));
-          if(trk_purity_1->at(j) < purityMin) {
-            h_duplicates_1->Fill(trk_phi_1->at(j));
-          }
-        } else {
-          //std::cout << "Not reconstructuble" << std::endl;
-        }
-      }
-
-    }
-    std::cout << "Entries duplicates: " << h_duplicates_1->GetEntries() << std::endl;
-   	std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
-  	std:: cout << "With overlay"<< std::endl;
-
-    for(Int_t i=0; i < nEntries_2; i++){
-
-      Long64_t pur_entry = t_pur_2->LoadTree(i);
-      b_trk_purity_2->GetEntry(pur_entry);
-
-      Long64_t per_entry = t_per_2->LoadTree(i);
-      b_trk_pt_2->GetEntry(per_entry);
-      b_trk_theta_2->GetEntry(per_entry);
-      b_trk_phi_2->GetEntry(per_entry);
-      b_trk_nhits_2->GetEntry(per_entry);
-
-      for(UInt_t j = 0; j < trk_purity_2->size(); j++){ //loop over tracks
-      	
-
-      	if(trk_pt_2->at(j) > ptMin && trk_theta_2->at(j) > thetaMin && trk_theta_2->at(j) < thetaMax && trk_nhits_2->at(j) >= minNhits){
-			if(trk_phi_2->at(j) > -1 && trk_phi_2->at(j) < 1){
-	      		std::cout << trk_nhits_2->at(j) << std::endl;
-		  	}
-          h_total_2->Fill(trk_phi_2->at(j));
-          if(trk_purity_2->at(j) < purityMin) {
-            h_duplicates_2->Fill(trk_phi_2->at(j));
-          }
-        } else {
-          //std::cout << "Not reconstructuble" << std::endl;
-        }
-      }
-
-    }
-    std::cout << "Entries duplicates: " << h_duplicates_2->GetEntries() << std::endl;
-   	std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
-
-  }
 
   //vs nHits
   else if(vsWhat.Contains(vsNHits)){
@@ -550,7 +501,6 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
   if(vsWhat.Contains(vsPt)) c->SetLogx();
   if(vsWhat.Contains(vsPt)) h_efficiency_1->SetTitle(";Reconstructed track p_{T} [GeV];Duplicates rate");
   else if(vsWhat.Contains(vsTheta)) h_efficiency_1->SetTitle(";Reconstructed track #theta [#circ];Duplicates rate");
-  else if(vsWhat.Contains(vsPhi)) h_efficiency_1->SetTitle(";Reconstructed track #phi [#circ];Duplicates rate");
   else if(vsWhat.Contains(vsNHits)) h_efficiency_1->SetTitle(";Reconstructed track n_{Hits};Duplicates rate");
   h_efficiency_1->SetLineColor(kBlue);//kRed
   h_efficiency_1->SetMarkerColor(kBlue);
@@ -564,11 +514,9 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
   auto graph = h_efficiency_1->GetPaintedGraph();
   graph->SetMinimum(1e-4);
   graph->SetMaximum(0.9);
-  if(vsWhat.Contains(vsNHits)) graph->SetMaximum(1.0);
+  //if(vsWhat.Contains(vsNHits)) graph->SetMaximum(1.0);
   graph->GetXaxis()->SetTitleOffset(1.2);
   graph->GetXaxis()->SetRangeUser(0.09,250);
-  //if(vsWhat.Contains(vsTheta)) graph->GetXaxis()->SetRangeUser(7,90);
-  if(vsWhat.Contains(vsPhi)) graph->GetXaxis()->SetRangeUser(-180,180);
 
   std::string Zuds("Zuds");
   std::string ttbar("ttbar");
@@ -576,7 +524,6 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 
   auto legend0 = new TLegend(0.318296,0.690828,0.893058,0.890533);
   legend0->SetTextSize(0.035);
-  if(vsWhat.Contains(vsPhi)) {legend0 = new TLegend(0.254386, 0.688427, 0.659148, 0.890208); legend0->SetTextSize(0.04);}
 
   if(inputFileName1.Contains(Zuds)) legend0->SetHeader("Z#rightarrowq#bar{q} (q = u,d,s), m_{Z} = 500 GeV");
   else if(inputFileName1.Contains(bbbar)) legend0->SetHeader("b#bar{b}, E_{CM} =  3 TeV");
@@ -584,12 +531,10 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
     if(inputFileName1.Contains("TeV") ) {
       if(vsWhat.Contains(vsPt) ) legend0->SetHeader(Form("t#bar{t}, E_{CM} = 3 TeV, %.0f#circ < #theta < %.0f#circ", thetaMin, thetaMax));
       else if(vsWhat.Contains(vsTheta) ) legend0->SetHeader(Form("t#bar{t}, E_{CM} = 3 TeV, p_{T} > %.0f GeV", ptMin));
-      else if(vsWhat.Contains(vsPhi) ) legend0->SetHeader(Form("t#bar{t}, E_{CM} = 3 TeV, p_{T} > %.0f GeV, %.0f#circ < #theta < %.0f#circ", ptMin, thetaMin, thetaMax));
     }
     else if(inputFileName1.Contains("GeV") ){
       if(vsWhat.Contains(vsPt) ) legend0->SetHeader(Form("t#bar{t}, E_{CM} = 380 GeV, %.0f#circ < #theta < %.0f#circ", thetaMin, thetaMax));
       else if(vsWhat.Contains(vsTheta) ) legend0->SetHeader(Form("t#bar{t}, E_{CM} = 380 GeV, p_{T} > %.0f GeV", ptMin));
-      else if(vsWhat.Contains(vsPhi) ) legend0->SetHeader(Form("t#bar{t}, E_{CM} = 380 GeV, p_{T} > %.0f GeV, %.0f#circ < #theta < %.0f#circ", ptMin, thetaMin, thetaMax));
     }
   }
 
@@ -617,6 +562,40 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 //  else if(vsWhat.Contains(vsTheta) )  c->SaveAs(path_to_fig+Form("/dupl_vs_theta_minNhits%i.eps",minNhits));
 //  else if(vsWhat.Contains(vsPhi) ) c->SaveAs(path_to_fig + Form("/dupl_vs_phi_minNhits%i.eps",minNhits));
 
+  //plotting also vsPhi
+  if(vsWhat.Contains(vsTheta)){
+    TEfficiency *h_phi_efficiency_1 = 0;
+    if(TEfficiency::CheckConsistency(*h_phi_duplicates_1,*h_phi_total_1)){
+      h_phi_efficiency_1 = new TEfficiency(*h_phi_duplicates_1,*h_phi_total_1);
+    }
+       
+    TEfficiency *h_phi_efficiency_2 = 0;
+    if(TEfficiency::CheckConsistency(*h_phi_duplicates_2,*h_phi_total_2)){
+      h_phi_efficiency_2 = new TEfficiency(*h_phi_duplicates_2,*h_phi_total_2);
+    }
+  
+    TCanvas *c_phi = new TCanvas();
+    c_phi->SetGrid();
+    c_phi->SetLogy();
+    h_phi_efficiency_1->SetTitle(";Reconstructed track #phi [#circ];Duplicates rate");
+    h_phi_efficiency_1->SetLineColor(kBlue);//kRed
+    h_phi_efficiency_1->SetMarkerColor(kBlue);
+    h_phi_efficiency_1->SetMarkerStyle(20);//20
+    h_phi_efficiency_1->Draw("ap");
+    h_phi_efficiency_2->SetLineColor(kRed);
+    h_phi_efficiency_2->SetMarkerColor(kRed);
+    h_phi_efficiency_2->SetMarkerStyle(21);
+    h_phi_efficiency_2->Draw("samep");
+    gPad->Update();
+    auto graph_phi = h_phi_efficiency_1->GetPaintedGraph();
+    graph_phi->SetMinimum(1e-4);
+    graph_phi->SetMaximum(0.9);
+    graph_phi->GetXaxis()->SetTitleOffset(1.2);
+
+    text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+    legend0->Draw();
+//  c->SaveAs(path_to_fig + Form("/dupl_vs_phi_minNhits%i.eps",minNhits));
+  }
 }
 
 
