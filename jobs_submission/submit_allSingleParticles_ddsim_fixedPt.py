@@ -5,19 +5,19 @@ import sys, getopt
 #set general parameters 
 
 #nJobs = 200
-nEvts = int(sys.argv[3])
-nEvtGen = 10000
+nEvts = int(sys.argv[1])
+nEvtGen = 10000 #nEvents in the SLCIO files produced with submit_allSingleParticles_slcio_fixedPt.py
 gunPt = sys.argv[2]
-gunPdg = sys.argv[1]
+gunPdg = sys.argv[3]
 nameTag = 'fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV'
 nameJobGroup = 'efficiencies'
-clicConfig = 'ILCSoft-2019-04-01'
-ddsimVersion = 'ILCSoft-2019-04-01_gcc62'
+clicConfig = 'ILCSoft-2019-09-04'
+ddsimVersion = 'ILCSoft-2019-09-04_gcc62'
 detectorModel =  'CLIC_o3_v14'
-baseSteeringDDSim = '/home/eleogran/2019-04-01/steeringFiles/clic_steer.py'
+baseSteeringDDSim = '/home/ericabro/CLICstudies/2019/LowPtStudy/ILCSoft_2019-09-04/CLICPerformance/clicConfig/steeringFiles/clic_steer.py'
 templateOutFile = 'sim.slcio'
 nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
-path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-04-01/efficiencies/sim/files_fixedPt_'+gunPdg+'_'+gunPt+'GeV'
+pathSLCIO = '/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_'+gunPdg+'_'+gunPt+'GeV'
 
 #####################################################################     
 #set environment 
@@ -36,7 +36,7 @@ from ILCDIRAC.Interfaces.API.NewInterface.Applications import DDSim
 #####################################################################     
 #job definition
 
-for f in listdir(path):
+for f in listdir(pathSLCIO):
     #print("Input file: %s" % f)
     for i in range(0,nEvtGen/nEvts):
         #print("Index chunk of events to process: %s" % i)
@@ -63,7 +63,7 @@ for f in listdir(path):
 
         ddsim.setVersion(ddsimVersion)
         ddsim.setDetectorModel(detectorModel)
-        ddsim.setInputFile('LFN:/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-04-01/efficiencies/sim/files_fixedPt_'+gunPdg+'_'+gunPt+'GeV/'+f)
+        ddsim.setInputFile('LFN:/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_'+gunPdg+'_'+gunPt+'GeV/'+f)
         ddsim.setOutputFile(outputFile)
         ddsim.setNumberOfEvents(nEvts) 
         ddsim.setSteeringFile(baseSteeringDDSim)

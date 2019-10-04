@@ -20,6 +20,8 @@ ddsim --steeringFile $ILCSOFT/ClicPerformance/HEAD/clicConfig/clic_steer.py --co
 
 #Open event display with the CLICdet oX_vXX for double-checking 
 ced2go -d $ILCSOFT/ClicPerformance/HEAD/Visualisation/CLIC_oX_vXX_CED/CLIC_oX_vXX_CED.xml output.slcio
+#-s 1 will show the correct surfaces as well
+#-t $ILCSOFT/ClicPerformance/HEAD/Visualisation/CLIC_o3_v06_CED/ced2go-template-DD4.xml will provide the correct template
 ```
 ### On the Grid
 Get the `ClicPerformance` repository locally. Copy the steer files in a new folder called `steeringFiles` in the `clicConfig`.
@@ -32,6 +34,18 @@ python submit_muons_gps_theta.py 89
 #Submit muon gun with pt fixed to 10 GeV
 python submit_muons_gun_energy.py 10
 ```
+
+In case of fixed pT (and not energy) the `lcio_particle_gun.py` is used:
+```
+#Produce slcio file from sh/lcio_particle_gun with sh/run_lcio_particle_gunXX.sh. It needs nEntries, pT, particleType as input
+#Example: 10000 events of 1GeV muons
+python submit_allSingleParticles_slcio_fixedPt.py 10000 1 11
+#Produce ddsim from slcio. It needs nEntries per file, pT, particleType as input
+python submit_allSingleParticles_ddsim_fixedPt.py 10000 1 11
+#Produce ddsim from slcio. It needs nEntries per file, pT, particleType as input
+- from ddsim to marlin (submit_allSingleParticles_reco_pt.py)
+``` 
+
 Nota Bene: Remember to set up the Dirac environment!
 
 ## Reconstruction of the validation sample 
