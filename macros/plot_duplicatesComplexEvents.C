@@ -24,9 +24,8 @@ const double thetaMin = 10;
 const double thetaMax = 170;
 const double ptMin = 1;
 
-TString path = "/home/ericabro/CLICstudies/2019/DuplicatesStudy/CLICPerformance/clicConfig/";
-//TString path = "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/";
-TString figuresFolder = "../figures/";
+TString path = "";
+TString figuresFolder = "";
 
 TString treeName_pur = "MyClicEfficiencyCalculator/puritytree";
 TString treeName_per = "MyClicEfficiencyCalculator/perfTree";
@@ -129,13 +128,11 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
   TH1D *h_duplicates_1;
   Int_t nEntries_1 = t_pur_1->GetEntries();
   std::cout << "nEntries (events) file#1 = " << nEntries_1 << std::endl;
-//  nEntries_1 = 7;
 
   TH1D *h_total_2;
   TH1D *h_duplicates_2;
   Int_t nEntries_2 = t_pur_2->GetEntries();
   std::cout << "nEntries (events) file#2 = " << nEntries_2 << std::endl;
-//  nEntries_2 = 7;
 
   TH1D *h_phi_total_1;
   TH1D *h_phi_duplicates_1;
