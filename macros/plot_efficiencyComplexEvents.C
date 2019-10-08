@@ -49,7 +49,7 @@ std::string vsDistClosestMCP("dist");
 
 void BinLogX(TH1D *);
 
-void plot_efficiencyComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conformal.root", TString file2 = "merged_ttbar3TeV_Overlay_conformal.root", string vsWhat = "pt", int minNhits = 3){
+void plot_efficiencyComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conformal.root", TString file2 = "merged_ttbar3TeV_Overlay_conformal.root", string vsWhat = "pt", int minNhits = 4){
 
   CLICdpStyle();
 
@@ -369,9 +369,8 @@ void plot_efficiencyComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
   }
 
   legend0->AddEntry(h_efficiency_1,"No background","ep");
-  legend0->AddEntry(h_efficiency_2,"3 TeV #gamma#gamma#rightarrow hadrons background","ep");
-  //if(inputFile1.find(TeV)!=-1) legend0->AddEntry(h_efficiency_2,"3 TeV #gamma#gamma#rightarrow hadrons background","ep");
-  //else if(inputFile1.find(GeV)!=-1) legend0->AddEntry(h_efficiency_2,"380 GeV #gamma#gamma#rightarrow hadrons background","ep");
+  if(inputFile1.find(TeV)!=-1) legend0->AddEntry(h_efficiency_2,"3 TeV #gamma#gamma#rightarrow hadrons background","ep");
+  else if(inputFile1.find(GeV)!=-1) legend0->AddEntry(h_efficiency_2,"380 GeV #gamma#gamma#rightarrow hadrons background","ep");
 
   legend0->Draw();
 
