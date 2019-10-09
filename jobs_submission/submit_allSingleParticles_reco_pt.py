@@ -4,10 +4,10 @@ import sys, getopt
 #####################################################################     
 #set general parameters 
 
-nJobs = 200 #200 for muons and electrons 1-10GeV, 10000 for pions and electrons 100GeV
-nEvts = 10000
-gunPt = sys.argv[2]
-gunPdg = sys.argv[1]
+nJobs = int(sys.argv[2]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py 
+nEvts = int(sys.argv[1]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py 
+gunPt = sys.argv[3]
+gunPdg = sys.argv[4]
 nameTag = 'reco_fixedPt_'+gunPdg+'_'+gunPt+'GeV'
 nameJobGroup = 'efficiencies'
 clicConfig = 'ILCSoft-2019-09-04'
@@ -19,8 +19,10 @@ templateOutRoot = "histograms"
 #templateOutputRec = 'Output_REC'
 #templateOutputDst = 'Output_DST'
 nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
-path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV' 
-#path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-04-01/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV' #to use in case too many jobs fail 
+#valid for muons
+path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV'
+#valid for electrons and pions
+#path = '/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV'
 
 #####################################################################     
 #set environment 
@@ -70,6 +72,7 @@ for f in listdir(path):
     ma.setVersion(marlinVersion)
     ma.setDetectorModel(detectorModel)
     ma.setInputFile('LFN:/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV/'+f)
+    #ma.setInputFile('LFN:/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV/'+f)
     ma.setNumberOfEvents(nEvts)
     ma.setSteeringFile(nameSteeringMarlin)
     res = job.append(ma)

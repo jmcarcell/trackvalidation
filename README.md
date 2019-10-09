@@ -42,8 +42,8 @@ In case of fixed pT (and not energy) the `lcio_particle_gun.py` is used:
 python submit_allSingleParticles_slcio_fixedPt.py 10000 1 11
 #Produce ddsim from slcio. It needs nEntries per file, pT, particleType as input
 python submit_allSingleParticles_ddsim_fixedPt.py 10000 1 11
-#Produce ddsim from slcio. It needs nEntries per file, pT, particleType as input
-- from ddsim to marlin (submit_allSingleParticles_reco_pt.py)
+#Produce validation files from ddsim. It needs nEntries per jobs, nJobs, pT, particleType as input
+python submit_allSingleParticles_reco_fixedPt.py 100 200 1 11
 ``` 
 
 Nota Bene: Remember to set up the Dirac environment!
