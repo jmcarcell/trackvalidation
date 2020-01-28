@@ -291,6 +291,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
     h_phi_total_2->Sumw2();
     h_phi_duplicates_2 = new TH1D("h_phi_duplicates_2","h_phi_duplicates_2",360,-180,180);
     h_phi_duplicates_2->Sumw2();
+
+    std:: cout << "** No overlay"<< std::endl;
     for(Int_t i=0; i < nEntries_1; i++){
 
       Long64_t pur_entry = t_pur_1->LoadTree(i);
@@ -312,7 +314,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
         //Fill total histo
       	if(trk_pt_1->at(j) > ptMin && trk_nhits_1->at(j) >= minNhits){
           h_total_1->Fill(trk_theta_1->at(j));
-          h_phi_total_1->Fill(trk_phi_1->at(j));
+      	  if(trk_theta_1->at(j) > thetaMin && trk_theta_1->at(j) < thetaMax )
+            h_phi_total_1->Fill(trk_phi_1->at(j));
         }
 
       	double current_simTheta = mc_simTheta_1->at(j);
@@ -337,7 +340,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
          //std::cout << " with theta = " << mc_simTheta_1->at(j) <<  ", pt = " << mc_simPt_1->at(j) <<  ", nHits = " << trk_nhits_1->at(j) << std::endl;
       	if(trk_pt_1->at(j) > ptMin && trk_nhits_1->at(j) >= minNhits){
           h_duplicates_1->Fill(trk_theta_1->at(j));
-          h_phi_duplicates_1->Fill(trk_phi_1->at(j));
+      	  if(trk_theta_1->at(j) > thetaMin && trk_theta_1->at(j) < thetaMax )
+            h_phi_duplicates_1->Fill(trk_phi_1->at(j));
         } else {
           //std::cout << "Not in the range" << std::endl;
         }
@@ -347,10 +351,13 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       iter_duplicates.clear();
 
     }
-    std::cout << "Entries duplicates: " << h_duplicates_1->GetEntries() << std::endl;
-    std::cout << "Entries reconstructed: " << h_total_1->GetEntries() << std::endl;
+    std::cout << "Entries duplicates    (theta): " << h_duplicates_1->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed (theta): " << h_total_1->GetEntries() << std::endl;
+    std::cout << "Entries duplicates    (phi): " << h_phi_duplicates_1->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed (phi): " << h_phi_total_1->GetEntries() << std::endl;
 
-   for(Int_t i=0; i < nEntries_2; i++){
+    std:: cout << "** With overlay"<< std::endl;
+    for(Int_t i=0; i < nEntries_2; i++){
 
       Long64_t pur_entry = t_pur_2->LoadTree(i);
       b_trk_purity_2->GetEntry(pur_entry);
@@ -371,7 +378,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
         //Fill total histo
       	if(trk_pt_2->at(j) > ptMin && trk_nhits_2->at(j) >= minNhits){
           h_total_2->Fill(trk_theta_2->at(j));
-          h_phi_total_2->Fill(trk_phi_2->at(j));
+      	  if(trk_theta_2->at(j) > thetaMin && trk_theta_2->at(j) < thetaMax )
+            h_phi_total_2->Fill(trk_phi_2->at(j));
         }
 
       	double current_simTheta = mc_simTheta_2->at(j);
@@ -396,7 +404,8 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
         //std::cout << " with theta = " << mc_simTheta_2->at(j) <<  "and pt = " << mc_simPt_2->at(j) << std::endl;
       	if(trk_pt_2->at(j) > ptMin && trk_nhits_2->at(j) >= minNhits){
           h_duplicates_2->Fill(trk_theta_2->at(j));
-          h_phi_duplicates_2->Fill(trk_phi_2->at(j));
+      	  if(trk_theta_2->at(j) > thetaMin && trk_theta_2->at(j) < thetaMax )
+            h_phi_duplicates_2->Fill(trk_phi_2->at(j));
         } else {
           //std::cout << "Not in the range" << std::endl;
         }
@@ -406,8 +415,10 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
       iter_duplicates.clear();
 
     }
-    std::cout << "Entries duplicates: " << h_duplicates_2->GetEntries() << std::endl;
-    std::cout << "Entries reconstructed: " << h_total_2->GetEntries() << std::endl;
+    std::cout << "Entries duplicates    (theta): " << h_duplicates_2->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed (theta): " << h_total_2->GetEntries() << std::endl;
+    std::cout << "Entries duplicates    (phi): " << h_phi_duplicates_2->GetEntries() << std::endl;
+    std::cout << "Entries reconstructed (phi): " << h_phi_total_2->GetEntries() << std::endl;
 
     //TCanvas *c_h = new TCanvas();
     //h_total_1->SetLineColor(kRed);
@@ -541,7 +552,7 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
 
   TLatex *text = new TLatex();
   text->SetTextSize(0.035);
-  text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+  text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
   TString path_to_fig = figuresFolder;
 
@@ -589,7 +600,17 @@ void plot_duplicatesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_co
     graph_phi->SetMaximum(0.9);
     graph_phi->GetXaxis()->SetTitleOffset(1.2);
 
-    text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+    text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
+    if(inputFileName1.Contains(Zuds)) legend0->SetHeader("Z#rightarrowq#bar{q} (q = u,d,s), m_{Z} = 500 GeV");
+    else if(inputFileName1.Contains(bbbar)) legend0->SetHeader("b#bar{b}, E_{CM} =  3 TeV");
+    else if(inputFileName1.Contains(ttbar) ){
+      if(inputFileName1.Contains("TeV") ) {
+        legend0->SetHeader(Form("t#bar{t}, E_{CM} = 3 TeV, p_{T} > %.0f GeV, %.0f#circ < #theta < %.0f#circ", ptMin, thetaMin, thetaMax));
+      }
+      if(inputFileName1.Contains("GeV") ){
+        legend0->SetHeader(Form("t#bar{t}, E_{CM} = 380 GeV, p_{T} > %.0f GeV, %.0f#circ < #theta < %.0f#circ", ptMin, thetaMin, thetaMax));
+      }
+    }
     legend0->Draw();
 //  c->SaveAs(path_to_fig + Form("/dupl_vs_phi_minNhits%i.eps",minNhits));
   }

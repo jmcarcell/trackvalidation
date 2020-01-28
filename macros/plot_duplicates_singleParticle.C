@@ -22,8 +22,8 @@ const double thetaMin = 10;
 const double thetaMax = 170;
 const double ptMin = 1;
 
-TString path = "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/";
-TString figuresFolder = "../figures/";
+TString path = "";
+TString figuresFolder = "";
 
 TString treeName_pur = "MyClicEfficiencyCalculator/puritytree";
 TString treeName_per = "MyClicEfficiencyCalculator/perfTree";
@@ -173,10 +173,10 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
   
   // vsPt or vsTheta/Phi ?
 
-  bool vsPt = false, vsThetaPhi = false;
+  bool vsPtPhi = false, vsThetaPhi = false;
 
   if( inputFileName1.Contains("deg") && inputFileName2.Contains("deg") && inputFileName3.Contains("deg") )
-    vsPt = true;
+    vsPtPhi = true;
   else if( inputFileName1.Contains("GeV") && inputFileName2.Contains("GeV") && inputFileName3.Contains("GeV") )
     vsThetaPhi = true;
 
@@ -188,7 +188,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
   TH1D *h_phi_duplicates_3;
 
   //vs pt
-  if(vsPt){
+  if(vsPtPhi){
 
     h_total_1 = new TH1D("h_total_1","h_total_1",100,-1,3);
     h_total_1->Sumw2();
@@ -209,6 +209,19 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
     h_duplicates_3->Sumw2();
     BinLogX(h_duplicates_3);
 
+    h_phi_total_1 = new TH1D("h_phi_total_1","h_phi_total_1",360,-180,180);
+    h_phi_total_1->Sumw2();
+    h_phi_duplicates_1 = new TH1D("h_phi_duplicates_1","h_phi_duplicates_1",360,-180,180);
+    h_phi_duplicates_1->Sumw2();
+    h_phi_total_2 = new TH1D("h_phi_total_2","h_phi_total_2",360,-180,180);
+    h_phi_total_2->Sumw2();
+    h_phi_duplicates_2 = new TH1D("h_phi_duplicates_2","h_phi_duplicates_2",360,-180,180);
+    h_phi_duplicates_2->Sumw2();
+    h_phi_total_3 = new TH1D("h_phi_total_3","h_phi_total_3",360,-180,180);
+    h_phi_total_3->Sumw2();
+    h_phi_duplicates_3 = new TH1D("h_phi_duplicates_3","h_phi_duplicates_3",360,-180,180);
+    h_phi_duplicates_3->Sumw2();
+
     for(Int_t i=0; i < nEntries_1; i++){
 
       Long64_t pur_entry = t_pur_1->LoadTree(i);
@@ -217,6 +230,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
       Long64_t per_entry = t_per_1->LoadTree(i);
       b_trk_pt_1->GetEntry(per_entry);
       b_trk_theta_1->GetEntry(per_entry);
+      b_trk_phi_1->GetEntry(per_entry);
       b_trk_nhits_1->GetEntry(per_entry);
       b_mc_simPt_1->GetEntry(per_entry);
       b_mc_simTheta_1->GetEntry(per_entry);
@@ -229,6 +243,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
         //Fill total histo
       	if(trk_nhits_1->at(j) >= minNhits){
           h_total_1->Fill(trk_pt_1->at(j));
+          h_phi_total_1->Fill(trk_phi_1->at(j));
           //std::cout << "Reconstructuble" << std::endl;
         } else {
           //std::cout << "Not reconstructuble" << std::endl;
@@ -255,7 +270,8 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
       	// std::cout << "Duplicates #" <<  j << std::endl;
         // std::cout << " with theta = " << mc_simTheta_1->at(j) <<  "and pt = " << mc_simPt_1->at(j) << std::endl;
       	if(trk_nhits_1->at(j) >= minNhits){
-            h_duplicates_1->Fill(trk_pt_1->at(j));            
+          h_duplicates_1->Fill(trk_pt_1->at(j));            
+          h_phi_duplicates_1->Fill(trk_phi_1->at(j));
         } else {
           //std::cout << "Not reconstructuble" << std::endl;
         }
@@ -276,6 +292,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
       Long64_t per_entry = t_per_2->LoadTree(i);
       b_trk_pt_2->GetEntry(per_entry);
       b_trk_theta_2->GetEntry(per_entry);
+      b_trk_phi_2->GetEntry(per_entry);
       b_trk_nhits_2->GetEntry(per_entry);
       b_mc_simPt_2->GetEntry(per_entry);
       b_mc_simTheta_2->GetEntry(per_entry);
@@ -288,6 +305,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
         //Fill total histo
       	if(trk_nhits_2->at(j) >= minNhits){
           h_total_2->Fill(trk_pt_2->at(j));
+          h_phi_total_2->Fill(trk_phi_2->at(j));
         }
 
       	double current_simTheta = mc_simTheta_2->at(j);
@@ -311,7 +329,8 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
       	// std::cout << "Duplicates #" <<  j << std::endl;
         // std::cout << " with theta = " << mc_simTheta_2->at(j) <<  "and pt = " << mc_simPt_2->at(j) << std::endl;
       	if(trk_nhits_2->at(j) >= minNhits){
-            h_duplicates_2->Fill(trk_pt_2->at(j));            
+          h_duplicates_2->Fill(trk_pt_2->at(j));            
+          h_phi_duplicates_2->Fill(trk_phi_2->at(j));
         } else {
           //std::cout << "Not in the range" << std::endl;
         }
@@ -332,6 +351,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
       Long64_t per_entry = t_per_3->LoadTree(i);
       b_trk_pt_3->GetEntry(per_entry);
       b_trk_theta_3->GetEntry(per_entry);
+      b_trk_phi_3->GetEntry(per_entry);
       b_trk_nhits_3->GetEntry(per_entry);
       b_mc_simPt_3->GetEntry(per_entry);
       b_mc_simTheta_3->GetEntry(per_entry);
@@ -344,6 +364,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
         //Fill total histo
         if(trk_nhits_3->at(j) >= minNhits){
           h_total_3->Fill(trk_pt_3->at(j));
+          h_phi_total_3->Fill(trk_phi_3->at(j));
         }
 
         double current_simTheta = mc_simTheta_3->at(j);
@@ -367,7 +388,8 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
         // std::cout << "Duplicates #" <<  j << std::endl;
         // std::cout << " with theta = " << mc_simTheta_3->at(j) <<  "and pt = " << mc_simPt_3->at(j) << std::endl;
         if(trk_nhits_3->at(j) >= minNhits){
-            h_duplicates_3->Fill(trk_pt_3->at(j));            
+          h_duplicates_3->Fill(trk_pt_3->at(j));            
+          h_phi_duplicates_3->Fill(trk_phi_3->at(j));
         } else {
           //std::cout << "Not in the range" << std::endl;
         }
@@ -674,10 +696,9 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
   TCanvas *c = new TCanvas();
   c->SetGrid();
   c->SetLogy();
-  if(vsPt) c->SetLogx();
-  if(vsPt) h_efficiency_1->SetTitle(";Reconstructed track p_{T} [GeV];Duplicates rate");
+  if(vsPtPhi) c->SetLogx();
+  if(vsPtPhi) h_efficiency_1->SetTitle(";Reconstructed track p_{T} [GeV];Duplicates rate");
   else if(vsThetaPhi) h_efficiency_1->SetTitle(";Reconstructed track #theta [#circ];Duplicates rate");
-  //else if(vsWhat.Contains(vsPhi)) h_efficiency_1->SetTitle(";Reconstructed track #phi [#circ];Duplicates rate");
   //else if(vsWhat.Contains(vsNHits)) h_efficiency_1->SetTitle(";Reconstructed track n_{Hits};Duplicates rate");
   h_efficiency_1->SetLineColor(kBlue);//kRed
   h_efficiency_1->SetMarkerColor(kBlue);
@@ -703,14 +724,14 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
 
   TLatex *text = new TLatex();
   text->SetTextSize(0.035);
-  text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+  text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
   auto legend0 = new TLegend(0.659148,0.713018,0.873434,0.862426);
   legend0->SetTextSize(0.03);
   if( inputFileName1.Contains("muon") ) legend0->SetHeader("Single #mu^{-}");
   else if( inputFileName1.Contains("ele") ) legend0->SetHeader("Single e^{-}");
   else if( inputFileName1.Contains("pion") ) legend0->SetHeader("Single #pi^{-}");
-  if(vsPt){
+  if(vsPtPhi){
     legend0->AddEntry(h_efficiency_1,"#theta = 10#circ","ep");
     legend0->AddEntry(h_efficiency_2,"#theta = 30#circ","ep");
     legend0->AddEntry(h_efficiency_3,"#theta = 89#circ","ep");
@@ -721,7 +742,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
   }
   legend0->Draw();
   
-  if(vsPt){
+  if(vsPtPhi){
     if( inputFileName1.Contains("muon") )
       c->SaveAs(Form((figuresFolder + "/muons/dupl_vs_pt_minNhits%i.eps"),minNhits));
     else if( inputFileName1.Contains("ele") )
@@ -738,7 +759,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
   }
   
   //plotting also vsPhi
-  if(vsThetaPhi){
+  if(vsThetaPhi || vsPtPhi){
     TEfficiency *h_phi_efficiency_1 = 0;
     if(TEfficiency::CheckConsistency(*h_phi_duplicates_1,*h_phi_total_1)){
       h_phi_efficiency_1 = new TEfficiency(*h_phi_duplicates_1,*h_phi_total_1);
@@ -758,9 +779,9 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
     c_phi->SetGrid();
     c_phi->SetLogy();
     h_phi_efficiency_1->SetTitle(";Reconstructed track #phi [#circ];Duplicates rate");
-    h_phi_efficiency_1->SetLineColor(kBlue);//kRed
+    h_phi_efficiency_1->SetLineColor(kBlue);
     h_phi_efficiency_1->SetMarkerColor(kBlue);
-    h_phi_efficiency_1->SetMarkerStyle(20);//20
+    h_phi_efficiency_1->SetMarkerStyle(20);
     h_phi_efficiency_1->Draw("ap");
     h_phi_efficiency_2->SetLineColor(kRed);
     h_phi_efficiency_2->SetMarkerColor(kRed);
@@ -776,7 +797,7 @@ void plot_duplicates_singleParticle(TString file1 = "merged_muons_1GeV.root", TS
     graph_phi->SetMaximum(0.9);
     graph_phi->GetXaxis()->SetTitleOffset(1.2);
 
-    text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+    text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
     legend0->Draw();
 
     if( inputFileName1.Contains("muon") )
