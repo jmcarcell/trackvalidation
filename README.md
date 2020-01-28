@@ -2,6 +2,34 @@
 
 Collect script and macros to validate tracking for new releases.
 
+In the case `REC` files are already present, then you can just run the validation of the tracking on them.
+
+The validation of the tracking is run using the module `ClicEfficiencyCalculator` in `$ILCSOFT/ClicPerformance/HEAD/Tracking`.
+This can be run again including only this module in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml` and running directly on `REC` files.
+
+If you want to run this on the grid:
+- Change the location of the modified clicReconstruction.xml file in the script `jobs_submission/submit_ttbar_onlyClicEffCalculator.py` 
+- Set the sample number and the other variables accordingly
+- Run it with
+```
+python jobs_submission/submit_ttbar_onlyClicEffCalculator.py
+```
+The script will create one job per `REC` file.
+
+Nb. You can use the same script w/o and w/overlay sample.
+
+Currently, the following macros can be used to produce efficiency, fakerate and duplicates summary:
+- `macros/plot_duplicatesXXX.C`
+- `macros/plot_efficiencyXXX.C`
+- `macros/plot_fakerateXXX.C`
+
+`_singleParticle` can be chosen in case of muons, electrons, and pions.
+`ComplexEvents` can be chosen in case of ttbar with and without overlay.
+
+---
+
+In the case `REC` files are NOT already present, follow the procedure to simulate and reconstruct the validation sample:
+
 ## Simulation of the validation sample 
 
 For basic validation, both muons and ttbar are used.
@@ -56,13 +84,4 @@ The `SIM` slcio file produced in the previous step is given as input in `$ILCSOF
 Marlin $ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml --global.LCIOInputFiles fileInput.slcio
 ```
 
-## Validation 
 
-The validation of the tracking is run using the module `ClicEfficiencyCalculator` in `$ILCSOFT/ClicPerformance/HEAD/Tracking`.
-This can be run again including only this module in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml` on `REC` files.
-Modify the location of the new xml file in the scripts in `jobs_submission` and the sample number - you can use the same script w/o and w/overlay sample.
-
-### On the Grid
-```
-python jobs_submission/submit_ttbar_onlyClicEffCalculator.py
-```
