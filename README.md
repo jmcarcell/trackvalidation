@@ -10,13 +10,9 @@ This can be run again including only this module in `$ILCSOFT/ClicPerformance/HE
 If you want to run this on the grid:
 - Change the location of the modified clicReconstruction.xml file in the script `jobs_submission/submit_ttbar_onlyClicEffCalculator.py` 
 - Set the sample number and the other variables accordingly
-- Run it with
-```
-python jobs_submission/submit_ttbar_onlyClicEffCalculator.py
-```
-The script will create one job per `REC` file.
+- Run it with ` python jobs_submission/submit_ttbar_onlyClicEffCalculator.py `. The script will create one job per `REC` file.
 
-Nb. You can use the same script w/o and w/overlay sample.
+You can use the same script w/o and w/overlay sample.
 
 Currently, the following macros can be used to produce efficiency, fakerate and duplicates summary:
 - `macros/plot_duplicatesXXX.C`
@@ -24,6 +20,7 @@ Currently, the following macros can be used to produce efficiency, fakerate and 
 - `macros/plot_fakerateXXX.C`
 
 `_singleParticle` can be chosen in case of muons, electrons, and pions.
+
 `ComplexEvents` can be chosen in case of ttbar with and without overlay.
 
 ---
@@ -59,7 +56,7 @@ cp $ILCSoft/ClicPerformance/HEAD/clicConfig/clic_steer.py /local/path/CLICPerfor
 cp $ILCSoft/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml /local/path/CLICPerformance/clicConfig/steeringFiles/
 #Submit muon gun with theta fixed to 89 deg
 python submit_muons_gps_theta.py 89
-#Submit muon gun with pt fixed to 10 GeV
+#Submit muon gun with energy fixed to 10 GeV
 python submit_muons_gun_energy.py 10
 ```
 
