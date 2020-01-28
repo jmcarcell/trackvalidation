@@ -22,7 +22,7 @@
 void BinLogX(TH1D *);
 
 TString path = "";
-TString figuresFolder = "../figures/";
+TString figuresFolder = "";
 
 void plot_efficiency_singleParticle_fixedTheta(TString file1 = "merged_Pow1_muons_10deg.root", TString file2 = "merged_Pow1_muons_30deg.root", TString file3 = "merged_Pow1_muons_89deg.root", int minNhits = 3){
 
@@ -211,7 +211,7 @@ void plot_efficiency_singleParticle_fixedTheta(TString file1 = "merged_Pow1_muon
     
   TLatex *text = new TLatex();
   text->SetTextSize(0.035);
-  text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+  text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
   auto legend0 = new TLegend(0.635338,0.310651,0.849624,0.483728);
   legend0->SetTextSize(0.03);

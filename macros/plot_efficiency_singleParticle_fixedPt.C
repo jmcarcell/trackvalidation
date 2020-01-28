@@ -20,7 +20,7 @@
 #include <string>
 
 TString path = "";
-TString figuresFolder = "../figures/";
+TString figuresFolder = "";
 
 void plot_efficiency_singleParticle_fixedPt(TString file1 = "merged_muons_1GeV.root", TString file2 = "merged_muons_10GeV.root", TString file3 = "merged_muons_100GeV.root", int minNhits = 3){
 
@@ -246,7 +246,7 @@ void plot_efficiency_singleParticle_fixedPt(TString file1 = "merged_muons_1GeV.r
 
   TLatex *text = new TLatex();
   text->SetTextSize(0.035);
-  text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+  text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
   auto legend0 = new TLegend(0.636591,0.309172,0.850877,0.45858);
   legend0->SetTextSize(0.03);
@@ -293,7 +293,7 @@ void plot_efficiency_singleParticle_fixedPt(TString file1 = "merged_muons_1GeV.r
   gPad->Update();
   TLatex *text1 = new TLatex();
   text1->SetTextSize(0.035);
-  text1->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+  text1->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
   auto legend01 = new TLegend(0.636591,0.309172,0.850877,0.45858);
   legend01->SetTextSize(0.04);

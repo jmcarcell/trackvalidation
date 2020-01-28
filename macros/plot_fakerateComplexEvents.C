@@ -472,7 +472,7 @@ void plot_fakesComplexEvents(TString file1 = "merged_ttbar3TeV_NoOverlay_conform
 
   TLatex *text = new TLatex();
   text->SetTextSize(0.035);
-  text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+  text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
   TString path_to_fig = figuresFolder;
 

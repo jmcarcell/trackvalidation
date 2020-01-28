@@ -24,7 +24,7 @@ void BinLogX(TH2D* h);
 const double purityMin = 0.75;
 
 TString path = "";
-TString figuresFolder = "../figures/";
+TString figuresFolder = "";
 
 TString treeName1 = "MyClicEfficiencyCalculator/puritytree";
 TString treeName2 = "MyClicEfficiencyCalculator/perfTree";
@@ -315,7 +315,7 @@ void plot_fakerate_singleParticle(TString file1 = "merged_muons_1GeV.root", TStr
     
     TLatex *text = new TLatex();
     text->SetTextSize(0.035);
-    text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+    text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
     auto legend0 = new TLegend(0.659148,0.713018,0.873434,0.862426);
     legend0->SetTextSize(0.03);
@@ -534,7 +534,7 @@ void plot_fakerate_singleParticle(TString file1 = "merged_muons_1GeV.root", TStr
 
     TLatex *text = new TLatex();
     text->SetTextSize(0.035);
-    text->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+    text->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
     auto legend0 = new TLegend(0.657895,0.715976,0.87218,0.865385);
     legend0->SetTextSize(0.03);
@@ -581,7 +581,7 @@ void plot_fakerate_singleParticle(TString file1 = "merged_muons_1GeV.root", TStr
     gPad->Update();
     TLatex *text1 = new TLatex();
     text1->SetTextSize(0.035);
-    text1->DrawTextNDC(0.175, 0.939349, "CLICdp"); // work in progress");
+    text1->DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
     auto legend01 = new TLegend(0.636591,0.309172,0.850877,0.45858);
     legend01->SetTextSize(0.03);
