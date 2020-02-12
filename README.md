@@ -2,10 +2,10 @@
 
 Collect script and macros to validate tracking for new releases.
 
-In the case `REC` files are already present, then you can just run the validation of the tracking on them.
+For basic validation, both muons and ttbar are used.
 
-The validation of the tracking is run using the module `ClicEfficiencyCalculator` in `$ILCSOFT/ClicPerformance/HEAD/Tracking`.
-This can be run again including only this module in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml` and running directly on `REC` files.
+The tracking validation is run using the module `$ILCSOFT/ClicPerformance/HEAD/Tracking/ClicEfficiencyCalculator` on `REC` files.
+This can be run again including only this module in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml`.
 
 If you want to run this on the grid:
 - Change the location of the modified clicReconstruction.xml file in the script `jobs_submission/submit_ttbar_onlyClicEffCalculator.py` 
@@ -14,22 +14,21 @@ If you want to run this on the grid:
 
 You can use the same script w/o and w/overlay sample.
 
-Currently, the following macros can be used to produce efficiency, fakerate and duplicates summary:
-- `macros/plot_duplicatesXXX.C`
-- `macros/plot_efficiencyXXX.C`
-- `macros/plot_fakerateXXX.C`
+Currently, the following macros can be used to produce efficiency, fakerate and duplicates summary in case of muons, electrons, and pions:
+- `macros/plot_duplicates_singleParticle.C`
+- `macros/plot_efficiency_singleParticle.C`
+- `macros/plot_fakerate_singleParticle.C`
 
-`_singleParticle` can be chosen in case of muons, electrons, and pions.
-
-`ComplexEvents` can be chosen in case of ttbar with and without overlay.
+In case of more complex events, such as ttbar or bbar, the macros are called:
+- `macros/plot_duplicatesComplexEvents.C`
+- `macros/plot_efficiencyComplexEvents.C`
+- `macros/plot_fakerateComplexEvents.C`
 
 ---
 
 In the case `REC` files are NOT already present, follow the procedure to simulate and reconstruct the validation sample:
 
 ## Simulation of the validation sample 
-
-For basic validation, both muons and ttbar are used.
 
 The SIM files for ttbar are usually produced centrally on the grid.
 
