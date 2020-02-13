@@ -77,7 +77,7 @@ Nota Bene: Remember to set up the Dirac environment!
 The `SIM` slcio file produced in the previous step is given as input in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml` and the tracking is run using the `ConformalTracking` processor
 
 ```
-Marlin $ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml --global.LCIOInputFiles fileInput.slcio
+Marlin $ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml --global.LCIOInputFiles=fileInput.slcio
 ```
 
 
