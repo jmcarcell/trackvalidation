@@ -5,5 +5,5 @@ Track of changes in [gitLab repo](https://gitlab.cern.ch/CLICdp/SoftwareConfigur
 ##  ILCSoft-2019-07-09
 
 ### ttbar
-![](plots/ILCSoft-2019-07-09/ttbar3TeV/eff_vs_pt_minNhits4.svg)
+![](clic_releases_validation/plots/ILCSoft-2019-07-09/ttbar3TeV/eff_vs_pt_minNhits4.svg)
 
