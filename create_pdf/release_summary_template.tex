@@ -29,6 +29,7 @@
 
 \usetikzlibrary{decorations.pathreplacing}
 \newcommand{\tikzmark}[2]{\tikz[remember picture,baseline=(#1.base)]{\node[inner sep=0pt] (#1) {#2};}}
+\newcommand{\pt}{p$_{\textnormal{T}}$}
 
 \title[RELEASE tracking validation]{\LARGE RELEASE tracking validation}
 \author[AUTHORNAME]{AUTHORNAME (AUTHORINSTITUTE) \\on behalf of the CLICdp collaboration}
@@ -42,8 +43,8 @@
 }
 
 \frame{
-\frametitle{Changes from last release:}
-Copy from releases changes page \url{https://gitlab.cern.ch/CLICdp/SoftwareConfigurations/iLCSoft/-/releases}
+\frametitle{Changes from last release}
+Full list of changes in \url{https://gitlab.cern.ch/CLICdp/SoftwareConfigurations/iLCSoft/-/releases}
 \newline 
 \textbf{Package 1}:
 \begin{itemize}
@@ -51,6 +52,183 @@ Copy from releases changes page \url{https://gitlab.cern.ch/CLICdp/SoftwareConfi
 \item[-] PR\#1: Other changes
 \end{itemize}
 }
+
+\frame{
+\frametitle{Single Particles: muons}
+vs \pt
+
+min number of hits = MINHITS_SINGLE
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/muons/eff_vs_pT_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/muons/fake_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/muons/dupl_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+\end{figure}
+}
+
+\frame{
+\frametitle{Single Particles: muons}
+vs $theta$
+
+min number of hits = MINHITS_SINGLE
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/muons/eff_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/muons/fake_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/muons/dupl_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+\end{figure}
+}
+
+\frame{
+\frametitle{Single Particles: electrons}
+vs \pt
+
+min number of hits = MINHITS_SINGLE
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/electrons/eff_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/electrons/fake_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    %\includegraphics[width=1.0\textwidth]{PATHPLOTS/electrons/dupl_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+\end{figure}
+}
+
+\frame{
+\frametitle{Single Particles: electrons}
+vs $theta$
+
+min number of hits = MINHITS_SINGLE
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/electrons/eff_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/electrons/fake_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/electrons/dupl_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+\end{figure}
+}
+
+\frame{
+\frametitle{Single Particles: pions}
+vs \pt
+
+min number of hits = MINHITS_SINGLE
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/pions/eff_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/pions/fake_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/pions/dupl_vs_pt_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+\end{figure}
+}
+
+\frame{
+\frametitle{Single Particles: pions}
+vs $theta$
+
+min number of hits = MINHITS_SINGLE
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/pions/eff_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/pions/fake_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/pions/dupl_vs_theta_minNhitsMINHITS_SINGLE.eps}
+  \end{minipage}
+\end{figure}
+}
+
+\frame{
+\frametitle{Complex events: ttbar3TeV}
+vs \pt
+
+min number of hits = MINHITS_COMPLEX
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/ttbar3TeV/eff_vs_pt_minNhitsMINHITS_COMPLEX.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/ttbar3TeV/fake_vs_pt_minNhitsMINHITS_COMPLEX.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/ttbar3TeV/dupl_vs_pt_minNhitsMINHITS_COMPLEX.eps}
+  \end{minipage}
+\end{figure}
+}
+
+\frame{
+\frametitle{Single Particles: ttbar3TeV}
+vs $theta$
+
+min number of hits = MINHITS_COMPLEX
+\begin{figure}[bt]
+  \centering
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/ttbar3TeV/eff_vs_theta_minNhitsMINHITS_COMPLEX.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/ttbar3TeV/fake_vs_theta_minNhitsMINHITS_COMPLEX.eps}
+  \end{minipage}
+  \begin{minipage}[c]{.3\textwidth}
+    \centering
+    \includegraphics[width=1.0\textwidth]{PATHPLOTS/ttbar3TeV/dupl_vs_theta_minNhitsMINHITS_COMPLEX.eps}
+  \end{minipage}
+\end{figure}
+}
+
 
 \clicSplashWhite
 
