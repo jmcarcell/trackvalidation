@@ -1,0 +1,57 @@
+\documentclass[aspectratio=169,10pt]{beamer} % change to aspectratio=43 for 4:3
+\usetheme{CLIC}
+
+\usepackage[latin1]{inputenc}
+\usepackage[TS1,T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{heppennames2}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{transparent}
+\usepackage[author={test},color=yellow,markup=Highlight]{pdfcomment}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\tikzstyle{every picture}+=[remember picture]
+
+\usepackage{pgfplots} % LaTeX
+\usepgfplotslibrary{groupplots}
+\usepackage[european]{circuitikz}
+\usepackage[alsoload=hep]{siunitx}
+
+\usetikzlibrary{decorations.pathreplacing}
+\newcommand{\tikzmark}[2]{\tikz[remember picture,baseline=(#1.base)]{\node[inner sep=0pt] (#1) {#2};}}
+
+\title[RELEASE tracking validation]{\LARGE RELEASE tracking validation}
+\author[AUTHORNAME]{AUTHORNAME (AUTHORINSTITUTE) \\on behalf of the CLICdp collaboration}
+\date[DATE]{DATE}
+
+% Body
+\begin{document}
+
+\frame{
+\titlepage 
+}
+
+\frame{
+\frametitle{Changes from last release:}
+Copy from releases changes page \url{https://gitlab.cern.ch/CLICdp/SoftwareConfigurations/iLCSoft/-/releases}
+\newline 
+\textbf{Package 1}:
+\begin{itemize}
+\item[-] PR\#0: This changes
+\item[-] PR\#1: Other changes
+\end{itemize}
+}
+
+\clicSplashWhite
+
+\end{document}
