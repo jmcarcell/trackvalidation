@@ -1,0 +1,50 @@
+\documentclass[aspectratio=169,10pt]{beamer} % change to aspectratio=43 for 4:3
+\usetheme{CLIC}
+
+\usepackage[latin1]{inputenc}
+\usepackage[TS1,T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{heppennames2}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{transparent}
+\usepackage[author={test},color=yellow,markup=Highlight]{pdfcomment}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{fit}
+\usetikzlibrary{calc}
+\tikzstyle{every picture}+=[remember picture]
+
+\usepackage{pgfplots} % LaTeX
+\usepgfplotslibrary{groupplots}
+\usepackage[european]{circuitikz}
+\usepackage[alsoload=hep]{siunitx}
+
+\usetikzlibrary{decorations.pathreplacing}
+\newcommand{\tikzmark}[2]{\tikz[remember picture,baseline=(#1.base)]{\node[inner sep=0pt] (#1) {#2};}}
+
+\title[Validation release RELEASE]{\LARGE Title}
+\author[Name]{AUTHORNAME (AUTHORINSTITUTE) \\on behalf of the CLICdp collaboration}
+\date[DATE]{DATE}
+
+% Body
+\begin{document}
+
+\frame{
+\titlepage 
+}
+
+\frame{
+\frametitle{Slide 1 title}
+}
+
+\clicSplashWhite
+
+\end{document}
