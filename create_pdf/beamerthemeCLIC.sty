@@ -1,0 +1,166 @@
+\mode<presentation>
+
+\usecolortheme{default}
+\useinnertheme{default}
+\useoutertheme{default}
+
+\usepackage{xcolor}
+
+\beamertemplatenavigationsymbolsempty
+
+% Colors
+\definecolor{bluecern}{HTML}{0053A1}
+%\setbeamercolor{normal text}{fg=bluecern, bg=white}
+\setbeamercolor{normal text}{fg=black, bg=white}
+\setbeamercolor{frametitle}{fg=black, bg=white}
+\setbeamercolor{section in toc}{fg=bluecern, bg=white}
+\setbeamercolor{title}{fg=black, bg=white}
+\setbeamercolor{inverted normal text}{fg=white, bg=bluecern}
+\setbeamercolor{itemize item}{fg=bluecern}
+\setbeamercolor{itemize subitem}{fg=bluecern}
+\setbeamercolor{itemize subsubitem}{fg=bluecern}
+\setbeamercolor{enumerate item}{fg=bluecern}
+\setbeamercolor{enumerate subitem}{fg=bluecern}
+\setbeamercolor{caption name}{fg=bluecern}
+\setbeamercolor{block title}{fg=bluecern, bg=gray!30}
+\setbeamercolor{block body}{fg=bluecern, bg=gray!10}
+\setbeamercolor{block title alerted}{bg=gray!30}
+\setbeamercolor{block body alerted}{bg=gray!10}
+
+% Fonts
+\usefonttheme{structurebold}
+\setbeamerfont{title}{size=\Huge}
+
+\usepackage[absolute,overlay]{textpos}
+\TPGrid{50}{50}
+
+\pgfdeclareimage[width=0.073\textwidth]{cliclogo}{logos/logo_clic_cropped}
+\pgfdeclareimage[width=0.073\textwidth]{cernlogo}{logos/logo_cern}
+
+\newcommand{\ClicLogoTitle}{%
+\ifthenelse{%
+  \lengthtest{\beamer@paperwidth=16cm}}% condition (16cm is the width of the frame with an aspect ratio = 16:9)
+	{\begin{textblock}{14}(40.9, 1.65)
+	    \begin{minipage}{0.1\paperwidth}\centering
+	      \href{https://clic.cern}{\pgfuseimage{cliclogo}}    
+	    \end{minipage}
+	\end{textblock}}
+	{\begin{textblock}{14}(41., 1.25)
+	    \begin{minipage}{0.1\paperwidth}\centering
+	      \href{https://clic.cern}{\pgfuseimage{cliclogo}}    
+	    \end{minipage}
+	\end{textblock}}
+}
+
+\newcommand{\CernLogoTitle}{%
+\ifthenelse{%
+  \lengthtest{\beamer@paperwidth=16cm}}% condition (16cm is the width of the frame with an aspect ratio = 16:9)
+	{\begin{textblock}{14}(45., 1.65)
+	  \begin{minipage}{0.1\paperwidth}\centering
+	    \href{https://home.cern}{\pgfuseimage{cernlogo}}
+	  \end{minipage}
+	\end{textblock}}
+	{\begin{textblock}{14}(45., 1.25)
+	  \begin{minipage}{0.1\paperwidth}\centering
+	    \href{https://home.cern}{\pgfuseimage{cernlogo}}
+	  \end{minipage}
+	\end{textblock}}
+}
+
+\newcommand{\ClicLogo}{%
+\ifthenelse{%
+  \lengthtest{\beamer@paperwidth=16cm}}% condition (16cm is the width of the frame with an aspect ratio = 16:9)
+	{\begin{textblock}{14}(-0.03, 1.65)
+	    \begin{minipage}{0.1\paperwidth}\centering
+	      \href{https://clic.cern}{\pgfuseimage{cliclogo}}    
+	    \end{minipage}
+	\end{textblock}}
+	{\begin{textblock}{14}(-0.03, 1.25)
+	    \begin{minipage}{0.1\paperwidth}\centering
+	      \href{https://clic.cern}{\pgfuseimage{cliclogo}}    
+	    \end{minipage}
+	\end{textblock}}
+}
+
+\newcommand{\CernLogo}{%
+\ifthenelse{%
+  \lengthtest{\beamer@paperwidth=16cm}}% condition (16cm is the width of the frame with an aspect ratio = 16:9)
+	{\begin{textblock}{14}(45., 1.65)
+	  \begin{minipage}{0.1\paperwidth}\centering
+	    \href{https://home.cern}{\pgfuseimage{cernlogo}}
+	  \end{minipage}
+	\end{textblock}}
+	{\begin{textblock}{14}(45., 1.25)
+	  \begin{minipage}{0.1\paperwidth}\centering
+	    \href{https://home.cern}{\pgfuseimage{cernlogo}}
+	  \end{minipage}
+	\end{textblock}}
+}
+
+\addtobeamertemplate{title page}{}{%
+\CernLogoTitle{}\ClicLogoTitle{}
+\vspace{-30px}
+}
+
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.25\paperwidth,ht=9.5px,left]{inverted normal text}%
+    \vspace{2.px}
+    \usebeamerfont{inverted normal text}\hspace{2.px}\strut\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.50\paperwidth,ht=9.5px,center]{inverted normal text}%
+    \vspace{2.px}
+    \usebeamerfont{inverted normal text}\strut\insertshorttitle\,\,-\,\,\insertshortdate{}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.25\paperwidth,ht=9.5px,right]{inverted normal text}%
+    \vspace{2.px}
+    \usebeamerfont{inverted normal text}\strut\insertframenumber{} / \inserttotalframenumber\hspace{4.px}
+  \end{beamercolorbox}}%
+}
+
+\setbeamertemplate{frametitle}{
+  \ClicLogo{}\CernLogo{}
+  {\centering
+    \begin{center}\vspace{-11pt}
+      \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+      \colorlet{oldcolor}{.}
+      \color{white}
+      \boxed{\color{oldcolor}\begin{beamercolorbox}[sep=0.3cm,center,wd=0.80\paperwidth]{frametitle}
+          \usebeamerfont{frametitle}%
+	  \vbox{}\vskip-0.2ex%
+          \if@tempswa\else\csname beamer@ftecenter\endcsname\fi%
+          \strut\insertframetitle\strut\par%
+          {%
+            \ifx\insertframesubtitle\@empty%
+            \else%
+            {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+            \fi }%
+          \vskip-1ex%
+          \if@tempswa\else\vskip-.3cm\fi%
+        \end{beamercolorbox}}%
+    \end{center}
+  }
+}
+
+\newcommand{\clicSplashWhite}{
+    % CLIC ending slide with blue logo and web page
+    \bgroup
+    \setbeamertemplate{navigation symbols}{}
+    \setbeamercolor{background canvas}{bg=white}
+    \frame[plain]{
+        \centering
+        \vspace{30px}
+        \begin{figure}
+        	  \href{https://clic.cern/}{
+           \includegraphics[scale=.47]{logos/logo_clic_cropped} \\
+  	   \vspace{5px}\hspace{1.px}
+           {\Large \href{https://clic.cern}\textbf{{clic.cern}}}}
+        \end{figure}
+    }
+    \egroup
+}
+
+\mode
+<all>
