@@ -11,7 +11,7 @@ python personalise_pdf.py --filein "release_summary_template.tex" --fileout "rel
 pdflatex release_summary.tex
 evince release_summary.pdf
 
-RELEASE2="ILCSoft-2019-09-04"
+RELEASE2="ILCSoft-2019-07-09"
 RELEASEFOLDER2="plots/clic_releases_validation/"$RELEASE2
 
 python personalise_pdf.py --filein "release_comparison_template.tex" --fileout "release_comparison.tex" --authorinstitute CERN --authorname "Erica Brondolin" --date 03-06-2020 --release $RELEASE --path $RELEASEFOLDER --minHits_singlePart "3" --minHits_complex "4" --release2 $RELEASE2 --path2 $RELEASEFOLDER2
