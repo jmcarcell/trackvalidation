@@ -12,10 +12,10 @@ if [ -d $NEWFOLDER ]
 then
   echo $NEWFOLDER "exists"
 else
-  echo $NEWFOLDER "does not exists. Create."
-  mkdir $NEWFOLDER
+  echo $NEWFOLDER "does not exists. Create a link to "$PATHPLOTS
+  ln -s $PATHPLOTS .
 fi
 
-cp -r $PATHPLOTS/* $NEWFOLDER
-echo "All plots were copied in "$NEWFOLDER
+#cp -r $PATHPLOTS/* $NEWFOLDER
+echo "All plots were linked in "$NEWFOLDER
 
