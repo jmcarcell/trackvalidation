@@ -17,10 +17,8 @@ parser.add_argument('--path2', help='Path for plots in comparison folder', defau
 args = parser.parse_args()
 print(args)
 
-NAMEINFILE  = args.filein#"release_summary_template.tex"
-NAMEOUTFILE = args.fileout#"release_summary.tex"
-#REPLACEARGS =  '"{0}: args.release, {1}: args.release2"'.format('RELEASE','RELEASE2')
-#print REPLACEARGS
+NAMEINFILE  = args.filein
+NAMEOUTFILE = args.fileout
 REPLACEARGS = {"#RELEASE#": args.release, "#PATHPLOTS#": args.path, "#DATE#": args.date, 
                "#AUTHORNAME#": args.authorname, "#AUTHORINSTITUTE#": args.authorinstitute,
                "#MINHITS_SINGLE#": args.minHits_singlePart, "#MINHITS_COMPLEX#": args.minHits_complex,
