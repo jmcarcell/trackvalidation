@@ -1,0 +1,36 @@
+{
+  "Release date" : "2019-09-04", 
+  "Detector model" : "CLIC_o3_v14", 
+
+  "Particles" : ["muons", "electrons", "pions"], 
+  "Variables" : ["theta", "energy"], 
+
+  "NJobs" : "2",
+  "#NJobs" : "200",
+  "NEvents_per_job" : "10",
+  "#NEvents_per_job" : "10000",
+
+	"DatasetInformationFile": "../cfg/info_on_all_datasets.json" ,
+	"NtupleOutputPrefix" : "output_file_",
+
+	"NtupleOutputDir": "../ntuples",
+
+	"RunInfoOutputDir" : "../infontuple/",
+
+	"HistogramInformationFile" : "../cfg/HistogramList.json",
+	"HistoFileDir" : "../histos/",
+
+	"CharginoCandidatesInfo": 1,
+	"TrueInfo": 1,
+	"PreselectCharginoCandidates": 1,
+
+	"ReweightToTargetCtau" : 1,
+	"WeightSignalHistToCtau_mm" : 6.9,
+
+	
+	"TestMode": 1,
+	"GridMode": 0,
+	"grid_tarball" : ""
+
+}
+
