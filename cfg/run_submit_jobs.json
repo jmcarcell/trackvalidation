@@ -10,10 +10,11 @@
   "NEvents_per_job" : "10",
   "#NEvents_per_job" : "10000",
 
-	"DatasetInformationFile": "../cfg/info_on_all_datasets.json" ,
-	"NtupleOutputPrefix" : "output_file_",
+  "Jobs_output_folder" : "prova",
+  "Jobs_customised_lib" : "",
+  "#Jobs_customised_lib" : "LFN:/ilc/user/u/username/libConformalTracking.tar.gz",
 
-	"NtupleOutputDir": "../ntuples",
+	"DatasetInformationFile": "../cfg/info_on_all_datasets.json" ,
 
 	"RunInfoOutputDir" : "../infontuple/",
 

@@ -62,7 +62,13 @@ job.setCPUTime(86400)
 job.setName(nameTag)
 job.setBannedSites(['LCG.UKI-LT2-IC-HEP.uk','LCG.KEK.jp','LCG.IN2P3-CC.fr','LCG.Tau.il','Weizmann.il','LCG.Weizmann.il','OSG.MIT.us','OSG.FNAL_FERMIGRID.us','OSG.GridUNESP_CENTRAL.br','OSG.SPRACE.br'])
 job.setInputSandbox([nameSteeringMarlin])
-#job.setInputSandbox("LFN:/ilc/user/e/ericabro/libConformalTracking.tar.gz")
+
+#set customised library
+if len(sys.argv) > 8:
+  customisedLibrary = str(sys.argv[8])
+  print('Using Marlin customised library: %s'%customisedLibrary)
+  job.setInputSandbox(customisedLibrary)
+
 job.setOutputSandbox(["*.log"]) 
 job.setOutputData([rootFile+".root"],nameDir,"CERN-DST-EOS")   
 job.setSplitEvents(nEvts,nJobs)
@@ -76,7 +82,6 @@ ddsim.setVersion(ddsimVersion)
 ddsim.setDetectorModel(detectorModel)
 ddsim.setOutputFile(outputFile)
 extraCLIArguments = " --enableGun --gun.particle %s --gun.energy %s*GeV --gun.distribution uniform" % (gunParticle, gunEnergy)
-print(extraCLIArguments)
 ddsim.setExtraCLIArguments(extraCLIArguments)
 ddsim.setSteeringFile(baseSteeringDDSim)
 ddsim.setNumberOfEvents(nEvts)

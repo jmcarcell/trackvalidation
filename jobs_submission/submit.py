@@ -14,6 +14,7 @@ def main(argv):
   #Test
   print(run_conf["Particles"])
   print(run_conf["Variables"])
+  print(run_conf["Jobs_customised_lib"])
 
   #set up environment
   cmd_source_ILCSoft = "source_ILCSoft %s"%(run_conf["Release date"])
@@ -29,6 +30,11 @@ def main(argv):
     sys.exit()
 
   particle_list = ["muons", "electrons", "pions"]
+  eos_output_folder = run_conf["Jobs_output_folder"]
+  eos_custom_lib = run_conf["Jobs_customised_lib"]
+  if not eos_custom_lib :
+    print("here")
+    eos_custom_lib = " "
 
   for particle in run_conf["Particles"]:
     print(particle)
@@ -40,17 +46,17 @@ def main(argv):
       if var == "theta":
         for theta in ["10","30","89"] :
           print(">> Running simulation and reconstruction for %s on grid at theta = %s deg"%(particle, theta))
-          cmd_run_theta = "python submit_gps_theta.py %s %s ILCSoft-%s %s %s %s %s"%(particle, theta, run_conf["Release date"], run_conf["Detector model"], 
-                          run_conf["NJobs"], run_conf["NEvents_per_job"], "prova")
+          cmd_run_theta = "python submit_gps_theta.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, theta, run_conf["Release date"], run_conf["Detector model"], 
+                          run_conf["NJobs"], run_conf["NEvents_per_job"], eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
           print(cmd_run_theta)
-          os.system(cmd_run_theta)
+          #os.system(cmd_run_theta)
       elif var == "energy":
         for energy in ["1","10","100"] :
           print(">> Running simulation and reconstruction for %s on grid at energy = %s GeV"%(particle, energy))
-          cmd_run_energy = "python submit_gun_energy.py %s %s ILCSoft-%s %s %s %s %s"%(particle, energy, run_conf["Release date"], run_conf["Detector model"], 
-                           run_conf["NJobs"], run_conf["NEvents_per_job"], "prova")
+          cmd_run_energy = "python submit_gun_energy.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, energy, run_conf["Release date"], run_conf["Detector model"], 
+                           run_conf["NJobs"], run_conf["NEvents_per_job"], eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
           print(cmd_run_energy)
-          os.system(cmd_run_energy)
+          #os.system(cmd_run_energy)
 
 
 if __name__ == "__main__":
