@@ -48,7 +48,7 @@ def main(argv):
   if bool(test) : print("Source ILCSoft release with: %s"%cmd_source_ILCSoft)
 
   single_particle_list = ["muons", "electrons", "pions"]
-  complex_events_list = ["ttbar"]
+  complex_events_list = ["ttbar", "ttbar_ove"]
 
   #running sim-reco-val for single particles
   for particle in run_conf["Particles"]:
@@ -68,14 +68,14 @@ def main(argv):
           cmd_run_theta = "python submit_gps_theta.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, theta, run_conf["Release date"], run_conf["Detector model"], 
                           n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
           print(cmd_run_theta)
-          #os.system(cmd_run_theta)
+          os.system(cmd_run_theta)
       elif var == "energy":
         for energy in ["1","10","100"] :
           if bool(test) : print(">> Running simulation and reconstruction for %s on grid at energy = %s GeV"%(particle, energy))
           cmd_run_energy = "python submit_gun_energy.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, energy, run_conf["Release date"], run_conf["Detector model"], 
                            n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
           print(cmd_run_energy)
-          #os.system(cmd_run_energy)
+          os.system(cmd_run_energy)
 
   #running reco-val for complex events
   for particle in run_conf["Particles"]:
@@ -86,6 +86,8 @@ def main(argv):
     if run_conf["Type sample ttbar"] == "SIM":
       #check (or create) the input xml file
       xml_file_name = "local_files/clicReconstruction.xml"
+      if "ove" in particle:
+        xml_file_name = "local_files/clicReconstruction_overlay.xml"
       if check_file_exist(xml_file_name) and bool(test):
         print("> Input xml file already exist")
 
@@ -93,7 +95,7 @@ def main(argv):
       cmd_run_ttbar = "python submit_ttbar_fromSIM.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, run_conf["Input sample ttbar"], run_conf["Release date"], run_conf["Detector model"], 
                       n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
       print(cmd_run_ttbar)
-      #os.system(cmd_run_ttbar)
+      os.system(cmd_run_ttbar)
 
     if run_conf["Type sample ttbar"] == "REC":
       #check (or create) the input xml file
@@ -105,7 +107,7 @@ def main(argv):
       cmd_run_ttbar = "python submit_ttbar_fromREC.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, run_conf["Input sample ttbar"], run_conf["Release date"], run_conf["Detector model"], 
                       n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
       print(cmd_run_ttbar)
-      #os.system(cmd_run_ttbar)
+      os.system(cmd_run_ttbar)
 
 if __name__ == "__main__":
   if len(sys.argv[1:]) == 0:

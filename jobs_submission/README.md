@@ -35,18 +35,21 @@ These are the input parameters concerning the job submission:
 - "Jobs_output_folder": name used for the jobs output folder in eos
 - "Jobs_customised_lib": if not empty, it is used to set a specific customised Marlin library as input
 
-After set the config file correctly, one can run:
+After setting the config file correctly, run:
 ```
 python submit.py ../cfg/cfg_file.json
 ```
-According to the particle type and the variables listed in the cfg file, the steps needed to obtain the final ntuples will be run on the grid.
 
-In the case of single particle, the automatic scripts runs SIM-REC-VAL steps for 10,30 and 89 deg in theta
-and 1,10,100 GeV in energy.
+As a first step the vanilla xml files of the specific release are copied in `local_files`. 
+Modify them similarly to the ones in `local_files/templates/`:
+- `local_files/templates/clicReconstruction.xml` to run only the tracking step in the reconstruction
+- `local_files/templates/clicReconstruction_onlyValidator.xml` to run only the tracking validator
+- `local_files/templates/clicReconstruction_overlay.xml` to include the overlay in the reconstruction
+Not all particles require all filed. In case these files are needed but not present in `local_files` folder, the automatic script will ask to include them.
 
-In the case of ttbar sample, the automatic scripts run REC-VAL or only VAL steps depending on the configuration. 
-In both cases the input slcio sample number is needed.
-If the name of the sample contains "ove", then the overlay will also be included in the reconstruction.
+According to the particle type and the variables listed in the cfg file, the steps needed to obtain the final ntuples will be run on the grid:
+- In the case of single particle, the automatic scripts runs SIM-REC-VAL steps for 10,30 and 89 deg in theta and 1,10,100 GeV in energy.
+- In the case of ttbar sample, the automatic scripts run REC-VAL or only VAL steps depending on the configuration. In both cases the input slcio sample number is needed. If the name of the sample contains "ove", then the overlay will also be included in the reconstruction.
 
 ## Standalone scripts
 
