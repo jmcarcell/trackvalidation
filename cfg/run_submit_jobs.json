@@ -2,21 +2,22 @@
   "Release date" : "2019-09-04", 
   "Detector model" : "CLIC_o3_v14", 
 
-  "Particles" : ["muons", "electrons", "pions"], 
+  "Particles" : ["muons", "electrons", "pions", "ttbar"], 
   "Variables" : ["theta", "energy"], 
 
-  "NJobs" : "2",
-  "#NJobs" : "200",
-  "NEvents_per_job" : "10",
-  "#NEvents_per_job" : "10000",
+  "NJobs" : "200",
+  "NEvents per job" : "10000",
+
+  "Input sample ttbar" : "13837",
+  "Type sample ttbar"  : "SIM",
+  "#Input sample ttbar" : "14207",
+  "#Type sample ttbar"  : "REC",
 
   "Jobs_output_folder" : "prova",
   "Jobs_customised_lib" : "",
-  "#Jobs_customised_lib" : "LFN:/ilc/user/u/username/libConformalTracking.tar.gz",
+  "#Jobs_customised_lib" : "LFN:/ilc/user/e/ericabro/libConformalTracking-iLCSoft_2019-09-04_exactly1sensor.tar.gz",
 
 	"DatasetInformationFile": "../cfg/info_on_all_datasets.json" ,
-
-	"RunInfoOutputDir" : "../infontuple/",
 
 	"HistogramInformationFile" : "../cfg/HistogramList.json",
 	"HistoFileDir" : "../histos/",
@@ -25,11 +26,7 @@
 	"TrueInfo": 1,
 	"PreselectCharginoCandidates": 1,
 
-	"ReweightToTargetCtau" : 1,
-	"WeightSignalHistToCtau_mm" : 6.9,
-
-	
-	"TestMode": 1,
+  "Test Mode": 1,
 	"GridMode": 0,
 	"grid_tarball" : ""
 
