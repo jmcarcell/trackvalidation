@@ -22,6 +22,7 @@ nEvts = int(sys.argv[6])
 nameJobGroup = sys.argv[7]
 templateOutRoot = "histograms"
 nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
+print('Output files can be found in %s'%nameDir)
 
 for input_ind in range(1,nJobs,1):
 

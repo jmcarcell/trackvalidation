@@ -34,6 +34,7 @@ These are the input parameters concerning the job submission:
 - "NEvents per job": number of events per jobs
 - "Jobs_output_folder": name used for the jobs output folder in eos
 - "Jobs_customised_lib": if not empty, it is used to set a specific customised Marlin library as input
+- "Test Mode": if set to 1, more printout are added and only 2 events are submit with 3 events 
 
 After setting the config file correctly, run:
 ```
