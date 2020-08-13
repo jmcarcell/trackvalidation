@@ -222,19 +222,20 @@ def calculate_fakerate(inputTree, cut, treeId_var, treeId_pur, purityMax = "0.75
 def main():
   print("Analysis performed on file: %s"%NAMENTUPLESFILE)
   inputTFile = TFile(NAMENTUPLESFILE)
-  if os.path.exists(OUTPUTFILE):
-    recreate = raw_input("%s already exists. Do you want to recreate the file (y/n)?"%OUTPUTFILE)
-    if recreate is "y":
-      outputTFile = TFile(OUTPUTFILE,"RECREATE")
-    elif recreate is "n":
-      outputTFile = TFile(OUTPUTFILE,"UPDATE")
-    else:
-      print("Answer not valid. Break.")
-      return
-  else:
-    outputTFile = TFile(OUTPUTFILE,"CREATE")
+  outputTFile = TFile(OUTPUTFILE,"UPDATE")
 
   if EFFICIENCY :
+  #if os.path.exists(OUTPUTFILE):
+  #  recreate = raw_input("%s already exists. Do you want to recreate the file [y/n]?"%OUTPUTFILE)
+  #  if recreate is "y":
+  #    outputTFile = TFile(OUTPUTFILE,"RECREATE")
+  #  elif recreate is "n":
+  #    outputTFile = TFile(OUTPUTFILE,"UPDATE")
+  #  else:
+  #    print("Answer not valid. Break.")
+  #    return
+  #else:
+  #  outputTFile = TFile(OUTPUTFILE,"CREATE")
     print("> Producing efficiency plots ...")
     rootTTree = inputTFile.Get(TREENAME_EFF)
     treeId = "simpl"

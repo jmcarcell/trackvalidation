@@ -12,7 +12,7 @@ The validation is performed with four different steps:
 
 The correspondent folders for each steps are:
 1. `job_submission`
-2. `produce_histos`
+2. `run_analysis`
 3. `produce_plots`
 4. `create_pdf`
 Each folder contains the README to run the step.
