@@ -52,9 +52,9 @@ def main(argv):
     filein = PATHFILESIN + file_name
     fileout = PATHFILESOUT + fileout
     #single particles
-    if particle is ("muons" or "electrons" or "pions"): 
+    if particle == "muons" or particle == "electrons" or particle == "pions": 
 
-      if "deg" or "GeV" not in file_name :
+      if "deg" not in file_name and "GeV" not in file_name :
         print("> Input file does not contain \'deg\' or \'GeV\', not sure what to plot!")
 
       #efficiency
@@ -88,7 +88,7 @@ def main(argv):
         os.system(command_analysis)
 
     #complex events
-    elif particle is "ttbar" or "ttbar_ove": 
+    elif particle == "ttbar" or particle == "ttbar_ove" : 
       #efficiency
       ANALYSIS_FLAGS = "--efficiency"
 
