@@ -24,6 +24,7 @@ dirac-proxy-init
 ## Automatic script
 
 Modify the config file `../cfg/run_submit_jobs.json` accordingly. 
+
 These are the input parameters concerning the job submission:
 - "Release date": release used to produce the sample
 - "Detector model": detector model used to produce the sample 
@@ -32,13 +33,14 @@ These are the input parameters concerning the job submission:
 - "Input/type sample ttbar": number and type of sample used as input (ttbar only!)
 - "NJobs": number of jobs submitted
 - "NEvents per job": number of events per jobs
-- "Jobs_output_folder": name used for the jobs output folder in eos
-- "Jobs_customised_lib": if not empty, it is used to set a specific customised Marlin library as input
+- "Jobs output folder": name used for the jobs output folder in eos
+- "Jobs customised lib": if not empty, it is used to set a specific customised Marlin library as input
+- "Sample fixed pt SIM folder": folder that contains the SIM-DDSIM sample (used only to create sample with fixed pT)
 - "Test Mode": if set to 1, more printout are added and only 2 events are submit with 3 events 
 
 After setting the config file correctly, run:
 ```
-python submit.py ../cfg/cfg_file.json
+python script_submit.py ../cfg/cfg_file.json
 ```
 
 As a first step the vanilla xml files of the specific release are copied in `local_files`. 
@@ -54,8 +56,8 @@ According to the particle type and the variables listed in the cfg file, the ste
 
 ## Standalone scripts
 
-- `submit_gps_theta.py` run SIM-REC-VAL steps of single particle at a certain theta angle [deg]
-- `submit_gun_energy.py` run SIM-REC-VAL steps of single particle at a certain energy [GeV]
+- `submit_allSingleParticles_gps_theta.py` run SIM-REC-VAL steps of single particle at a certain theta angle [deg]
+- `submit_allSingleParticles_gun_energy.py` run SIM-REC-VAL steps of single particle at a certain energy [GeV]
 - `submit_ttbar_fromSIM.py` run REC-VAL steps for ttbar events (number of SIM sample in input is needed!)
 - `submit_ttbar_fromREC.py` run VAL step for ttbar events (number of REC sample in input is needed!)
 
@@ -63,6 +65,13 @@ When running one of them standalone, you need to give the following arguments:
 ```
 python submit_XXX.py sampleName energy/theta/sampleNum release detector nJobs nEv nameTag [path to customised Marlin library]
 ```
+
+In case of fixed pt (and not energy) one step more is needed: SIM-DDSIM-RECO-VAL.
+The following scripts can be used:
+- `submit_allSingleParticles_slcio_fixedPt.py` produce SIM files (10'000 events are always created!)
+- `submit_allSingleParticles_ddsim_fixedPt.py` produce DDSIM files ("NJobs" referres to the number of input SIM files. 1'000 events are always run per jobs. Therefore, the real number of jobs sumitted will be NJobs\*10!)
+- `submit_allSingleParticles_reco_fixedPt.py` run REC-VAL (same as above)
+In the first one, the `sh/lcio_particle_gun.py` and `sh/run_lcio_particle_gun_\*_\*GeV.sh` scripts are then called.
 
 ## Local
 Produce SIM files locally:

@@ -1,28 +1,37 @@
 #!/bin/python
 import sys, getopt
 
-#####################################################################     
-#set general parameters 
+#####################################################################
 
-nJobs = int(sys.argv[2]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py 
-nEvts = int(sys.argv[1]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py 
-gunPt = sys.argv[3]
-gunPdg = sys.argv[4]
-nameTag = 'reco_fixedPt_'+gunPdg+'_'+gunPt+'GeV'
-nameJobGroup = 'efficiencies'
-clicConfig = 'ILCSoft-2019-09-04'
-marlinVersion = 'ILCSoft-2019-09-04_gcc62'
-detectorModel =  'CLIC_o3_v14'
-baseSteeringMarlin = 'local/path/CLICPerformance/clicConfig/steeringFiles/clicReconstruction.xml'
-nameSteeringMarlin = "local/path/CLICPerformance/clicConfig/clicReconstruction_final.xml"
+#parameters
+particle = sys.argv[1]
+gunPt = sys.argv[2]
+nameTag = particle+'_'+gunPt+'GeV_fixedPt'
+if 'muon' in particle :
+  gunPdg = "13"
+elif 'ele' in particle:
+  gunPdg = "11"
+elif 'pion' in particle:
+  gunPdg = "211"
+else:
+  print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
+
+clicConfig = sys.argv[3]
+marlinVersion = sys.argv[3]+'_gcc62'
+detectorModel =  sys.argv[4]
+baseSteeringMarlin = 'local_files/clicReconstruction.xml'
+nameSteeringMarlin = "local_files/clicReconstruction_final.xml"
+
+nJobs = int(sys.argv[5]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
+nEvts = int(sys.argv[6]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
+nameJobGroup = sys.argv[7]
+
 templateOutRoot = "histograms"
-#templateOutputRec = 'Output_REC'
-#templateOutputDst = 'Output_DST'
-nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
-#valid for muons
-path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV'
-#valid for electrons and pions
-#path = '/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV'
+nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
+print('Output files can be found in %s'%nameDir)
+ 
+pathSLCIO = sys.argv[8]+'files_'+particle+'_'+gunPt+'GeV_fixedPt_ddsim'
+subpathSLCIO = pathSLCIO[pathSLCIO.find("/ilc/"):]
 
 #####################################################################     
 #set environment 
@@ -42,14 +51,16 @@ from ILCDIRAC.Interfaces.API.NewInterface.Applications import Marlin
 #job definition
 i = 0
 
-for f in listdir(path):
+for f in listdir(pathSLCIO):
+    #running all sub-jobs produced in the job
+    currJob = f[f.find("particles_")+10:f.find('.slcio')]
+    if int(currJob) > nJobs:
+      continue
+    i+=1
+
     outputFile = 'reco_'+f
     fsplitted = f.split('.')
     rootFile = 'reco_'+fsplitted[0]
-
-    if i > nJobs:
-        break
-    i += 1
 
     with open(baseSteeringMarlin) as fmarlin:
         open(nameSteeringMarlin,"w").write(fmarlin.read().replace(templateOutRoot,rootFile))
@@ -71,8 +82,14 @@ for f in listdir(path):
 
     ma.setVersion(marlinVersion)
     ma.setDetectorModel(detectorModel)
-    ma.setInputFile('LFN:/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV/'+f)
-    #ma.setInputFile('LFN:/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV/'+f)
+    ma.setInputFile('LFN:'+subpathSLCIO+'/'+f)
+
+    #set customised library
+    if len(sys.argv) > 9:
+      customisedLibrary = str(sys.argv[9])
+      print('Using Marlin customised library: %s'%customisedLibrary)
+      job.setInputSandbox(customisedLibrary)
+
     ma.setNumberOfEvents(nEvts)
     ma.setSteeringFile(nameSteeringMarlin)
     res = job.append(ma)

@@ -4,18 +4,29 @@ import sys, getopt
 #####################################################################
 
 #parameters
-nJobs = 200
-nEvts = sys.argv[1]
+particle = sys.argv[1]
 gunPt = sys.argv[2]
-gunPdg = sys.argv[3]
-nameTag = 'fixedPt_'+gunPdg+'_'+gunPt+'GeV'
-nameJobGroup = 'efficiencies'
-clicConfig = 'ILCSoft-2019-09-04'
-ddsimVersion = 'ILCSoft-2019-09-04_gcc62' 
-detectorModel =  'CLIC_o3_v14'
-baseSteeringGA = '/home/ericabro/CLICstudies/2019/LowPtStudy/ILCSoft_2019-09-04/trackingvalidation/jobs_submission/sh/lcio_particle_gun.py'
-outputFile = 'mcparticles.slcio' #'fixedPt_'+gunPt+'GeV.slcio'
-nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
+nameTag = particle+'_'+gunPt+'GeV_fixedPt'
+if 'muon' in particle :
+  gunPdg = "13"
+elif 'ele' in particle:
+  gunPdg = "11"
+elif 'pion' in particle:
+  gunPdg = "211"
+else:
+  print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
+
+clicConfig = sys.argv[3]
+ddsimVersion = sys.argv[3]+'_gcc62'
+detectorModel =  sys.argv[4]
+baseSteeringGA = 'sh/lcio_particle_gun.py'
+
+nJobs = int(sys.argv[5])
+nEvts = int(sys.argv[6])
+nameJobGroup = sys.argv[7]
+outputFile = 'mcparticles.slcio'
+nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
+print('Output files can be found in %s'%nameDir)
  
 #####################################################################     
 #set environment          

@@ -23,7 +23,7 @@ def main(argv):
   #Test
   print(run_conf["Particles"])
   print(run_conf["Variables"])
-  print(run_conf["Jobs_customised_lib"])
+  print(run_conf["Jobs customised lib"])
   print(run_conf["Test Mode"])
   print(run_conf["NEvents per job"])
   print(run_conf["NJobs"])
@@ -32,8 +32,8 @@ def main(argv):
   #store variables from json
   nev_per_job = run_conf["NEvents per job"]
   n_jobs = run_conf["NJobs"]
-  eos_output_folder = run_conf["Jobs_output_folder"]
-  eos_custom_lib = run_conf["Jobs_customised_lib"]
+  eos_output_folder = run_conf["Jobs output folder"]
+  eos_custom_lib = run_conf["Jobs customised lib"]
   test = run_conf["Test Mode"]
 
   #adapt to test mode
@@ -65,17 +65,62 @@ def main(argv):
       if var == "theta":
         for theta in ["10","30","89"] :
           if bool(test) : print(">> Running simulation and reconstruction for %s on grid at theta = %s deg"%(particle, theta))
-          cmd_run_theta = "python submit_gps_theta.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, theta, run_conf["Release date"], run_conf["Detector model"], 
+          cmd_run_theta = "python submit_alSingleParticles_gps_theta.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, theta, run_conf["Release date"], run_conf["Detector model"], 
                           n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
           print(cmd_run_theta)
           os.system(cmd_run_theta)
       elif var == "energy":
         for energy in ["1","10","100"] :
           if bool(test) : print(">> Running simulation and reconstruction for %s on grid at energy = %s GeV"%(particle, energy))
-          cmd_run_energy = "python submit_gun_energy.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, energy, run_conf["Release date"], run_conf["Detector model"], 
+          cmd_run_energy = "python submit_allSingleParticles_gun_energy.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, energy, run_conf["Release date"], run_conf["Detector model"], 
                            n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
           print(cmd_run_energy)
           os.system(cmd_run_energy)
+      elif var == "pT" or var == "pt":
+        step = raw_input("> Which step would you like to run to produce %s at fixed pt ? [sim/ddsim/reco] "%particle) 
+        for pt in ["1","10","100"] :
+          if str(step) == 'sim':
+            if bool(test) : print(">> Producing sim files for %s on grid at pt = %s GeV"%(particle, pt))
+            #ERICA: in this step 10'000 events are always created!
+            cmd_run_pt = "python submit_allSingleParticles_slcio_pt.py %s %s ILCSoft-%s %s %s %s %s "%(particle, pt, run_conf["Release date"], run_conf["Detector model"], 
+                             n_jobs, nev_per_job, eos_output_folder)
+            print(cmd_run_pt)
+            os.system(cmd_run_pt)
+          elif str(step) == 'ddsim':
+            if bool(test) : print(">> Running simulation for %s on grid at pt = %s GeV"%(particle, pt))
+
+            #ddsim production requires clic_steer file
+            steer_file_name = "local_files/clic_steer.py"
+            if check_file_exist(steer_file_name) and bool(test):
+              print("> Input steer file already exist")
+
+            #Sample fixed pt SIM folder is used to set the path to input SIM files
+            #In this step n_jobs is the number of input SIM files taken from "Sample fixed pt SIM folder"
+            #1000 events are always run (10'000 / 1'000 = 10 jobs per file)!
+            cmd_run_pt = "python submit_allSingleParticles_ddsim_pt.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, pt, run_conf["Release date"], run_conf["Detector model"], 
+                             n_jobs, "1000", eos_output_folder, run_conf["Sample fixed pt SIM folder"])
+            print(cmd_run_pt)
+            os.system(cmd_run_pt)
+
+          elif str(step) == 'reco':
+            if bool(test) : print(">> Running reconstruction for %s on grid at pt = %s GeV"%(particle, pt))
+
+            #ddsim production requires clic_steer file
+            xml_file_name = "local_files/clicReconstruction.xml"
+            if check_file_exist(xml_file_name) and bool(test):
+              print("> Input xml file already exist")
+
+            #Sample fixed pt SIM folder is used to set the path to input DDSIM files
+            #In this step n_jobs is the number of input SIM files taken from "Sample fixed pt SIM folder"
+            #1000 events are always run (10'000 / 1'000 = 10 jobs per file)!
+            cmd_run_pt = "python submit_allSingleParticles_reco_pt.py %s %s ILCSoft-%s %s %s %s %s %s %s"%(particle, pt, run_conf["Release date"], run_conf["Detector model"], 
+                             n_jobs-1, "1000", eos_output_folder, run_conf["Sample fixed pt SIM folder"], "" if not eos_custom_lib else eos_custom_lib)
+            print(cmd_run_pt)
+            os.system(cmd_run_pt)
+          else:
+            print("> Step not included in the list!")
+      else:
+        print("> Variable not included in the list!")
 
   #running reco-val for complex events
   for particle in run_conf["Particles"]:

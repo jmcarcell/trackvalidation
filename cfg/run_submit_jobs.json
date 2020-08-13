@@ -3,7 +3,7 @@
   "Detector model" : "CLIC_o3_v14", 
 
   "Particles" : ["muons", "electrons", "pions", "ttbar", "ttbar_ove"], 
-  "Variables" : ["theta", "energy"], 
+  "Variables" : ["theta", "energy", "pt"], 
 
   "Input sample ttbar" : "13837",
   "Type sample ttbar"  : "SIM",
@@ -13,9 +13,11 @@
   "NJobs" : "200",
   "NEvents per job" : "10000",
 
-  "Jobs_output_folder" : "prova",
-  "Jobs_customised_lib" : "",
-  "#Jobs_customised_lib" : "LFN:/ilc/user/e/ericabro/libConformalTracking-iLCSoft_2019-09-04_exactly1sensor.tar.gz",
+  "Jobs output folder" : "prova",
+  "Jobs customised lib" : "",
+  "#Jobs customised lib" : "LFN:/ilc/user/e/ericabro/libConformalTracking-iLCSoft_2019-09-04_exactly1sensor.tar.gz",
+
+  "Sample fixed pt SIM folder" : "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/CLIC_o3_v14/ILCSoft-2019-09-04/prova/sim/",
 
   "Ntuple folder": "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2020/CLICo3v14/ILCSoft-2020-02-07/efficiencies/",
   "Ntuple types" : ["muons"],
@@ -27,13 +29,7 @@
   "#Histo names"  : ["histo_1GeV.root", "histo_10GeV.root", "histo_100GeV.root",
                     "histo_10deg.root", "histo_30deg.root", "histo_89deg.root"],
 
-	"CharginoCandidatesInfo": 1,
-	"TrueInfo": 1,
-	"PreselectCharginoCandidates": 1,
-
-  "Test Mode": 1,
-	"GridMode": 0,
-	"grid_tarball" : ""
+  "Test Mode": 1
 
 }
 

@@ -1,23 +1,36 @@
 #!/bin/python
 import sys, getopt
 
-#####################################################################     
-#set general parameters 
+#####################################################################
 
-#nJobs = 200
-nEvts = int(sys.argv[1])
-nEvtGen = 10000 #nEvents in the SLCIO files produced with submit_allSingleParticles_slcio_fixedPt.py
+#parameters 
+particle = sys.argv[1]
 gunPt = sys.argv[2]
-gunPdg = sys.argv[3]
-nameTag = 'fixedPt_ddsim_'+gunPdg+'_'+gunPt+'GeV'
-nameJobGroup = 'efficiencies'
-clicConfig = 'ILCSoft-2019-09-04'
-ddsimVersion = 'ILCSoft-2019-09-04_gcc62'
-detectorModel =  'CLIC_o3_v14'
-baseSteeringDDSim = '/home/ericabro/CLICstudies/2019/LowPtStudy/ILCSoft_2019-09-04/CLICPerformance/clicConfig/steeringFiles/clic_steer.py'
+nameTag = particle+'_'+gunPt+'GeV_fixedPt_ddsim'
+if 'muon' in particle :
+  gunPdg = "13"
+elif 'ele' in particle:
+  gunPdg = "11"
+elif 'pion' in particle:
+  gunPdg = "211"
+else:
+  print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
+
+clicConfig = sys.argv[3]
+ddsimVersion = sys.argv[3]+'_gcc62'
+detectorModel =  sys.argv[4]
+baseSteeringDDSim = 'local_files/clic_steer.py'
+
+nJobs = int(sys.argv[5])
+nEvts = int(sys.argv[6])
+nameJobGroup = sys.argv[7]
+nEvtGen = 10000 #nEvents in the SLCIO files produced with submit_allSingleParticles_slcio_fixedPt.py
 templateOutFile = 'sim.slcio'
-nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
-pathSLCIO = '/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_'+gunPdg+'_'+gunPt+'GeV'
+nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
+print('Output files can be found in %s'%nameDir)
+ 
+pathSLCIO = sys.argv[8]+'files_'+particle+'_'+gunPt+'GeV_fixedPt'
+subpathSLCIO = pathSLCIO[pathSLCIO.find("/ilc/"):]
 
 #####################################################################     
 #set environment 
@@ -63,7 +76,7 @@ for f in listdir(pathSLCIO):
 
         ddsim.setVersion(ddsimVersion)
         ddsim.setDetectorModel(detectorModel)
-        ddsim.setInputFile('LFN:/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/sim/files_fixedPt_'+gunPdg+'_'+gunPt+'GeV/'+f)
+        ddsim.setInputFile('LFN:'+subpathSLCIO+'/'+f)
         ddsim.setOutputFile(outputFile)
         ddsim.setNumberOfEvents(nEvts) 
         ddsim.setSteeringFile(baseSteeringDDSim)
