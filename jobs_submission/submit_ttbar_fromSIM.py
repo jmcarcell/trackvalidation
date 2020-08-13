@@ -15,6 +15,8 @@ clicConfig = sys.argv[3]
 marlinVersion = sys.argv[3]+'_gcc62'
 detectorModel =  sys.argv[4]
 baseSteeringMarlin = 'local_files/clicReconstruction.xml'
+if "ove" in particle :
+  baseSteeringMarlin = 'local_files/clicReconstruction_overlay.xml'
 nameSteeringMarlin = 'local_files/clicReconstruction_final.xml'
 
 nJobs = int(sys.argv[5])
@@ -22,6 +24,7 @@ nEvts = int(sys.argv[6])
 nameJobGroup = sys.argv[7]
 templateOutRoot = "histograms"
 nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
+print('Output files can be found in %s'%nameDir)
 
 for input_ind in range(1,nJobs,1):
 
@@ -45,6 +48,17 @@ for input_ind in range(1,nJobs,1):
     print('Using Marlin customised library: %s'%customisedLibrary)
     job.setInputSandbox(customisedLibrary)
 
+  if "ove" in particle :
+    over = OverlayInput()
+    #Overlay.NBunchtrain in clicReconstruction.xml
+    over.setBXOverlay(30)
+    #Overlay3TeV.NumberBackground in clicReconstruction.xml
+    over.setGGToHadInt(3.2)
+    over.setNumberOfSignalEventsPerJob( 100 )
+    over.setBackgroundType("gghad")
+    over.setDetectorModel(detectorModel)
+    over.setEnergy("3000")
+    over.setMachine("clic_opt")
   
   ma = Marlin()
   ma.setVersion(marlinVersion)
@@ -54,10 +68,15 @@ for input_ind in range(1,nJobs,1):
   ma.setSteeringFile(nameSteeringMarlin)
   ma.setNumberOfEvents(nEvts)
   
-  res=job.append(ma)
+  if "ove" in particle :
+    res=job.append(over)
+  else:
+    res=job.append(ma)
   if not res['OK']:
      print res['Message']
      exit()
+  if "ove" in particle :
+    res=job.append(ma)
 
   job.dontPromptMe()
   print job.submit(dirac)
