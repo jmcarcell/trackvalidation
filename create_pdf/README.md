@@ -24,10 +24,16 @@ python script_create.py ../cfg/cfg_file.json
 ```
 The outputs are `release\_summary.pdf` and `release\_comparison.pdf`
 
-For each release the pdf will search for the following plots:
-- 'muons/' +
--- 'eff_vs_pT_minNhits'
-- 
+For each release the pdf will search for the following folders:
+- 'muons/'
+- 'pions/'
+- 'ttbar3TeV/'
+
+And for each folder the following plots:
+- 'eff\_vs\_VAR\_minNhits\*.eps'
+- 'fake\_vs\_VAR\_minNhits\*.eps'
+- 'dupl\_vs\_VAR\_minNhits\*.eps'
+with VAR = theta, pt, phi 
 
 ## Standalone scripts
 
