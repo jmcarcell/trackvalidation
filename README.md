@@ -10,11 +10,12 @@ The validation is performed with four different steps:
 3. Perform analysis plot (including comparison among samples)
 4. Create summary pdf (and comparison with other releases)
 
-The correspondent folders for each steps are:
+The correspondent folder for each step is:
 1. `job_submission`
 2. `run_analysis`
 3. `produce_plots`
 4. `create_pdf`
+
 Each folder contains the README to run the step.
 
 Additional folders:
@@ -22,11 +23,6 @@ Additional folders:
 - `cfg` contains configuration files which can be used across folders
 
 ## Old text from here:
-
-For basic validation, both muons and ttbar are used.
-
-The tracking validation is run using the module `$ILCSOFT/ClicPerformance/HEAD/Tracking/ClicEfficiencyCalculator` on `REC` files.
-This can be run again including only this module in `$ILCSOFT/ClicPerformance/HEAD/clicConfig/clicReconstruction.xml`.
 
 Currently, the following macros can be used to produce efficiency, fakerate and duplicates summary in case of muons, electrons, and pions:
 - `macros/plot_duplicates_singleParticle.C`

@@ -8,9 +8,6 @@ The package was tested with single particles (muon, electrons and pions) and com
 
 To run the scripts in this folder you will need ROOT.
 
-Modify the config file accordingly:
-set ../cfg/run_submit_jobs.json
-
 # Automatic script
 
 Modify the config file `../cfg/run_submit_jobs.json` accordingly.
@@ -21,6 +18,7 @@ These are the input parameters concerning the analysis:
 - For each file one want to analyse, one should specify "Ntuple types", "Ntuple names" and "Histo names" accordingly
 - "Test Mode": if set to 1, more printout are added
 
+After setting the config file correctly, run:
 ```
 python script_analysis.py ../cfg/cfg_file.json
 ```
