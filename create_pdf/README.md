@@ -26,6 +26,7 @@ The outputs are `release\_summary.pdf` and `release\_comparison.pdf`
 
 For each release the pdf will search for the following folders:
 - 'muons/'
+- 'electrons/'
 - 'pions/'
 - 'ttbar3TeV/'
 
