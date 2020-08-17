@@ -1,0 +1,16 @@
+{
+  "Input folder": "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2020/CLICo3v14/ILCSoft-2020-02-07/efficiencies/",
+  "Output folder": "results/",
+
+  "Ntuple types" : ["muons", "muons", "muons", "muons", "muons", "muons", "ttbar", "ttbar_ove"],
+  "Ntuple names" : ["merged_reco_muons_pt_1GeV.root", "merged_reco_muons_pt_10GeV.root", "merged_reco_muons_pt_100GeV.root",
+                     "merged_Pow1_muons_10deg.root", "merged_Pow1_muons_30deg.root", "merged_Pow1_muons_89deg.root",
+                     "merged_ttbar3TeV_NoOverlay_conformal.root", "merged_ttbar3TeV_Overlay_conformal.root"],
+  "Histo names"  : ["histo_1GeV.root", "histo_10GeV.root", "histo_100GeV.root",
+                    "histo_10deg.root", "histo_30deg.root", "histo_89deg.root",
+                    "histo_ttbar.root", "histo_ttbar_ove.root"],
+
+  "Test Mode": 1
+
+}
+

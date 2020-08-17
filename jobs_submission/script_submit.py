@@ -20,15 +20,6 @@ def main(argv):
   with open(run_config_file) as json_run_file:
     run_conf = json.load(json_run_file)
 
-  #Test
-  print(run_conf["Particles"])
-  print(run_conf["Variables"])
-  print(run_conf["Jobs customised lib"])
-  print(run_conf["Test Mode"])
-  print(run_conf["NEvents per job"])
-  print(run_conf["NJobs"])
-  print(run_conf["Type sample ttbar"])
-
   #store variables from json
   nev_per_job = run_conf["NEvents per job"]
   n_jobs = run_conf["NJobs"]
@@ -156,7 +147,7 @@ def main(argv):
 
 if __name__ == "__main__":
   if len(sys.argv[1:]) == 0:
-    print("Please always give the run_config file as argument, e.g. \n python main.py ../cfg/run_info_local.json")
+    print("Please always give the run_config file as argument, e.g. \n python script.py ../cfg/run_info_local.json")
     sys.exit()
 
   check_dirac = raw_input("Did you setup Dirac? [yes/no] ") 

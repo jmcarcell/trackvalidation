@@ -1,13 +1,13 @@
 # Tracking Validation
 
-Collect script and macros to validate [Conformal Tracking](https://github.com/iLCSoft/ConformalTracking) for new releases.
+Collect script and macros to validate [Conformal Tracking](https://github.com/iLCSoft/ConformalTracking) for new [ILCSoft releases](https://gitlab.cern.ch/CLICdp/SoftwareConfigurations/iLCSoft/-/releases).
 
 ## Package structure 
 
 The validation is performed with four different steps:
 1. Production of the validation sample
 2. Analysis of the ntuple and production of the local root histo
-3. Perform analysis plot (including comparison among samples)
+3. Produce analysis plot (including comparison among samples)
 4. Create summary pdf (and comparison with other releases)
 
 The correspondent folder for each step is:
