@@ -71,8 +71,8 @@ def main(argv):
         if bool(test) : print(command_analysis)
         os.system(command_analysis)
 
-      #comparison and fakerate
-      ANALYSIS_FLAGS = "--compareRecoSim --fakerate"
+      #MC comparison, fakerate and duplicates
+      ANALYSIS_FLAGS = "--compareRecoSim --fakerate --duplicates"
       if "deg" in file_name :
         CUTS_FIXED_THETA       = "nHits:3:1000 nHits:3:1000"
         command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s %s"%(filein,fileout,LISTVAR_FIXED_THETA,CUTS_FIXED_THETA,ANALYSIS_FLAGS)
@@ -98,7 +98,7 @@ def main(argv):
       os.system(command_analysis)
 
       #comparison and fakerate
-      ANALYSIS_FLAGS = "--compareRecoSim --fakerate"
+      ANALYSIS_FLAGS = "--compareRecoSim --fakerate --duplicates"
       LISTVAR = "theta:83:7:90:False pt:100:-1:3:True phi:180:-180:180:False"
       CUTS    = "pt:1:10000:nHits:4:1000 theta:10:170:nHits:4:1000 theta:10:170:pt:1:10000:nHits:4:1000"
       

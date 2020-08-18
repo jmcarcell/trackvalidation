@@ -9,6 +9,8 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 from ROOT import *
 
+ROOT.gROOT.LoadMacro("root_macros.C")
+
 gROOT.SetBatch()
 
 parser = argparse.ArgumentParser(description='Produce root files with tracking analysis plots')
@@ -35,7 +37,7 @@ TREENAME      = "MyClicEfficiencyCalculator/"
 TREENAME_EFF  = TREENAME+"simplifiedEfficiencyTree"
 TREENAME_DIST = TREENAME+"perfTree"
 TREENAME_FAKE = TREENAME+"perfTree"
-TREENAME_DUPL = TREENAME+"simplifiedEfficiencyTree"
+TREENAME_DUPL = TREENAME+"perfTree"
 
 VARIABLES = args.listVariables
 if not VARIABLES:
@@ -218,6 +220,29 @@ def calculate_fakerate(inputTree, cut, treeId_var, treeId_pur, purityMax = "0.75
   hfake.Write()
   return
 
+def calculate_duplicates(inputTree, minHits, treeId, variable = "theta", nbins = 100, minbin = 0.0, maxbin = 100, isLog = False):
+
+  realName = translateVariable(variable, treeId)
+  print(">> Duplicates for variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
+  hReco = TH1F("hReco","hReco",nbins,minbin,maxbin)
+  hReco.Sumw2()
+  hDupl = TH1F("hDupl","hDupl",nbins,minbin,maxbin)
+  hDupl.Sumw2()
+  if isLog == True :
+    BinLogX(hReco, nbins)
+    BinLogX(hDupl, nbins)
+
+  ROOT.fill_duplicates_histos(inputTree, realName, hReco, hDupl, minHits)
+  print("   Total Dupl: %.f"%hDupl.GetEntries())
+  print("   Total Reco: %.f"%hReco.GetEntries())
+
+  hdupl = TEfficiency(hDupl, hReco)
+  hduplName = "dupl_vs_"+variable
+
+  hdupl.SetName(hduplName)
+  hdupl.SetDirectory(0)
+  hdupl.Write()
+  return
 
 def main():
   print("Analysis performed on file: %s"%NAMENTUPLESFILE)
@@ -300,8 +325,24 @@ def main():
       calculate_fakerate(fakeTTree, cuts, treeId_var, treeId_pur, "0.75", coord[0], int(coord[1]), float(coord[2]), float(coord[3]), json.loads(coord[4].lower()))
    
     
-#  if DUPLICATES :
-#    rootTTree = rootTFile.Get(TREENAME_DUPL)
+  if DUPLICATES :
+    print("> Producing fakerate plots ...")
+    rootTTree = inputTFile.Get(TREENAME_DUPL)
+    treeId = "perfReco"
+
+    for var,cutCustom in zip(VARIABLES,SELECTIONS):
+      #For duplicates, only num hits is used
+      minHits = 0
+      varDetails = cutCustom.split(":")
+      for i in range(0, len(varDetails), 3):
+        realName = translateVariable(varDetails[i], treeId)
+        if realName is 'recoNhits':
+          minHits = int(varDetails[i+1])
+      print('> For duplicates, only num hits is used! min nHits = %d'%minHits)
+      
+      coord = var.split(":")
+      calculate_duplicates(rootTTree, minHits, treeId, coord[0], int(coord[1]), float(coord[2]), float(coord[3]), json.loads(coord[4].lower()))
+
 
   outputTFile.Close()
   print("Analysis saved in: %s"%OUTPUTFILE)
