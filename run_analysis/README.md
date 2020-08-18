@@ -1,12 +1,13 @@
 # Analysis of the ntuple and production of the local root histo
 
-In this part, the ntuple produced by the validator are analysed in terms of efficiency, fakerate, ...
+In this part, the ntuple produced by the validator are analysed in terms of efficiency, fakerate and duplicates.
+To obtain the track parameter resolution as a function of theta and pt, use the scripts in `macros/resolutions`.
 
 The package was tested with single particles (muon, electrons and pions) and complex events (ttbar without and with overlay).
 
 ## Setup environment
 
-To run the scripts in this folder you will need ROOT.
+To run the scripts in this folder you will need ROOT and Python 2.7.
 
 # Automatic script
 

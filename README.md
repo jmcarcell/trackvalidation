@@ -2,6 +2,8 @@
 
 Collect script and macros to validate [Conformal Tracking](https://github.com/iLCSoft/ConformalTracking) for new [ILCSoft releases](https://gitlab.cern.ch/CLICdp/SoftwareConfigurations/iLCSoft/-/releases).
 
+To run all packages, Python 2.7 is needed.
+
 ## Package structure 
 
 The validation is performed with four different steps:

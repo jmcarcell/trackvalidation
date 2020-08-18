@@ -23,7 +23,7 @@ void BinLogX(TH2D* h);
 
 const double purityMin = 0.75;
 
-TString path = "";
+TString path = "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2019/CLICo3v14/ILCSoft-2019-09-04/efficiencies/";
 TString figuresFolder = "";
 
 TString treeName1 = "MyClicEfficiencyCalculator/puritytree";
@@ -175,7 +175,8 @@ void plot_fakerate_singleParticle(TString file1 = "merged_muons_1GeV.root", TStr
       b_mc_vtxR_1->GetEntry(per_entry);
 
       for(UInt_t j = 0; j < trk_purity_1->size(); j++){ //loop over tracks
-       if(mc_vtxR_1->at(j) == 0 && trk_nhits_1->at(j) > minNhits) {
+       if(trk_nhits_1->at(j) > minNhits) {
+       //if(mc_vtxR_1->at(j) == 0 && trk_nhits_1->at(j) > minNhits) {
           h_reconstructed_pt_1->Fill(trk_pt_1->at(j));
           if(trk_purity_1->at(j) < purityMin) {
             h_fake_pt_1->Fill(trk_pt_1->at(j));
@@ -189,8 +190,8 @@ void plot_fakerate_singleParticle(TString file1 = "merged_muons_1GeV.root", TStr
 
     }
 
-   std::cout << "Entries fake: " << h_fake_pt_1->GetEntries() << std::endl;
-   std::cout << "Entries reconstructed: " << h_reconstructed_pt_1->GetEntries() << std::endl;
+   std::cout << "Entries fake: " << int(h_fake_pt_1->GetEntries()) << std::endl;
+   std::cout << "Entries reconstructed: " << int(h_reconstructed_pt_1->GetEntries()) << std::endl;
 
     TEfficiency *h_efficiency_pt_1 = 0;
     if(TEfficiency::CheckConsistency(*h_fake_pt_1,*h_reconstructed_pt_1)){
@@ -387,8 +388,8 @@ void plot_fakerate_singleParticle(TString file1 = "merged_muons_1GeV.root", TStr
 
     }
 
-   std::cout << "Entries fake: " << h_fake_theta_1->GetEntries() << std::endl;
-   std::cout << "Entries reconstructed: " << h_reconstructed_theta_1->GetEntries() << std::endl;
+   std::cout << "Entries fake: " << int(h_fake_theta_1->GetEntries()) << std::endl;
+   std::cout << "Entries reconstructed: " << int(h_reconstructed_theta_1->GetEntries()) << std::endl;
 
     TEfficiency *h_efficiency_theta_1 = 0;
     if(TEfficiency::CheckConsistency(*h_fake_theta_1,*h_reconstructed_theta_1)){
