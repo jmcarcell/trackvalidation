@@ -5,10 +5,12 @@ In general, three different steps are needed to obtain the tracking validation n
 - REC: event reconstruction, full or only track reconstruction and fit
 - VAL: tracking validator `$ILCSOFT/ClicPerformance/HEAD/Tracking/ClicEfficiencyCalculator` which produced comprehensive set of ntuples
 
+In the specific case of the production of single particle at fixed pt, also the DDSIM step is required.
+
 The package was tested with single particles (muon, electrons and pions) and complex events (ttbar without and with overlay).
 
 Scripts and automatic submission were created in the context of the ILCDirac grid.
-There is also the possibility of running the validation locally - the instructions are in Local.
+There is also the possibility of running the validation locally - the instructions are in "Not on the grid, local test".
 
 ## Setup environment
 
@@ -23,25 +25,27 @@ dirac-proxy-init
 
 ## Automatic script
 
-Modify the config file `../cfg/run_submit_jobs.json` accordingly. 
+Modify the config file `../cfg/run_script_job_submit.json` accordingly. 
 
 These are the input parameters concerning the job submission:
 - "Release date": release used to produce the sample
 - "Detector model": detector model used to produce the sample 
 - "Particles": list of particles to produce the sample
 - "Variables": produce sample at specific theta, energy and pT (single particles only!) 
-- "Input/type sample ttbar": number and type of sample used as input (ttbar only!)
+- "Input/type sample ttbar": number and type of sample used as input (ttbar only!). To search for it, you can use: 
+```
+#search ing in the path with meta data
+dirac-ilc-find-in-FC -D /ilc/prod/clic/ Energy=3000 Datatype=SIM
+
+#tells you everything about that prodID
+dirac-ilc-get-info -p #ProdId
+```
 - "NJobs": number of jobs submitted
 - "NEvents per job": number of events per jobs
 - "Jobs output folder": name used for the jobs output folder in eos
 - "Jobs customised lib": if not empty, it is used to set a specific customised Marlin library as input
 - "Sample fixed pt SIM folder": folder that contains the SIM-DDSIM sample (used only to create sample with fixed pT)
 - "Test Mode": if set to 1, more printout are added and only 2 events are submit with 3 events 
-
-After setting the config file correctly, run:
-```
-python script_submit.py ../cfg/cfg_file.json
-```
 
 As a first step the vanilla xml files of the specific release are copied in `local_files`. 
 Modify them similarly to the ones in `local_files/templates/`:
@@ -51,9 +55,14 @@ Modify them similarly to the ones in `local_files/templates/`:
 
 Not all particles require all filed. In case these files are needed but not present in `local_files` folder, the automatic script will ask to include them.
 
+After setting the config file correctly, run:
+```
+python script_submit.py ../cfg/run_script_job_submit.json
+```
+
 According to the particle type and the variables listed in the cfg file, the steps run on the grid are:
-- In the case of single particle, the automatic scripts runs SIM-REC-VAL steps for 10, 30 and 89 deg in theta and 1, 10, 100 GeV in energy.
-- In the case of single particle, the automatic scripts runs SIM-DDSIM-REC-VAL steps for 1, 10, 100 GeV in transverse momentum.
+- In the case of single particle, the script runs automatically SIM-REC-VAL steps for 10, 30 and 89 deg in theta and 1, 10, 100 GeV in energy.
+- In the case of single particle, the script must be called three time to run sim/ddsim/reco steps [SIM-DDSIM-REC-VAL] steps for 1, 10, 100 GeV in transverse momentum.
 - In the case of ttbar sample, the automatic scripts run REC-VAL or only VAL steps depending on the configuration. In both cases the input slcio sample number is needed. If the name of the sample contains "ove", then the overlay will also be included in the reconstruction.
 
 ## Standalone scripts

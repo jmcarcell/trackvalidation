@@ -10,7 +10,7 @@ To run the scripts in this folder you will need ROOT.
 
 # Automatic script
 
-Modify the config file `../cfg/run_submit_jobs.json` accordingly.
+Modify the config file `../cfg/run_script_analysis.json` accordingly.
 
 These are the input parameters concerning the analysis:
 - "Particles": list of particles to produce the sample
@@ -20,7 +20,7 @@ These are the input parameters concerning the analysis:
 
 After setting the config file correctly, run:
 ```
-python script_analysis.py ../cfg/cfg_file.json
+python script_analysis.py ../cfg/run_script_analysis.json
 ```
 
 ## Standalone scripts

@@ -10,7 +10,7 @@ To run the scripts in this folder you will need ROOT.
 
 # Automatic script
 
-Modify the config file `../cfg/run_submit_jobs.json` accordingly.
+Modify the config file `../cfg/run_script_plotting.json` accordingly.
 
 These are the input parameters concerning the plotting:
 - "Input files": input files with the entire path. They are divided in groups which one wants to compare.
@@ -22,7 +22,7 @@ These are the input parameters concerning the plotting:
 
 After setting the config file correctly, run:
 ```
-python script_plotting.py ../cfg/cfg_file.json
+python script_plotting.py ../cfg/run_script_plotting.json
 ```
 The output plots will be in EPS and PNG format.
 

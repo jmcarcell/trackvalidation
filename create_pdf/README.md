@@ -8,7 +8,7 @@ To run the scripts in this folder you will need LATEX.
 
 # Automatic script
 
-Modify the config file `../cfg/run_create_pdf.json` accordingly.
+Modify the config file `../cfg/run_script_create_pdf.json` accordingly.
 
 The inputs are:
 - "Author name", "Author institute", "Date": used only as text in the pdf
@@ -20,7 +20,7 @@ The inputs are:
 
 After setting the config file correctly, run:
 ```
-python script_create.py ../cfg/cfg_file.json
+python script_create.py ../cfg/run_script_create_pdf.json
 ```
 The outputs are `release\_summary.pdf` and `release\_comparison.pdf`
 
