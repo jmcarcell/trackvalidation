@@ -56,7 +56,7 @@ def main(argv):
       if var == "theta":
         for theta in ["10","30","89"] :
           if bool(test) : print(">> Running simulation and reconstruction for %s on grid at theta = %s deg"%(particle, theta))
-          cmd_run_theta = "python submit_alSingleParticles_gps_theta.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, theta, run_conf["Release date"], run_conf["Detector model"], 
+          cmd_run_theta = "python submit_allSingleParticles_gps_theta.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, theta, run_conf["Release date"], run_conf["Detector model"], 
                           n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
           print(cmd_run_theta)
           os.system(cmd_run_theta)
