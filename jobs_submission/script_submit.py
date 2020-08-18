@@ -129,7 +129,7 @@ def main(argv):
 
       if bool(test) : print(">> Running reconstruction and validation for %s on grid"%(particle))
       cmd_run_ttbar = "python submit_ttbar_fromSIM.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, run_conf["Input sample ttbar"], run_conf["Release date"], run_conf["Detector model"], 
-                      n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
+                      n_jobs+1, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
       print(cmd_run_ttbar)
       os.system(cmd_run_ttbar)
 
@@ -141,7 +141,7 @@ def main(argv):
 
       if bool(test) : print(">> Running validation for %s on grid"%(particle))
       cmd_run_ttbar = "python submit_ttbar_fromREC.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, run_conf["Input sample ttbar"], run_conf["Release date"], run_conf["Detector model"], 
-                      n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
+                      n_jobs+1, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
       print(cmd_run_ttbar)
       os.system(cmd_run_ttbar)
 
