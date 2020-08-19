@@ -31,3 +31,8 @@ Use the following command to read the input parameters needed:
 ```
 python analysis.py --help
 ```
+
+To merge all ntuple, you can use
+```
+python script_merge.py ../cfg/run_script_analysis.json
+```

@@ -27,7 +27,7 @@ def main(argv):
     if not isthere :
       print("> Input file (%s) does NOT exist."%(filein))
       print("> To create it, you can use:")
-      print("hadd -f %s %s/*"%(file_name, PATHFILESIN))
+      print("`python script_merge.py %s` or `hadd -f %s %s/*`"%(run_config_file, file_name, PATHFILESIN))
       sys.exit()
     else :
       if bool(test) : print("> Input file (%s) exist."%(filein))

@@ -1,5 +1,6 @@
 {
-  "Input folder": "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/2020/CLICo3v14/ILCSoft-2020-02-07/efficiencies/",
+  "Release date" : "2020-02-07", 
+  "Input folder": "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/CLIC_o3_v14/ILCSoft-2020-02-07/tracking_validation/",
   "Output folder": "results/",
 
   "Ntuple types" : ["muons", "muons", "muons", "muons", "muons", "muons", "ttbar", "ttbar_ove"],
