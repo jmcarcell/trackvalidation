@@ -62,7 +62,7 @@ def main(argv):
       print(command_merging)
       os.system(command_merging)
       print("> Outputfile can be found in %s and log in %s"%(file_out,log_out))
-      print("> To copy the file on the grid:"
+      print("> To copy the file on the grid:")
       print("> dirac-dms-add-file /ilc/user/i/initial/some/path/file.root file.root CERN-DST-EOS")
     else:
       print("> No merging was performed.")
