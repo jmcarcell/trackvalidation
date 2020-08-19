@@ -53,7 +53,7 @@ dirac-ilc-get-info -p #ProdId
 - "Jobs output folder": name used for the jobs output folder in eos
 - "Jobs customised lib": if not empty, it is used to set a specific customised Marlin library as input
 - "Sample fixed pt SIM folder": folder that contains the SIM-DDSIM sample (used only to create sample with fixed pT)
-- "Test Mode": if set to 1, more printout are added and only 2 jobs are submitted with 3 events each
+- "Test Mode": if set to 1, more printout are added and only 2 events are submit with 3 events 
 
 After setting the config file correctly, run:
 ```
