@@ -6,13 +6,8 @@ def check_file_exist(file_name):
   isthere = os.path.isfile(file_name)
   if not isthere :
     print("> Input xml file (%s) does NOT exist."%(file_name))
-    check_xml = raw_input("> Do you want to copy the xml locally? [yes/no] ") 
-    if str(check_xml) == 'yes':
-      cmd_cp = "cp -r $ILCSOFT/ClicPerformance/HEAD/clicConfig/clic* local_files/"
-      os.system(cmd_cp)
-      print(cmd_cp)
-      print(">> Adapt the files to run only tracking or only validation! Example in local_files/templates/")
-      sys.exit()
+    print("> Run script_copyXML.py and adapt them as in local_files/templates/")
+    sys.exit()
   return isthere
 
 def main(argv):
@@ -122,8 +117,6 @@ def main(argv):
     if run_conf["Type sample ttbar"] == "SIM":
       #check (or create) the input xml file
       xml_file_name = "local_files/clicReconstruction.xml"
-      if "ove" in particle:
-        xml_file_name = "local_files/clicReconstruction_overlay.xml"
       if check_file_exist(xml_file_name) and bool(test):
         print("> Input xml file already exist")
 

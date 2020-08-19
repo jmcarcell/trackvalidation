@@ -15,8 +15,6 @@ clicConfig = sys.argv[3]
 marlinVersion = sys.argv[3]+'_gcc62'
 detectorModel =  sys.argv[4]
 baseSteeringMarlin = 'local_files/clicReconstruction.xml'
-if "ove" in particle :
-  baseSteeringMarlin = 'local_files/clicReconstruction_overlay.xml'
 nameSteeringMarlin = 'local_files/clicReconstruction_final.xml'
 
 nJobs = int(sys.argv[5])
@@ -67,8 +65,9 @@ for input_ind in range(1,nJobs,1):
   ma.setDetectorModel(detectorModel)
   ma.setSteeringFile(nameSteeringMarlin)
   ma.setNumberOfEvents(nEvts)
-  
+
   if "ove" in particle :
+    ma.setExtraCLIArguments( " --Config.Overlay=3TeV " )  
     res=job.append(over)
   else:
     res=job.append(ma)

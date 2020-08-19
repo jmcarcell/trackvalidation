@@ -14,10 +14,18 @@ There is also the possibility of running the validation locally - the instructio
 
 ## Setup environment
 
-First set up the environment
+Copy the xml files in `local_files` (and follow the instructions):
 ```
-sh setup.sh
+python script_copyXML.py ../cfg/run_script_job_submit.json
+```
+Then, modify them similarly to the ones in `local_files/templates/`:
+- `local_files/templates/clicReconstruction.xml` to run only the tracking step in the reconstruction
+- `local_files/templates/clicReconstruction_onlyValidator.xml` to run only the tracking validator
 
+Not all particles require all filed. In case these files are needed but not present in `local_files` folder, the automatic script will ask to include them.
+
+Finally, set up the Dirac environment:
+```
 #Set up Dirac environment
 source /cvmfs/clicdp.cern.ch/DIRAC/bashrc
 dirac-proxy-init
@@ -46,14 +54,6 @@ dirac-ilc-get-info -p #ProdId
 - "Jobs customised lib": if not empty, it is used to set a specific customised Marlin library as input
 - "Sample fixed pt SIM folder": folder that contains the SIM-DDSIM sample (used only to create sample with fixed pT)
 - "Test Mode": if set to 1, more printout are added and only 2 jobs are submitted with 3 events each
-
-As a first step the vanilla xml files of the specific release are copied in `local_files`. 
-Modify them similarly to the ones in `local_files/templates/`:
-- `local_files/templates/clicReconstruction.xml` to run only the tracking step in the reconstruction
-- `local_files/templates/clicReconstruction_onlyValidator.xml` to run only the tracking validator
-- `local_files/templates/clicReconstruction_overlay.xml` to include the overlay in the reconstruction
-
-Not all particles require all filed. In case these files are needed but not present in `local_files` folder, the automatic script will ask to include them.
 
 After setting the config file correctly, run:
 ```
