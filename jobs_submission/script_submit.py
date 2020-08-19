@@ -100,7 +100,7 @@ def main(argv):
             #In this step n_jobs is the number of input SIM files taken from "Sample fixed pt SIM folder"
             #1000 events are always run (10'000 / 1'000 = 10 jobs per file)!
             cmd_run_pt = "python submit_allSingleParticles_reco_pt.py %s %s ILCSoft-%s %s %s %s %s %s %s"%(particle, pt, run_conf["Release date"], run_conf["Detector model"], 
-                             n_jobs-1, "1000", eos_output_folder, run_conf["Sample fixed pt SIM folder"], "" if not eos_custom_lib else eos_custom_lib)
+                             n_jobs, "1000", eos_output_folder, run_conf["Sample fixed pt SIM folder"], "" if not eos_custom_lib else eos_custom_lib)
             print(cmd_run_pt)
             os.system(cmd_run_pt)
           else:
@@ -122,7 +122,7 @@ def main(argv):
 
       if bool(test) : print(">> Running reconstruction and validation for %s on grid"%(particle))
       cmd_run_ttbar = "python submit_ttbar_fromSIM.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, run_conf["Input sample ttbar"], run_conf["Release date"], run_conf["Detector model"], 
-                      n_jobs+1, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
+                      n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
       print(cmd_run_ttbar)
       os.system(cmd_run_ttbar)
 
@@ -134,7 +134,7 @@ def main(argv):
 
       if bool(test) : print(">> Running validation for %s on grid"%(particle))
       cmd_run_ttbar = "python submit_ttbar_fromREC.py %s %s ILCSoft-%s %s %s %s %s %s"%(particle, run_conf["Input sample ttbar"], run_conf["Release date"], run_conf["Detector model"], 
-                      n_jobs+1, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
+                      n_jobs, nev_per_job, eos_output_folder, "" if not eos_custom_lib else eos_custom_lib)
       print(cmd_run_ttbar)
       os.system(cmd_run_ttbar)
 
