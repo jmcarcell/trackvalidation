@@ -7,59 +7,49 @@ import sys, getopt
 #####################################################################
 
 #Parsing parameters
-#from DIRAC import exit as DIRACExit
 from DIRAC.Core.Base import Script
-#from DIRAC import S_OK, S_ERROR
 from class_parse import *
-#class Params(object):
-#
-#  def __init__(self):
-#    self.raw = False
-#    self.pingsToDo = 1
-#
-#  def setRawResult(self, value):
-#    self.raw = True
-#    return S_OK()
-#
-#  def setNumOfPingsToDo(self, value):
-#    print("hello")
-#    try:
-#      self.pingsToDo = max(1, int(value))
-#    except ValueError:
-#      return S_ERROR("Number of pings to do has to be a number")
-#    return S_OK()
 
 # Instantiate the params class
 cliParams = Params()
 
 # Register accepted switches and their callbacks
-Script.registerSwitch("r", "showRaw", "show raw result from the query", cliParams.setRawResult)
-Script.registerSwitch("p:", "numPings=", "Number of pings to do (by default 1)", cliParams.setNumOfPingsToDo)
-print("hello")
+Script.registerSwitch("p:", "particle=", "particle type", cliParams.setParticle)
+Script.registerSwitch("t:", "theta=", "Fixed theta value", cliParams.setTheta)
+Script.registerSwitch("r:", "clicRelease=", "ILCSoft release", cliParams.setRelease)
+Script.registerSwitch("d:", "detector=", "Detector configuration", cliParams.setDetector)
+Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
+Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEvents)
+Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
+Script.registerSwitch("l:", "library=", "Library file in LFN", cliParams.setLibrary)
 
 # Parse the command line and initialize DIRAC
 Script.parseCommandLine(ignoreErrors=False)
-print(cliParams.raw)
-print(cliParams.pingsToDo)
+print(cliParams.particle)
+print(cliParams.theta)
 
 #parameters
-particle = sys.argv[1]
-gunTheta = sys.argv[2]
+particle = cliParams.particle
+gunTheta = cliParams.theta
+single_particle_list = ["muons", "electrons", "pions"]
+if particle not in single_particle_list:
+  print("%s not in the list of single particles! Possible choices are: %s"%(particle,', '.join(single_particle_list)))
+  sys.exit()
 macFile = "gps_"+gunTheta+"deg_Pow1_clic.mac"
 macFilePath = "/ilc/user/e/eleogran/mac/"+particle+"/"+macFile
 nameTag = particle+'_'+gunTheta+'deg'
 
-clicConfig = sys.argv[3]
-ddsimVersion = sys.argv[3]+'_gcc62' 
-marlinVersion = sys.argv[3]+'_gcc62' 
-detectorModel =  sys.argv[4]
+clicConfig = cliParams.release
+ddsimVersion = clicConfig+'_gcc62' 
+marlinVersion = clicConfig+'_gcc62' 
+detectorModel =  cliParams.detector
 baseSteeringDDSim = 'local_files/clic_steer.py'
 baseSteeringMarlin = 'local_files/clicReconstruction.xml'
 nameSteeringMarlin = 'local_files/clicReconstruction_final.xml'
 
-nJobs = int(sys.argv[5])
-nEvts = int(sys.argv[6])
-nameJobGroup = sys.argv[7]
+nJobs = cliParams.njobs
+nEvts = cliParams.nev
+nameJobGroup = cliParams.group
 templateOutRoot = "histograms"
 rootFile = particle+'_'+gunTheta+'deg'
 outputFile = particle+'_'+gunTheta+'deg.slcio'
@@ -68,6 +58,7 @@ print('Output files can be found in %s'%nameDir)
 
 #####################################################################
 
+#changing output name
 with open(baseSteeringMarlin) as f:
     open(nameSteeringMarlin,"w").write(f.read().replace(templateOutRoot,rootFile))
  
