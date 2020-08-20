@@ -15,6 +15,7 @@ class Params(object):
     self.group = ""
     self.lib = ""
     self.sim_folder = ""
+    self.ove = False
 
   def setParticle(self, value):
     try:
@@ -93,4 +94,6 @@ class Params(object):
       return S_ERROR("Library has to be a string")
     return S_OK()
 
-
+  def setOverlay(self, value):
+    self.ove = True
+    return S_OK()

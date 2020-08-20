@@ -16,7 +16,7 @@ cliParams = Params()
 
 # Register accepted switches and their callbacks
 Script.registerSwitch("p:", "particle=", "particle type", cliParams.setParticle)
-Script.registerSwitch("v:", "energy=", "Fixed energy value", cliParams.setEnergy)
+Script.registerSwitch("v:", "pt=", "Fixed pt value", cliParams.setPt)
 Script.registerSwitch("r:", "clicRelease=", "ILCSoft release", cliParams.setRelease)
 Script.registerSwitch("D:", "detector=", "Detector configuration", cliParams.setDetector)
 Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
@@ -30,7 +30,7 @@ Script.parseCommandLine(ignoreErrors=False)
 
 #parameters
 particle = cliParams.particle
-gunPt = clicParams.pt
+gunPt = cliParams.pt
 nameTag = particle+'_'+gunPt+'GeV_fixedPt'
 if 'muon' in particle :
   gunPdg = "13"
