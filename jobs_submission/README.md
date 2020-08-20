@@ -61,28 +61,34 @@ python script_submit.py ../cfg/run_script_job_submit.json
 ```
 
 According to the particle type and the variables listed in the cfg file, the steps run on the grid are:
-- In the case of single particle, the script runs automatically SIM-REC-VAL steps for 10, 30 and 89 deg in theta and 1, 10, 100 GeV in energy.
-- In the case of single particle, the script must be called three time to run sim/ddsim/reco steps [SIM-DDSIM-REC-VAL] steps for 1, 10, 100 GeV in transverse momentum.
+- In the case of single particle with fixed energy and theta, the script runs automatically SIM-REC-VAL steps for 10, 30 and 89 deg in theta and 1, 10, 100 GeV in energy.
+- In the case of single particle with fixed transverse momentum, the script must be called three time to run sim/ddsim/reco steps [SIM-DDSIM-REC-VAL] steps for 1, 10, 100 GeV in transverse momentum.
 - In the case of ttbar sample, the automatic scripts run REC-VAL or only VAL steps depending on the configuration. In both cases the input slcio sample number is needed. If the name of the sample contains "ove", then the overlay will also be included in the reconstruction.
+
+Specific parameters for the automatic script in the fixed pt case:
+- SIM step always create 10'000 events
+- In DDSIM step, "NJobs" referres to the number of input SIM files. 1'000 events are always run per jobs. Therefore, the real number of jobs sumitted will be NJobs\*10
+- REC step similar to DDSIM step
 
 ## Standalone scripts
 
+The standalone scripts are:
 - `submit_allSingleParticles_gps_theta.py` run SIM-REC-VAL steps of single particle at a certain theta angle [deg]
 - `submit_allSingleParticles_gun_energy.py` run SIM-REC-VAL steps of single particle at a certain energy [GeV]
 - `submit_ttbar_fromSIM.py` run REC-VAL steps for ttbar events (number of SIM sample in input is needed!)
 - `submit_ttbar_fromREC.py` run VAL step for ttbar events (number of REC sample in input is needed!)
 
-When running one of them standalone, you need to give the following arguments:
-```
-python submit_XXX.py sampleName energy/theta/sampleNum release detector nJobs nEv nameTag [path to customised Marlin library]
-```
-
-In case of fixed pt (and not energy) one step more is needed: SIM-DDSIM-RECO-VAL.
-The following scripts can be used:
-- `submit_allSingleParticles_sim_fixedPt.py` produce SIM files (10'000 events are always created!)
-- `submit_allSingleParticles_ddsim_fixedPt.py` produce DDSIM files ("NJobs" referres to the number of input SIM files. 1'000 events are always run per jobs. Therefore, the real number of jobs sumitted will be NJobs\*10!)
-- `submit_allSingleParticles_reco_fixedPt.py` run REC-VAL (same as above)
+For fixed pt are:
+- `submit_allSingleParticles_sim_fixedPt.py` run SIM step
+- `submit_allSingleParticles_ddsim_fixedPt.py` run DDSIM step. Here, "NJobs" referres to the number of input SIM files.
+- `submit_allSingleParticles_reco_fixedPt.py` run REC-VAL, similar as above
 In the first one, the `sh/lcio_particle_gun.py` and `sh/run_lcio_particle_gun_\*_\*GeV.sh` scripts are then called.
+
+The job sumbission scripts can also be run standalone.
+Use the following command to read the input parameters needed:
+```
+python submit_XXX.py --help
+```
 
 ## Not on the grid, local test
 Produce SIM files locally:
