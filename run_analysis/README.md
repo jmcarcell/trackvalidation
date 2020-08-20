@@ -32,7 +32,21 @@ Use the following command to read the input parameters needed:
 python analysis.py --help
 ```
 
+## Merging the ntuples
+
 To merge all ntuple, you can use
 ```
 python script_merge.py ../cfg/run_script_analysis.json
+```
+
+To transfer them to the grid you have to set up the Dirac environment:
+```
+#Set up Dirac environment
+source /cvmfs/clicdp.cern.ch/DIRAC/bashrc
+dirac-proxy-init
+```
+
+and then use the specific Dirac command:
+```
+dirac-dms-add-file /ilc/user/i/initial/some/path/file.root file.root CERN-DST-EOS
 ```
