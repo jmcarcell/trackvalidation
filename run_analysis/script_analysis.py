@@ -61,14 +61,18 @@ def main(argv):
         LISTVAR_FIXED_THETA    = "pt:100:-2:3:True phi:180:-180:180:False"
         CUTS_FIXED_THETA       = "vertexR:0:0.0001:nHitsMC:3:1000 vertexR:0:0.0001:nHitsMC:3:1000"
         command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s %s"%(filein,fileout,LISTVAR_FIXED_THETA,CUTS_FIXED_THETA,ANALYSIS_FLAGS)
-        if bool(test) : print(command_analysis)
+        if bool(test) : 
+          command_analysis += " --verbose "
+          print(command_analysis)
         os.system(command_analysis)
 
       if "GeV" in file_name :
         LISTVAR_FIXED_PT       = "theta:83:7:90:False phi:180:-180:180:False"
         CUTS_FIXED_PT          = "vertexR:0:0.0001:nHitsMC:3:1000 vertexR:0:0.0001:nHitsMC:3:1000"
         command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s %s"%(filein,fileout,LISTVAR_FIXED_PT,CUTS_FIXED_PT,ANALYSIS_FLAGS)
-        if bool(test) : print(command_analysis)
+        if bool(test) : 
+          command_analysis += " --verbose "
+          print(command_analysis)
         os.system(command_analysis)
 
       #MC comparison, fakerate and duplicates
@@ -76,13 +80,17 @@ def main(argv):
       if "deg" in file_name :
         CUTS_FIXED_THETA       = "nHits:3:1000 nHits:3:1000"
         command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s %s"%(filein,fileout,LISTVAR_FIXED_THETA,CUTS_FIXED_THETA,ANALYSIS_FLAGS)
-        if bool(test) : print(command_analysis)
+        if bool(test) : 
+          command_analysis += " --verbose "
+          print(command_analysis)
         os.system(command_analysis)
 
       if "GeV" in file_name :
         CUTS_FIXED_PT          = "nHits:3:1000 nHits:3:1000"
         command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s %s"%(filein,fileout,LISTVAR_FIXED_PT,CUTS_FIXED_PT,ANALYSIS_FLAGS)
-        if bool(test) : print(command_analysis)
+        if bool(test) : 
+          command_analysis += " --verbose "
+          print(command_analysis)
         os.system(command_analysis)
 
     #complex events
@@ -94,7 +102,9 @@ def main(argv):
       CUTS    = "pt:1:10000:vertexR:-1:50:purity:0.75:1.0:dist:0.02:1000:nHitsMC:4:1000 theta:10:170:vertexR:-1:50:purity:0.75:1.0:dist:0.02:1000:nHitsMC:4:1000 theta:10:170:pt:1:10000:vertexR:-1:50:purity:0.75:1.0:dist:0.02:1000:nHitsMC:4:1000"
       
       command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s %s"%(filein,fileout,LISTVAR,CUTS,ANALYSIS_FLAGS)
-      if bool(test) : print(command_analysis)
+      if bool(test) : 
+        command_analysis += " --verbose "
+        print(command_analysis)
       os.system(command_analysis)
 
       #comparison and fakerate
@@ -103,7 +113,9 @@ def main(argv):
       CUTS    = "pt:1:10000:nHits:4:1000 theta:10:170:nHits:4:1000 theta:10:170:pt:1:10000:nHits:4:1000"
       
       command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s %s"%(filein,fileout,LISTVAR,CUTS,ANALYSIS_FLAGS)
-      if bool(test) : print(command_analysis)
+      if bool(test) : 
+        command_analysis += " --verbose "
+        print(command_analysis)
       os.system(command_analysis)
 
 if __name__ == "__main__":

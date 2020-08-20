@@ -1,4 +1,4 @@
-void fill_duplicates_histos(TTree *t_per_1, TString var, TH1F* h_total_1, TH1F *h_duplicates_1, int minNhits = 3, bool debug = true){
+void fill_duplicates_histos(TTree *t_per_1, TString var, TH1F* h_total_1, TH1F *h_duplicates_1, int minNhits = 3, bool debug = false){
 
   vector<double> *trk_var = 0;
 //  vector<double> *trk_pt_1 = 0;

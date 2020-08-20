@@ -22,8 +22,11 @@ parser.add_argument('--duplicates', help='Perform analysis of tracking duplicate
 parser.add_argument('--compareRecoSim', help='Compare Simulated vs Reconstructed distrib', action='store_true')
 parser.add_argument('--listVariables', nargs='+', help='List of variables and correspondent axis specs (ex. var:nbins:min:max:logXaxis var2:nbins2:min2:max2:logXaxis2)')
 parser.add_argument('--listSelections', nargs='+', help='List of selections for each variable (ex. var:min:max:var2:min2:max2)')
+parser.add_argument('-v', '--verbose', help="increase output verbosity", action="store_true")
 args = parser.parse_args()
-print(args)
+
+VERBOSE = args.verbose
+if VERBOSE : print(args)
 
 EFFICIENCY = args.efficiency
 RECOVSSIM = args.compareRecoSim
@@ -97,8 +100,9 @@ def calculate_efficiency(inputTree, cut, treeId, variable = "theta", nbins = 100
   """
 
   realName = translateVariable(variable, treeId)
-  print(">> Eff for variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
-  print("   Selections applied: %s"%(cut))
+  if VERBOSE :
+    print(">> Eff for variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
+    print("   Selections applied: %s"%(cut))
   cutReconstructable = cut
   cutReconstructed   = str("%s && m_reconstructed == 1 "%(cut))
 
@@ -115,8 +119,9 @@ def calculate_efficiency(inputTree, cut, treeId, variable = "theta", nbins = 100
 
   heff = TEfficiency(hreconstructed, hreconstructable)
   heffName = "eff_vs_"+variable
-  print("   Total reconstructed: %.f"%hreconstructed.GetEntries())
-  print("   Total reconstructable: %.f"%hreconstructable.GetEntries())
+  if VERBOSE :
+    print("   Total reconstructed: %.f"%hreconstructed.GetEntries())
+    print("   Total reconstructable: %.f"%hreconstructable.GetEntries())
   
   heff.SetName(heffName)
   heff.SetDirectory(0)
@@ -137,8 +142,9 @@ def save_distribution(treeId, inputTree, cut, variable = "theta", nbins = 100, m
   isLog         (bool): Set log scale on TH1F x-axis in output
   """
 
-  print(">> Saving variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
-  print("   Selections applied: %s"%(cut))
+  if VERBOSE :
+    print(">> Saving variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
+    print("   Selections applied: %s"%(cut))
 
   h_distr = TH1F("h_distr","h_distr",nbins,minbin,maxbin)
   h_distr.Sumw2()
@@ -167,7 +173,8 @@ def save_distribution(treeId, inputTree, cut, variable = "theta", nbins = 100, m
     hName = variable
   h_distr.SetName(hName)
   h_distr.SetTitle(hName)
-  print("Total : %.f"%h_distr.GetEntries())
+  if VERBOSE :
+    print("Total : %.f"%h_distr.GetEntries())
 
   h_distr.Write()
   return
@@ -190,14 +197,16 @@ def calculate_fakerate(inputTree, cut, treeId_var, treeId_pur, purityMax = "0.75
   """
 
   realName = translateVariable(variable, treeId_var)
-  print(">> Fakes for variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
   purityName = translateVariable("pur", treeId_pur)
   cutReco = cut
   if cut != "":
     cut += " && "
   cutFake = str("%s %s < %s "%(cut, purityName, purityMax))
-  print("   Selections applied: %s"%(cut))
-  print("   Selections to cut fakes: %s"%(cutFake))
+
+  if VERBOSE :
+    print(">> Fakes for variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
+    print("   Selections applied: %s"%(cut))
+    print("   Selections to cut fakes: %s"%(cutFake))
 
   hReco = TH1F("hReco","hReco",nbins,minbin,maxbin)
   hReco.Sumw2()
@@ -212,8 +221,9 @@ def calculate_fakerate(inputTree, cut, treeId_var, treeId_pur, purityMax = "0.75
 
   hfake = TEfficiency(hFake, hReco)
   hfakeName = "fake_vs_"+variable
-  print("   Total Fake: %.f"%hFake.GetEntries())
-  print("   Total Reco: %.f"%hReco.GetEntries())
+  if VERBOSE :
+    print("   Total Fake: %.f"%hFake.GetEntries())
+    print("   Total Reco: %.f"%hReco.GetEntries())
 
   hfake.SetName(hfakeName)
   hfake.SetDirectory(0)
@@ -222,8 +232,11 @@ def calculate_fakerate(inputTree, cut, treeId_var, treeId_pur, purityMax = "0.75
 
 def calculate_duplicates(inputTree, minHits, treeId, variable = "theta", nbins = 100, minbin = 0.0, maxbin = 100, isLog = False):
 
+  if VERBOSE :
+    print(">> Duplicates for variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
+    print('   For duplicates, only num hits is used! min nHits = %d'%minHits)
+
   realName = translateVariable(variable, treeId)
-  print(">> Duplicates for variable %s (min=%.1f,max=%.1f,bins=%d,log=%d)"%(variable,minbin,maxbin,nbins,isLog))
   hReco = TH1F("hReco","hReco",nbins,minbin,maxbin)
   hReco.Sumw2()
   hDupl = TH1F("hDupl","hDupl",nbins,minbin,maxbin)
@@ -233,8 +246,9 @@ def calculate_duplicates(inputTree, minHits, treeId, variable = "theta", nbins =
     BinLogX(hDupl, nbins)
 
   ROOT.fill_duplicates_histos(inputTree, realName, hReco, hDupl, minHits)
-  print("   Total Dupl: %.f"%hDupl.GetEntries())
-  print("   Total Reco: %.f"%hReco.GetEntries())
+  if VERBOSE :
+    print("   Total Dupl: %.f"%hDupl.GetEntries())
+    print("   Total Reco: %.f"%hReco.GetEntries())
 
   hdupl = TEfficiency(hDupl, hReco)
   hduplName = "dupl_vs_"+variable
@@ -261,7 +275,8 @@ def main():
   #    return
   #else:
   #  outputTFile = TFile(OUTPUTFILE,"CREATE")
-    print("> Producing efficiency plots ...")
+    if VERBOSE :
+      print("> Producing efficiency plots ...")
     rootTTree = inputTFile.Get(TREENAME_EFF)
     treeId = "simpl"
 
@@ -276,7 +291,8 @@ def main():
       calculate_efficiency(rootTTree, cuts, treeId, coord[0], int(coord[1]), float(coord[2]), float(coord[3]), json.loads(coord[4].lower()))
 
   if RECOVSSIM:
-    print("> Saving distribution of reco/sim track ...")
+    if VERBOSE :
+      print("> Saving distribution of reco/sim track ...")
     rootTTree = inputTFile.Get(TREENAME_DIST)
 
     for var,cutCustom in zip(VARIABLES,SELECTIONS):
@@ -289,23 +305,25 @@ def main():
       save_distribution("perfReco", rootTTree, cutsReco, coord[0], int(coord[1]), float(coord[2]), float(coord[3]), json.loads(coord[4].lower()))
 
   if FAKERATE :
-    print("> Producing fakerate plots ...")
+    if VERBOSE :
+      print("> Producing fakerate plots ...")
     rootTTree = inputTFile.Get(TREENAME_FAKE)
     branchesNames = [b.GetName() for b in rootTTree.GetListOfBranches()]
-    print(" perfTree has the following branches:%s"%branchesNames)
+    if VERBOSE :  print(" perfTree has the following branches:%s"%branchesNames)
 
     fakeTree = TTree()
     treeId_var = "perfReco"
     treeId_pur = "perfReco"
 
     if "recoPurity" not in branchesNames :
-      print(" Tree has NO purity, using a second tree!")
+      if VERBOSE :
+        print(" Tree has NO purity, using a second tree!")
       rootTTree2 = inputTFile.Get(TREENAME+"puritytree")
       if rootTTree2.GetEntries() != rootTTree.GetEntries() :
         print("ERROR: the two trees have not the same number of entries")
         return
       else:
-        print(" Total number of entries = %s"%str(rootTTree2.GetEntries()))
+        if VERBOSE :  print(" Total number of entries = %s"%str(rootTTree2.GetEntries()))
 
       mergedTTree = rootTTree.CloneTree(0)
       mergedTTree.CopyEntries(rootTTree)
@@ -326,7 +344,8 @@ def main():
    
     
   if DUPLICATES :
-    print("> Producing fakerate plots ...")
+    if VERBOSE :
+      print("> Producing duplicates plots ...")
     rootTTree = inputTFile.Get(TREENAME_DUPL)
     treeId = "perfReco"
 
@@ -338,7 +357,6 @@ def main():
         realName = translateVariable(varDetails[i], treeId)
         if realName is 'recoNhits':
           minHits = int(varDetails[i+1])
-      print('> For duplicates, only num hits is used! min nHits = %d'%minHits)
       
       coord = var.split(":")
       calculate_duplicates(rootTTree, minHits, treeId, coord[0], int(coord[1]), float(coord[2]), float(coord[3]), json.loads(coord[4].lower()))

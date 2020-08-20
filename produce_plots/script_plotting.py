@@ -61,7 +61,9 @@ def main(argv):
     command_plot = "python plotting.py --filesin %s --folderout %s --histonames %s --varAxes %s --sample %s --features %s"%(listFilein,path_out,histo_name,titleAxis,particle,features)
     command_plot += " --logXaxis %s --rangeXaxis %s "%(logXaxis,rangeXaxis)
     command_plot += " --logYaxis %s --rangeYaxis %s"%(logYaxis,rangeYaxis)
-    if bool(test) : print(command_plot)
+    if bool(test) : 
+      command_plot += " --verbose "
+      print(command_plot)
     os.system(command_plot)
 
 if __name__ == "__main__":

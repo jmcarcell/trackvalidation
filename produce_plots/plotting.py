@@ -20,8 +20,11 @@ parser.add_argument('--rangeYaxis', nargs='+', help='Range Y axis (ex. min:max)'
 parser.add_argument('--rangeXaxis', nargs='+', help='Range X axis (ex. min:max)', default="7:90 -180:180")
 parser.add_argument('--minHits', help='Minim number of reconstructed track hits', default="3")
 parser.add_argument('--sample', help="Data sample", type=str, choices=["muon", "ele", "pion", "ttbar3TeV", "ttbar380GeV"])
+parser.add_argument('-v', '--verbose', help="increase output verbosity", action="store_true")
 args = parser.parse_args()
-print(args)
+
+VERBOSE = args.verbose
+if VERBOSE : print(args)
 
 INPUTFILES = args.filesin
 OUTPUTFOLDER = args.folderout
@@ -62,6 +65,11 @@ MINHITS = args.minHits
 
 def main():
   for i_histo in range(0,len(HISTONAMES)) :
+    if VERBOSE : 
+      print("> Plotting %s histogram:"%HISTONAMES[i_histo])
+      print("  Axis titles = %s"%(AXISTITLE[i_histo]))
+      print("  X axis: min = %.2f, max = %.2f, isLog = %s"%(MINXAXIS[i_histo],MAXXAXIS[i_histo],AXISXLOG[i_histo]))
+      print("  Y axis: min = %.2f, max = %.2f, isLog = %s"%(MINYAXIS[i_histo],MAXYAXIS[i_histo],AXISYLOG[i_histo]))
     c = TCanvas("c","c")
     c.SetGrid()
     if json.loads(AXISXLOG[i_histo].lower()):
@@ -72,19 +80,21 @@ def main():
     leg = TLegend(0.63,0.30,0.85,0.45)
     leg.SetTextSize(0.03)
     if SAMPLE == "muon" :
+      if "fake" in HISTONAMES[i_histo] : leg = TLegend(0.63,0.60,0.85,0.75)
       leg.SetHeader("Single #mu^{-}")
     elif SAMPLE == "ele" :
       leg.SetHeader("Single e^{-}")
     elif SAMPLE == "pion" :
       leg.SetHeader("Single #pi^{-}")
     elif SAMPLE == "ttbar3TeV" :
+      leg = TLegend(0.23,0.20,0.85,0.35)
       leg.SetHeader("t#bar{t}, E_{CM} = 3 TeV")
     elif SAMPLE == "ttbar380GeV" :
       leg.SetHeader("t#bar{t}, E_{CM} = 380 GeV")
 
-    print("Plotting %s histogram in files:"%HISTONAMES[i_histo])
+    if VERBOSE : print("  Input files used:")
     for i_gr in range(0,len(INPUTFILES)):
-      print(INPUTFILES[i_gr])
+      if VERBOSE : print("  %s"%(INPUTFILES[i_gr]))
       inputTFile = TFile(INPUTFILES[i_gr])
       graph = inputTFile.Get(HISTONAMES[i_histo])
       graph.SetTitle(AXISTITLE[i_histo])
