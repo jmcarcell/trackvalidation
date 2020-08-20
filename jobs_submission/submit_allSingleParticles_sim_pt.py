@@ -21,7 +21,6 @@ Script.registerSwitch("D:", "detector=", "Detector configuration", cliParams.set
 Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
 Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEvents)
 Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
-Script.registerSwitch("l:", "library=", "Library file in LFN", cliParams.setLibrary)
 
 # Parse the command line and initialize DIRAC
 Script.parseCommandLine(ignoreErrors=False)
@@ -52,12 +51,6 @@ nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+na
 print('Output files can be found in %s'%nameDir)
  
 #####################################################################     
-#set environment          
-import os
-import sys
-
-from DIRAC.Core.Base import Script #dirac enviroment                                              
-Script.parseCommandLine() #dirac enviroment     
 
 from ILCDIRAC.Interfaces.API.DiracILC import DiracILC #job receiver class   
 dirac = DiracILC(False)      

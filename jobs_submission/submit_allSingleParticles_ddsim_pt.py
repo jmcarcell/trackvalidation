@@ -1,11 +1,35 @@
 #!/bin/python
+
+#set environment          
+import os
+from os import listdir
 import sys, getopt
 
 #####################################################################
 
+#Parsing parameters
+from DIRAC.Core.Base import Script
+from class_parse import *
+
+# Instantiate the params class
+cliParams = Params()
+
+# Register accepted switches and their callbacks
+Script.registerSwitch("p:", "particle=", "particle type", cliParams.setParticle)
+Script.registerSwitch("v:", "pt=", "Fixed pt value", cliParams.setPt)
+Script.registerSwitch("r:", "clicRelease=", "ILCSoft release", cliParams.setRelease)
+Script.registerSwitch("D:", "detector=", "Detector configuration", cliParams.setDetector)
+Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
+Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEvents)
+Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
+Script.registerSwitch("f:", "simFold=", "SIM folder used as input", cliParams.setSIMFolder)
+
+# Parse the command line and initialize DIRAC
+Script.parseCommandLine(ignoreErrors=False)
+
 #parameters 
-particle = sys.argv[1]
-gunPt = sys.argv[2]
+particle = cliParams.particle
+gunPt = cliParams.pt
 nameTag = particle+'_'+gunPt+'GeV_fixedPt_ddsim'
 if 'muon' in particle :
   gunPdg = "13"
@@ -16,29 +40,23 @@ elif 'pion' in particle:
 else:
   print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
 
-clicConfig = sys.argv[3]
-ddsimVersion = sys.argv[3]+'_gcc62'
-detectorModel =  sys.argv[4]
+clicConfig = cliParams.release
+ddsimVersion = clicConfig+'_gcc62' 
+detectorModel =  cliParams.detector
 baseSteeringDDSim = 'local_files/clic_steer.py'
 
-nJobs = int(sys.argv[5])
-nEvts = int(sys.argv[6])
-nameJobGroup = sys.argv[7]
+nJobs = cliParams.njobs
+nEvts = cliParams.nev
+nameJobGroup = cliParams.group
 nEvtGen = 10000 #nEvents in the SLCIO files produced with submit_allSingleParticles_slcio_fixedPt.py
 templateOutFile = 'sim.slcio'
 nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
 print('Output files can be found in %s'%nameDir)
  
-pathSLCIO = sys.argv[8]+'files_'+particle+'_'+gunPt+'GeV_fixedPt'
+pathSLCIO = cliParams.sim_folder+'files_'+particle+'_'+gunPt+'GeV_fixedPt'
 subpathSLCIO = pathSLCIO[pathSLCIO.find("/ilc/"):]
 
 #####################################################################     
-#set environment 
-import os
-from os import listdir
-
-from DIRAC.Core.Base import Script
-Script.parseCommandLine()
 
 from ILCDIRAC.Interfaces.API.DiracILC import DiracILC
 dirac = DiracILC(False)

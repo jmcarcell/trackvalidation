@@ -1,11 +1,36 @@
 #!/bin/python
+
+#set environment          
+import os
+from os import listdir
 import sys, getopt
 
 #####################################################################
 
+#Parsing parameters
+from DIRAC.Core.Base import Script
+from class_parse import *
+
+# Instantiate the params class
+cliParams = Params()
+
+# Register accepted switches and their callbacks
+Script.registerSwitch("p:", "particle=", "particle type", cliParams.setParticle)
+Script.registerSwitch("v:", "energy=", "Fixed energy value", cliParams.setEnergy)
+Script.registerSwitch("r:", "clicRelease=", "ILCSoft release", cliParams.setRelease)
+Script.registerSwitch("D:", "detector=", "Detector configuration", cliParams.setDetector)
+Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
+Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEvents)
+Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
+Script.registerSwitch("l:", "library=", "Library file in LFN", cliParams.setLibrary)
+Script.registerSwitch("f:", "simFold=", "SIM folder used as input", cliParams.setSIMFolder)
+
+# Parse the command line and initialize DIRAC
+Script.parseCommandLine(ignoreErrors=False)
+
 #parameters
-particle = sys.argv[1]
-gunPt = sys.argv[2]
+particle = cliParams.particle
+gunPt = clicParams.pt
 nameTag = particle+'_'+gunPt+'GeV_fixedPt'
 if 'muon' in particle :
   gunPdg = "13"
@@ -16,30 +41,24 @@ elif 'pion' in particle:
 else:
   print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
 
-clicConfig = sys.argv[3]
-marlinVersion = sys.argv[3]+'_gcc62'
-detectorModel =  sys.argv[4]
+clicConfig = cliParams.release
+marlinVersion = clicConfig+'_gcc62' 
+detectorModel =  cliParams.detector
 baseSteeringMarlin = 'local_files/clicReconstruction.xml'
 nameSteeringMarlin = "local_files/clicReconstruction_final.xml"
 
-nJobs = int(sys.argv[5]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
-nEvts = int(sys.argv[6]) #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
-nameJobGroup = sys.argv[7]
+nJobs = cliParams.njobs #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
+nEvts = cliParams.nev #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py 
+nameJobGroup = cliParams.group
 
 templateOutRoot = "histograms"
 nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
 print('Output files can be found in %s'%nameDir)
  
-pathSLCIO = sys.argv[8]+'files_'+particle+'_'+gunPt+'GeV_fixedPt_ddsim'
+pathSLCIO = cliParams.sim_folder+'files_'+particle+'_'+gunPt+'GeV_fixedPt_ddsim'
 subpathSLCIO = pathSLCIO[pathSLCIO.find("/ilc/"):]
 
 #####################################################################     
-#set environment 
-import os
-from os import listdir
-
-from DIRAC.Core.Base import Script
-Script.parseCommandLine()
 
 from ILCDIRAC.Interfaces.API.DiracILC import DiracILC
 dirac = DiracILC(False)
@@ -85,10 +104,9 @@ for f in listdir(pathSLCIO):
     ma.setInputFile('LFN:'+subpathSLCIO+'/'+f)
 
     #set customised library
-    if len(sys.argv) > 9:
-      customisedLibrary = str(sys.argv[9])
-      print('Using Marlin customised library: %s'%customisedLibrary)
-      job.setInputSandbox(customisedLibrary)
+    if cliParams.lib is not "":
+      print('Using Marlin customised library: %s'%cliParams.lib)
+      job.setInputSandbox(cliParams.lib)
 
     ma.setNumberOfEvents(nEvts)
     ma.setSteeringFile(nameSteeringMarlin)

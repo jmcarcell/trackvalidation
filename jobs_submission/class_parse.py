@@ -14,6 +14,7 @@ class Params(object):
     self.nev = ""
     self.group = ""
     self.lib = ""
+    self.sim_folder = ""
 
   def setParticle(self, value):
     try:
@@ -81,6 +82,13 @@ class Params(object):
   def setLibrary(self, value):
     try:
       self.lib = str(value)
+    except ValueError:
+      return S_ERROR("Library has to be a string")
+    return S_OK()
+
+  def setSIMFolder(self, value):
+    try:
+      self.sim_folder = str(value)
     except ValueError:
       return S_ERROR("Library has to be a string")
     return S_OK()
