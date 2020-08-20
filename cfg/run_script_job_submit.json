@@ -13,7 +13,7 @@
   "NJobs" : "200",
   "NEvents per job" : "10000",
 
-  "Jobs output folder" : "prova2",
+  "Jobs output folder" : "prova",
   "Jobs customised lib" : "",
   "#Jobs customised lib" : "LFN:/ilc/user/e/ericabro/libConformalTracking-iLCSoft_2019-09-04_exactly1sensor.tar.gz",
 
