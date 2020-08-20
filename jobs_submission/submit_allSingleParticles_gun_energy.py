@@ -1,24 +1,47 @@
 #!/bin/python
+
+#set environment          
+import os
 import sys, getopt
 
 #####################################################################
 
+#Parsing parameters
+from DIRAC.Core.Base import Script
+from class_parse import *
+
+# Instantiate the params class
+cliParams = Params()
+
+# Register accepted switches and their callbacks
+Script.registerSwitch("p:", "particle=", "particle type", cliParams.setParticle)
+Script.registerSwitch("v:", "energy=", "Fixed energy value", cliParams.setEnergy)
+Script.registerSwitch("r:", "clicRelease=", "ILCSoft release", cliParams.setRelease)
+Script.registerSwitch("D:", "detector=", "Detector configuration", cliParams.setDetector)
+Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
+Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEvents)
+Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
+Script.registerSwitch("l:", "library=", "Library file in LFN", cliParams.setLibrary)
+
+# Parse the command line and initialize DIRAC
+Script.parseCommandLine(ignoreErrors=False)
+
 #parameters
-particle = sys.argv[1]
-gunEnergy = sys.argv[2]
+particle = cliParams.particle
+gunEnergy = cliParams.energy
 nameTag = particle+'_'+gunEnergy+'GeV'
 
-clicConfig = sys.argv[3]
-ddsimVersion = sys.argv[3]+'_gcc62'
-marlinVersion = sys.argv[3]+'_gcc62'
-detectorModel =  sys.argv[4]
+clicConfig = cliParams.release
+ddsimVersion = clicConfig+'_gcc62' 
+marlinVersion = clicConfig+'_gcc62' 
+detectorModel =  cliParams.detector
 baseSteeringDDSim = 'local_files/clic_steer.py'
 baseSteeringMarlin = 'local_files/clicReconstruction.xml'
 nameSteeringMarlin = 'local_files/clicReconstruction_final.xml'
 
-nJobs = int(sys.argv[5])
-nEvts = int(sys.argv[6])
-nameJobGroup = sys.argv[7]
+nJobs = cliParams.njobs
+nEvts = cliParams.nev
+nameJobGroup = cliParams.group
 templateOutRoot = "histograms"
 rootFile = particle+'_'+gunEnergy+'GeV'
 outputFile = particle+'_'+gunEnergy+'GeV.slcio'
@@ -37,13 +60,7 @@ print('Particle used for the gun is %s'%gunParticle)
 with open(baseSteeringMarlin) as f:
     open(nameSteeringMarlin,"w").write(f.read().replace(templateOutRoot,rootFile))
  
-#####################################################################     
-#set environment          
-import os
-import sys
-
-from DIRAC.Core.Base import Script #dirac enviroment                                              
-Script.parseCommandLine() #dirac enviroment     
+#####################################################################
 
 from ILCDIRAC.Interfaces.API.DiracILC import DiracILC #job receiver class   
 dirac = DiracILC(False)      
@@ -53,7 +70,7 @@ from ILCDIRAC.Interfaces.API.NewInterface.Applications import DDSim
 from ILCDIRAC.Interfaces.API.NewInterface.Applications import Marlin
    
 #####################################################################      
- 
+
 #job definition   
 
 job = UserJob() #use UserJob unless recommended differently      
@@ -64,10 +81,9 @@ job.setBannedSites(['LCG.UKI-LT2-IC-HEP.uk','LCG.KEK.jp','LCG.IN2P3-CC.fr','LCG.
 job.setInputSandbox([nameSteeringMarlin])
 
 #set customised library
-if len(sys.argv) > 8:
-  customisedLibrary = str(sys.argv[8])
-  print('Using Marlin customised library: %s'%customisedLibrary)
-  job.setInputSandbox(customisedLibrary)
+if cliParams.lib is not "":
+  print('Using Marlin customised library: %s'%cliParams.lib)
+  job.setInputSandbox(cliParams.lib)
 
 job.setOutputSandbox(["*.log"]) 
 job.setOutputData([rootFile+".root"],nameDir,"CERN-DST-EOS")   
@@ -91,7 +107,7 @@ if not res['OK']:
     print res['Message']
     sys.exit(2)
 
-#####################################################################
+####################################################################
 
 #marlin
 ma = Marlin()
@@ -108,8 +124,8 @@ if not res['OK']:
     sys.exit(2)
 
 #####################################################################      
-#submit          
 
+#submit          
 job.dontPromptMe()
 print job.submit(dirac)
 

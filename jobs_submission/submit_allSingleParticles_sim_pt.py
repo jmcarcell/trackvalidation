@@ -1,11 +1,34 @@
 #!/bin/python
+
+#set environment          
+import os
 import sys, getopt
 
 #####################################################################
 
+#Parsing parameters
+from DIRAC.Core.Base import Script
+from class_parse import *
+
+# Instantiate the params class
+cliParams = Params()
+
+# Register accepted switches and their callbacks
+Script.registerSwitch("p:", "particle=", "particle type", cliParams.setParticle)
+Script.registerSwitch("v:", "pt=", "Fixed pt value", cliParams.setPt)
+Script.registerSwitch("r:", "clicRelease=", "ILCSoft release", cliParams.setRelease)
+Script.registerSwitch("D:", "detector=", "Detector configuration", cliParams.setDetector)
+Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
+Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEvents)
+Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
+Script.registerSwitch("l:", "library=", "Library file in LFN", cliParams.setLibrary)
+
+# Parse the command line and initialize DIRAC
+Script.parseCommandLine(ignoreErrors=False)
+
 #parameters
-particle = sys.argv[1]
-gunPt = sys.argv[2]
+particle = cliParams.particle
+gunPt = cliParams.pt
 nameTag = particle+'_'+gunPt+'GeV_fixedPt'
 if 'muon' in particle :
   gunPdg = "13"
@@ -14,16 +37,16 @@ elif 'ele' in particle:
 elif 'pion' in particle:
   gunPdg = "211"
 else:
-  print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
+  print('ERROR in submit_allSingleParticles_sim_fixedPt.py >> Particle not in the list!')
 
-clicConfig = sys.argv[3]
-ddsimVersion = sys.argv[3]+'_gcc62'
-detectorModel =  sys.argv[4]
+clicConfig = cliParams.release
+ddsimVersion = clicConfig+'_gcc62' 
+detectorModel =  cliParams.detector
 baseSteeringGA = 'sh/lcio_particle_gun.py'
 
-nJobs = int(sys.argv[5])
-nEvts = int(sys.argv[6])
-nameJobGroup = sys.argv[7]
+nJobs = cliParams.njobs
+nEvts = cliParams.nev
+nameJobGroup = cliParams.group
 outputFile = 'mcparticles.slcio'
 nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
 print('Output files can be found in %s'%nameDir)
@@ -73,8 +96,8 @@ if not res['OK']:
     sys.exit(2)
 
 #####################################################################      
-#submit          
 
+#submit          
 job.dontPromptMe()
 print job.submit(dirac)
 

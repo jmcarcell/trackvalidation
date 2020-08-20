@@ -6,6 +6,8 @@ class Params(object):
   def __init__(self):
     self.particle = ""
     self.theta = ""
+    self.energy = ""
+    self.pt = ""
     self.release = ""
     self.detector = ""
     self.njobs = ""
@@ -14,7 +16,6 @@ class Params(object):
     self.lib = ""
 
   def setParticle(self, value):
-    print("helloPart")
     try:
       self.particle = str(value)
     except ValueError:
@@ -22,15 +23,27 @@ class Params(object):
     return S_OK()
 
   def setTheta(self, value):
-    print("helloThet")
     try:
       self.theta = str(value)
     except ValueError:
       return S_ERROR("Theta angle has to be a string")
     return S_OK()
 
+  def setEnergy(self, value):
+    try:
+      self.energy = str(value)
+    except ValueError:
+      return S_ERROR("Energy has to be a string")
+    return S_OK()
+
+  def setPt(self, value):
+    try:
+      self.pt = str(value)
+    except ValueError:
+      return S_ERROR("Pt has to be a string")
+    return S_OK()
+
   def setRelease(self, value):
-    print("helloRel")
     try:
       self.release = str(value)
     except ValueError:
@@ -38,7 +51,6 @@ class Params(object):
     return S_OK()
 
   def setDetector(self, value):
-    print("helloDetect")
     try:
       self.detector = str(value)
     except ValueError:
@@ -46,7 +58,6 @@ class Params(object):
     return S_OK()
 
   def setNJobs(self, value):
-    print("helloNJObs")
     try:
       self.njobs = int(value)
     except ValueError:
@@ -54,7 +65,6 @@ class Params(object):
     return S_OK()
 
   def setNEvents(self, value):
-    print("helloNEv")
     try:
       self.nev = int(value)
     except ValueError:
@@ -62,7 +72,6 @@ class Params(object):
     return S_OK()
 
   def setGroup(self, value):
-    print("helloGrou")
     try:
       self.group = str(value)
     except ValueError:
@@ -70,7 +79,6 @@ class Params(object):
     return S_OK()
 
   def setLibrary(self, value):
-    print("helloLib")
     try:
       self.lib = str(value)
     except ValueError:

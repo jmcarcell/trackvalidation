@@ -79,7 +79,7 @@ python submit_XXX.py sampleName energy/theta/sampleNum release detector nJobs nE
 
 In case of fixed pt (and not energy) one step more is needed: SIM-DDSIM-RECO-VAL.
 The following scripts can be used:
-- `submit_allSingleParticles_slcio_fixedPt.py` produce SIM files (10'000 events are always created!)
+- `submit_allSingleParticles_sim_fixedPt.py` produce SIM files (10'000 events are always created!)
 - `submit_allSingleParticles_ddsim_fixedPt.py` produce DDSIM files ("NJobs" referres to the number of input SIM files. 1'000 events are always run per jobs. Therefore, the real number of jobs sumitted will be NJobs\*10!)
 - `submit_allSingleParticles_reco_fixedPt.py` run REC-VAL (same as above)
 In the first one, the `sh/lcio_particle_gun.py` and `sh/run_lcio_particle_gun_\*_\*GeV.sh` scripts are then called.
