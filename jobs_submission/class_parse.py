@@ -4,18 +4,25 @@ from DIRAC import S_OK, S_ERROR
 class Params(object):
 
   def __init__(self):
-    self.particle = ""
-    self.theta = ""
-    self.energy = ""
-    self.pt = ""
-    self.release = ""
-    self.detector = ""
-    self.njobs = ""
-    self.nev = ""
-    self.group = ""
+    self._particle = ""
+    self._theta = ""
+    self._energy = ""
+    self._pt = ""
+    self._release = ""
+    self._detector = ""
+    self._njobs = ""
+    self._nev = ""
+    self._group = ""
     self.lib = ""
-    self.sim_folder = ""
+    self._sim_folder = ""
     self.ove = False
+
+  def __getattr__(self, attribute):
+    """ Getattr is called when the class instance itself doesn't find the attribute """
+    value = getattr(self, "_" + attribute)  # get the actual value
+    if not value:
+      raise RuntimeError("Mandatory '%s' option not set" % attribute)
+    return value
 
   def setParticle(self, value):
     try:
