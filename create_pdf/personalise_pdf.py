@@ -19,10 +19,10 @@ print(args)
 
 NAMEINFILE  = args.filein
 NAMEOUTFILE = args.fileout
-REPLACEARGS = {"#RELEASE#": args.release, "#PATHPLOTS#": args.path, "#DATE#": args.date, 
-               "#AUTHORNAME#": args.authorname, "#AUTHORINSTITUTE#": args.authorinstitute,
+REPLACEARGS = {"#RELEASE#": args.release.replace('_', '\_'), "#PATHPLOTS#": args.path, "#DATE#": args.date, 
+               "#AUTHORNAME#": args.authorname.replace('_', '\_'), "#AUTHORINSTITUTE#": args.authorinstitute.replace('_', '\_'),
                "#MINHITS_SINGLE#": args.minHits_singlePart, "#MINHITS_COMPLEX#": args.minHits_complex,
-               "#RELEASE2#": args.release2, "#PATHPLOTS2#": args.path2}
+               "#RELEASE2#": args.release2.replace('_', '\_'), "#PATHPLOTS2#": args.path2}
 
 #Open file
 f = open(NAMEINFILE,'r')

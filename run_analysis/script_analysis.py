@@ -12,7 +12,6 @@ def main(argv):
 
   PATHFILESIN  = run_conf["Input folder"]
   PATHFILESOUT = run_conf["Output folder"]
-  PATHFILESOUT = "results/"
   
   if not os.path.exists(PATHFILESOUT):
     os.makedirs(PATHFILESOUT)
@@ -41,7 +40,7 @@ def main(argv):
       if recreate is "y":
         os.system("rm %s"%fileout)
 
-  particle_list = ["muons", "electrons", "pions", "ttbar", "ttbar_ove"]
+  particle_list = ["muons", "electrons", "pions", "ttbar3TeV", "ttbar3TeV_ove"]
 
   for particle, file_name, fileout in zip(run_conf["Ntuple types"],FILENAMESIN,FILENAMESOUT):
     if particle not in particle_list:
@@ -94,7 +93,7 @@ def main(argv):
         os.system(command_analysis)
 
     #complex events
-    elif particle == "ttbar" or particle == "ttbar_ove" : 
+    elif particle == "ttbar3TeV" or particle == "ttbar3TeV_ove" : 
       #efficiency
       ANALYSIS_FLAGS = "--efficiency"
 

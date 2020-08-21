@@ -15,7 +15,7 @@ The inputs are:
 - "Release date(2)": used only as text in the pdf 
 - "Input folder(2)": contains plots used for the differerent releases
 - "Comparison": if set to 1, it will produce also the comparison pdf
-- "Min hits": validation plots end with \_minNhits#MINHITS#.eps
+- "Min hits": keep track in the pdf what is the min n hits used in the analysis
 - "Test Mode": if set to 1, more printout are added
 
 After setting the config file correctly, run:
@@ -31,9 +31,9 @@ For each release the pdf will search for the following folders:
 - 'ttbar3TeV/'
 
 And for each folder the following plots:
-- 'eff\_vs\_VAR\_minNhits\*.eps'
-- 'fake\_vs\_VAR\_minNhits\*.eps'
-- 'dupl\_vs\_VAR\_minNhits\*.eps'
+- 'eff\_vs\_VAR\.eps'
+- 'fake\_vs\_VAR\.eps'
+- 'dupl\_vs\_VAR\.eps'
 with VAR = theta, pt, phi 
 
 ## Standalone scripts

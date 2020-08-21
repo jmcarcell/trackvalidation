@@ -18,7 +18,6 @@ parser.add_argument('--logXaxis', nargs='+', help='Bool to set log of X axes in 
 parser.add_argument('--logYaxis', nargs='+', help='Bool to set log of Y axes in histos')
 parser.add_argument('--rangeYaxis', nargs='+', help='Range Y axis (ex. min:max)', default="0.9:1.0 0.9:1.0")
 parser.add_argument('--rangeXaxis', nargs='+', help='Range X axis (ex. min:max)', default="7:90 -180:180")
-parser.add_argument('--minHits', help='Minim number of reconstructed track hits', default="3")
 parser.add_argument('--sample', help="Data sample", type=str, choices=["muon", "ele", "pion", "ttbar3TeV", "ttbar380GeV"])
 parser.add_argument('-v', '--verbose', help="increase output verbosity", action="store_true")
 args = parser.parse_args()
@@ -61,8 +60,6 @@ for rangeX in args.rangeXaxis :
   MINXAXIS.append(float(axis[0]))
   MAXXAXIS.append(float(axis[1]))
 
-MINHITS = args.minHits
-
 def main():
   for i_histo in range(0,len(HISTONAMES)) :
     if VERBOSE : 
@@ -71,6 +68,8 @@ def main():
       print("  X axis: min = %.2f, max = %.2f, isLog = %s"%(MINXAXIS[i_histo],MAXXAXIS[i_histo],AXISXLOG[i_histo]))
       print("  Y axis: min = %.2f, max = %.2f, isLog = %s"%(MINYAXIS[i_histo],MAXYAXIS[i_histo],AXISYLOG[i_histo]))
     c = TCanvas("c","c")
+    gROOT.SetBatch(True);
+
     c.SetGrid()
     if json.loads(AXISXLOG[i_histo].lower()):
       c.SetLogx()
@@ -123,7 +122,7 @@ def main():
     text.DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
     
     c.Draw()
-    nameOutputPlot = OUTPUTFOLDER+HISTONAMES[i_histo]+"_minNhits"+str(MINHITS)
+    nameOutputPlot = OUTPUTFOLDER+HISTONAMES[i_histo]
     c.SaveAs(nameOutputPlot+".eps","eps")
     c.SaveAs(nameOutputPlot+".png","png")
 

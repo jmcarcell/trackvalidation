@@ -1,5 +1,5 @@
 {
-  "Release date" : "2019-09-04", 
+  "Release date" : "2020-02-20", 
   "Detector model" : "CLIC_o3_v14", 
 
   "Particles" : ["muons", "electrons", "pions", "ttbar", "ttbar_ove"], 
@@ -13,11 +13,11 @@
   "NJobs" : "200",
   "NEvents per job" : "10000",
 
-  "Jobs output folder" : "prova",
+  "Jobs output folder" : "tracking_validation",
   "Jobs customised lib" : "",
   "#Jobs customised lib" : "LFN:/ilc/user/e/ericabro/libConformalTracking-iLCSoft_2019-09-04_exactly1sensor.tar.gz",
 
-  "Sample fixed pt SIM folder" : "/eos/experiment/clicdp/grid/ilc/user/e/ericabro/CLIC/CLIC_o3_v14/ILCSoft-2019-09-04/prova/sim/",
+  "Sample fixed pt SIM folder" : "/eos/experiment/clicdp/grid//ilc/user/e/ericabro/CLIC/CLIC_o3_v14/ILCSoft-2019-02-20/tracking_validation/sim/",
 
   "Test Mode": 1
 
