@@ -70,55 +70,49 @@ from ILCDIRAC.Interfaces.API.NewInterface.Applications import Marlin
 #job definition
 i = 0
 
-for f in listdir(pathSLCIO):
-    #running all sub-jobs produced in the job
-    currJob = f[f.find("particles_")+10:f.find('.slcio')]
-    if int(currJob) > nJobs:
-      continue
-    i+=1
+listOfFiles = listdir(pathSLCIO)
+listOfFiles = [f for f in listOfFiles if int(f[f.find("particles_")+10:f.find('.slcio')]) <= nJobs]
+inputFiles = [os.path.join(subpathSLCIO, f) for f in listOfFiles]
 
-    outputFile = 'reco_'+f
-    fsplitted = f.split('.')
-    rootFile = 'reco_'+fsplitted[0]
+rootFiles = ['reco_' + f.split('.', 1)[0] for f in listOfFiles]
+outputFiles = [f + '.root' for f in rootFiles]
 
-    with open(baseSteeringMarlin) as fmarlin:
-        open(nameSteeringMarlin,"w").write(fmarlin.read().replace(templateOutRoot,rootFile))
-                                      
-    job = UserJob()
-    job.setJobGroup(nameJobGroup)
-    job.setCPUTime(86400)
-    job.setName(nameTag)
-    job.setBannedSites(['LCG.UKI-LT2-IC-HEP.uk','LCG.KEK.jp','LCG.IN2P3-CC.fr','LCG.Tau.il','Weizmann.il','LCG.Weizmann.il','OSG.MIT.us','OSG.FNAL_FERMIGRID.us','OSG.GridUNESP_CENTRAL.br','OSG.SPRACE.br'])
-    job.setInputSandbox([nameSteeringMarlin])
-    job.setOutputSandbox([ "*.log"]) 
-    job.setOutputData([rootFile+'.root'],nameDir,"CERN-DST-EOS")   
-    #job.setSplitEvents(nEvts,nJobs) 
+job = UserJob()
+job.setJobGroup(nameJobGroup)
+job.setCPUTime(86400)
+job.setName(nameTag)
+job.setBannedSites(['LCG.UKI-LT2-IC-HEP.uk','LCG.KEK.jp','LCG.IN2P3-CC.fr','LCG.Tau.il','Weizmann.il','LCG.Weizmann.il','OSG.MIT.us','OSG.FNAL_FERMIGRID.us','OSG.GridUNESP_CENTRAL.br','OSG.SPRACE.br'])
+job.setInputSandbox([baseSteeringMarlin])
+job.setOutputSandbox(["*.log"])
+job.setSplitOutputData(outputFiles, nameDir, "CERN-DST-EOS")
+job.setSplitDoNotAlterOutputFilename()
+job.setSplitInputData(lfns=inputFiles, numberOfFilesPerJob=1)
+job.setSplitParameter('rootFile', rootFiles)
 
 #####################################################################     
 #marlin
 
-    ma = Marlin()
+ma = Marlin()
 
-    ma.setVersion(marlinVersion)
-    ma.setDetectorModel(detectorModel)
-    ma.setInputFile('LFN:'+subpathSLCIO+'/'+f)
+ma.setVersion(marlinVersion)
+ma.setDetectorModel(detectorModel)
+ma.setExtraCLIArguments('--MyAIDAProcessor.FileName=%(rootFile)s')
+#set customised library
+if cliParams.lib is not "":
+  print('Using Marlin customised library: %s'%cliParams.lib)
+  job.setInputSandbox(cliParams.lib)
 
-    #set customised library
-    if cliParams.lib is not "":
-      print('Using Marlin customised library: %s'%cliParams.lib)
-      job.setInputSandbox(cliParams.lib)
+ma.setNumberOfEvents(nEvts)
+ma.setSteeringFile(os.path.basename(baseSteeringMarlin))
+res = job.append(ma)
 
-    ma.setNumberOfEvents(nEvts)
-    ma.setSteeringFile(nameSteeringMarlin)
-    res = job.append(ma)
-
-    if not res['OK']:
-        print res['Message']
-        sys.exit(2)
+if not res['OK']:
+  print res['Message']
+  sys.exit(2)
 
 #####################################################################     
 #submit
     
-    job.dontPromptMe()
-    print job.submit(dirac)
+job.dontPromptMe()
+job.submit(dirac)
         
