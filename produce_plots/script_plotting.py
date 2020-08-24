@@ -42,9 +42,9 @@ def main(argv):
 
     histo_name = ""
     titleAxis = ""
-    rangeXaxis = ""
+    rangeXaxis = "\""
     logXaxis = ""
-    rangeYaxis = ""
+    rangeYaxis = "\""
     logYaxis = ""
     sub_histo = histo_out.split("|")
     for var in sub_histo:
@@ -57,10 +57,12 @@ def main(argv):
         rangeYaxis += list_sub_histo[8] + ":" + list_sub_histo[9] + " "
         logYaxis += list_sub_histo[10] + " "
       titleAxis += "\";" + list_sub_histo[2] + ";" + list_sub_histo[7] + "\" "
+    rangeYaxis+= "\""
+    rangeXaxis+= "\""
 
     command_plot = "python plotting.py --filesin %s --folderout %s --histonames %s --varAxes %s --sample %s --features %s"%(listFilein,path_out,histo_name,titleAxis,particle,features)
-    command_plot += " --logXaxis %s --rangeXaxis %s "%(logXaxis,rangeXaxis)
-    command_plot += " --logYaxis %s --rangeYaxis %s"%(logYaxis,rangeYaxis)
+    command_plot += " --logXaxis %s --rangeXaxis=%s "%(logXaxis,rangeXaxis)
+    command_plot += " --logYaxis %s --rangeYaxis=%s"%(logYaxis,rangeYaxis)
     if bool(test) : 
       command_plot += " --verbose "
       print(command_plot)

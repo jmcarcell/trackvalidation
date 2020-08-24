@@ -4,8 +4,11 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 from ROOT import gROOT, TFile, TCanvas, TGraph, TLegend, gPad, TLatex
 import json
 import argparse
-#STILL TO DO:
-#- phi -180, 180 range doesnt work 
+
+def list_with_negatives(value):
+  values = value.split(" ")
+  print(values)
+  return values
 
 gROOT.Macro("CLICdpStyle.C") 
 parser = argparse.ArgumentParser(description='Produce root files with tracking analysis plots')
@@ -16,8 +19,8 @@ parser.add_argument('--histonames', nargs='+', help='Name of histos to plot (ex.
 parser.add_argument('--varAxes', nargs='+', help='Name of axes in histos (ex. ";#theta [#circ];Tracking efficiency" ";#phi [#circ];Tracking efficiency")')
 parser.add_argument('--logXaxis', nargs='+', help='Bool to set log of X axes in histos')
 parser.add_argument('--logYaxis', nargs='+', help='Bool to set log of Y axes in histos')
-parser.add_argument('--rangeYaxis', nargs='+', help='Range Y axis (ex. min:max)', default="0.9:1.0 0.9:1.0")
-parser.add_argument('--rangeXaxis', nargs='+', help='Range X axis (ex. min:max)', default="7:90 -180:180")
+parser.add_argument('--rangeYaxis', nargs='+', help='Range Y axis (ex. =\"min:max\")', type=list_with_negatives, action='store')
+parser.add_argument('--rangeXaxis', nargs='+', help='Range X axis (ex. =\"min:max\")', type=list_with_negatives, action='store')
 parser.add_argument('--sample', help="Data sample", type=str, choices=["muon", "ele", "pion", "ttbar3TeV", "ttbar380GeV"])
 parser.add_argument('-v', '--verbose', help="increase output verbosity", action="store_true")
 args = parser.parse_args()
@@ -46,19 +49,23 @@ AXISYLOG  = args.logYaxis
 
 MINYAXIS = []
 MAXYAXIS = []
-for rangeY in args.rangeYaxis :
-  axis = rangeY.split(":")
-  #print(axis)
-  MINYAXIS.append(float(axis[0]))
-  MAXYAXIS.append(float(axis[1]))
+for axisY in args.rangeYaxis :
+  for rangeY in axisY:
+    #print(rangeY)
+    if rangeY is not "":
+      axis = rangeY.split(":")
+      MINYAXIS.append(float(axis[0]))
+      MAXYAXIS.append(float(axis[1]))
 
 MINXAXIS = []
 MAXXAXIS = []
-for rangeX in args.rangeXaxis :
-  axis = rangeX.split(":")
-  #print(axis)
-  MINXAXIS.append(float(axis[0]))
-  MAXXAXIS.append(float(axis[1]))
+for axisX in args.rangeXaxis :
+  for rangeX in axisX :
+    #print(axis)
+    if rangeX is not "":
+      axis = rangeX.split(":")
+      MINXAXIS.append(float(axis[0]))
+      MAXXAXIS.append(float(axis[1]))
 
 def main():
   for i_histo in range(0,len(HISTONAMES)) :
