@@ -44,7 +44,7 @@ else:
 clicConfig = cliParams.release
 marlinVersion = clicConfig+'_gcc62' 
 detectorModel =  cliParams.detector
-baseSteeringMarlin = 'local_files/clicReconstruction.xml'
+baseSteeringMarlin = os.path.join(os.getcwd(), 'local_files/templates/clicReconstruction.xml')
 nameSteeringMarlin = "local_files/clicReconstruction_final.xml"
 
 nJobs = cliParams.njobs #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
