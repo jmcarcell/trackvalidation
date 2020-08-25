@@ -23,6 +23,7 @@ Script.registerSwitch("j:", "njobs=", "Number of jobs", cliParams.setNJobs)
 Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEvents)
 Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
 Script.registerSwitch("f:", "simFold=", "SIM folder used as input", cliParams.setSIMFolder)
+Script.registerSwitch("", "local", "If set, run job locally for testing", cliParams.setLocal)
 
 # Parse the command line and initialize DIRAC
 Script.parseCommandLine(ignoreErrors=False)
@@ -43,7 +44,7 @@ else:
 clicConfig = cliParams.release
 ddsimVersion = clicConfig+'_gcc62' 
 detectorModel =  cliParams.detector
-baseSteeringDDSim = 'local_files/clic_steer.py'
+baseSteeringDDSim = os.path.join(os.getcwd(), 'local_files/clic_steer.py')
 
 nJobs = cliParams.njobs
 nEvts = cliParams.nev
@@ -67,48 +68,55 @@ from ILCDIRAC.Interfaces.API.NewInterface.Applications import DDSim
 #####################################################################     
 #job definition
 
-for f in listdir(pathSLCIO):
-    #print("Input file: %s" % f)
-    for i in range(0,nEvtGen/nEvts):
-        #print("Index chunk of events to process: %s" % i)
-        outputFile = 'ddsim_j'+str(i)+'_'+f
-        #print("Output file: %s" % outputFile)
-        skipEvents = i*nEvts
-        #if fileCounter > nJobs:
-            #break
+listOfFiles = listdir(pathSLCIO)
 
-        job = UserJob()
-        job.setJobGroup(nameTag)
-        job.setCPUTime(86400)
-        job.setName(nameTag)
-        job.setBannedSites(['LCG.UKI-LT2-IC-HEP.uk','LCG.KEK.jp','LCG.IN2P3-CC.fr','LCG.Tau.il','Weizmann.il','LCG.Weizmann.il','OSG.MIT.us','OSG.FNAL_FERMIGRID.us','OSG.GridUNESP_CENTRAL.br','OSG.SPRACE.br'])
-        job.setInputSandbox([baseSteeringDDSim])
-        job.setOutputSandbox(["*.log"]) 
-        job.setOutputData([outputFile],nameDir,"CERN-DST-EOS") 
-    #job.setSplitEvents(nEvts,nJobs) 
+inputFiles = [os.path.join(subpathSLCIO, f) for f in listOfFiles]
 
-#####################################################################     
+jobsPerFile = nEvtGen / nEvts
+outputTmp = ['ddsim_j_%d_' + f for f in listOfFiles]
+outputFiles = []
+for outputFile in outputTmp:
+  for i in range(jobsPerFile):
+    outputFiles.append(outputFile % i)
+
+#print("Input file: %s" % f)
+#for i in range(0,nEvtGen/nEvts):
+#print("Index chunk of events to process: %s" % i)
+
+#print("Output file: %s" % outputFile)
+#if fileCounter > nJobs:
+    #break
+
+job = UserJob()
+job.setJobGroup(nameTag)
+job.setCPUTime(86400)
+job.setName(nameTag + '_%n')
+job.setBannedSites(['LCG.UKI-LT2-IC-HEP.uk','LCG.KEK.jp','LCG.IN2P3-CC.fr','LCG.Tau.il','Weizmann.il','LCG.Weizmann.il','OSG.MIT.us','OSG.FNAL_FERMIGRID.us','OSG.GridUNESP_CENTRAL.br','OSG.SPRACE.br'])
+job.setInputSandbox([baseSteeringDDSim])
+job.setOutputSandbox(["*.log"])
+job.setSplitFilesAcrossJobs(lfns=inputFiles, eventsPerFile=nEvtGen, eventsPerJob=nEvts)
+job.setSplitOutputData(outputFiles, nameDir, "CERN-DST-EOS")
+job.setSplitParameter('outputFile', outputFiles)
+
+#####################################################################
 #ddsim
 
-        ddsim = DDSim()
+ddsim = DDSim()
 
-        ddsim.setVersion(ddsimVersion)
-        ddsim.setDetectorModel(detectorModel)
-        ddsim.setInputFile('LFN:'+subpathSLCIO+'/'+f)
-        ddsim.setOutputFile(outputFile)
-        ddsim.setNumberOfEvents(nEvts) 
-        ddsim.setSteeringFile(baseSteeringDDSim)
-        ddsim.setExtraCLIArguments("--skipNEvents %(evts)s" % {'evts' : skipEvents})
-        #print("Skip %s events" % skipEvents)
-        res = job.append(ddsim)
+ddsim.setVersion(ddsimVersion)
+ddsim.setDetectorModel(detectorModel)
+ddsim.setOutputFile('%(outputFile)s')
+ddsim.setNumberOfEvents(nEvts)
+ddsim.setSteeringFile(baseSteeringDDSim)
+res = job.append(ddsim)
 
-        if not res['OK']:
-            print res['Message']
-            sys.exit(2)
+if not res['OK']:
+  print res['Message']
+  sys.exit(2)
 
-#####################################################################     
+#####################################################################
 #submit
-    
-        job.dontPromptMe()
-        print job.submit(dirac)
+
+job.dontPromptMe()
+print job.submit(dirac, mode='local' if cliParams.local else 'wms')
         
