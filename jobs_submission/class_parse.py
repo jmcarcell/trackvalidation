@@ -16,6 +16,7 @@ class Params(object):
     self.lib = ""
     self._sim_folder = ""
     self.ove = False
+    self.local = False
 
   def __getattr__(self, attribute):
     """ Getattr is called when the class instance itself doesn't find the attribute """
@@ -103,4 +104,8 @@ class Params(object):
 
   def setOverlay(self, value):
     self.ove = True
+    return S_OK()
+
+  def setLocal(self, value):
+    self.local = True
     return S_OK()

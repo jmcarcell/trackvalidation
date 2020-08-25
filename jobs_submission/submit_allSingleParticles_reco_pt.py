@@ -24,6 +24,7 @@ Script.registerSwitch("e:", "nev=", "Number of events per job", cliParams.setNEv
 Script.registerSwitch("g:", "group=", "Group name", cliParams.setGroup)
 Script.registerSwitch("l:", "library=", "Library file in LFN", cliParams.setLibrary)
 Script.registerSwitch("f:", "simFold=", "SIM folder used as input", cliParams.setSIMFolder)
+Script.registerSwitch("", "local", "If set, run job locally for testing", cliParams.setLocal)
 
 # Parse the command line and initialize DIRAC
 Script.parseCommandLine(ignoreErrors=False)
@@ -114,5 +115,5 @@ if not res['OK']:
 #submit
     
 job.dontPromptMe()
-job.submit(dirac)
+job.submit(dirac, mode='local' if cliParams.local else 'wms')
         
