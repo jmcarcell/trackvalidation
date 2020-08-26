@@ -113,7 +113,6 @@ if not res['OK']:
 
 #####################################################################     
 #submit
-    
+
 job.dontPromptMe()
-job.submit(dirac, mode='local' if cliParams.local else 'wms')
-        
+print job.submit(dirac, mode='local' if cliParams.local else 'wms')
