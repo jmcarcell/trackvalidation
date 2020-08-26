@@ -1,16 +1,16 @@
 {
-  "Author name"      : "Erica Brondolin", 
+  "Author name"      : "Name Surname", 
   "Author institute" : "CERN", 
   "Date"             : "15-08-2020",
   "Release date"     : "2020-02-07", 
 
   "Min hits (single)"  : "3", 
   "Min hits (complex)" : "4", 
-  "Input folder"  : "/home/ericabro/CLICstudies/2020/trackingvalidation/produce_plots/results/ILCSoft-2020-02-04/",
+  "Input folder"  : "/local/folder/trackingvalidation/produce_plots/results/ILCSoft-2020-02-07/",
 
   "Comparison": 1,
-  "Release date2"  : "2019-07-09", 
-  "Input folder2"  : "/home/ericabro/CLICstudies/2020/trackingvalidation/plots/clic_releases_validation/ILCSoft-2019-07-09/",
+  "Release date2"  : "2019-09-04", 
+  "Input folder2"  : "/local/folder/trackingvalidation/plots/clic_releases_validation/ILCSoft-2019-09-04/",
 
   "Test Mode": 1
 
