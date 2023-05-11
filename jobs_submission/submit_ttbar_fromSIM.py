@@ -32,7 +32,7 @@ sampleNum = cliParams.sim_folder
 nameTag = particle
 
 clicConfig = cliParams.release
-marlinVersion = clicConfig+'_gcc62' 
+marlinVersion = clicConfig+'_gcc62'
 detectorModel =  cliParams.detector
 baseSteeringMarlin = 'local_files/clicReconstruction.xml'
 nameSteeringMarlin = 'local_files/clicReconstruction_final.xml'
@@ -46,56 +46,55 @@ print('Output files can be found in %s'%nameDir)
 
 for input_ind in range(1,nJobs,1):
 
-  rootFile = nameTag+'_' + str(input_ind)
-  with open(baseSteeringMarlin) as f:
-    open(nameSteeringMarlin,"w").write(f.read().replace(templateOutRoot,rootFile))
+    rootFile = nameTag+'_' + str(input_ind)
+    with open(baseSteeringMarlin) as f:
+        open(nameSteeringMarlin,"w").write(f.read().replace(templateOutRoot,rootFile))
 
-  inputFolder_ind = input_ind / 1000
-  print ( inputFolder_ind )
+    inputFolder_ind = input_ind / 1000
+    print ( inputFolder_ind )
 
-  dirac = DiracILC(False)
-  job = UserJob()
-  job.setJobGroup(nameJobGroup)
-  job.setName(nameTag)
-  job.setBannedSites(['LCG.IN2P3-CC.fr','OSG.UConn.us','LCG.Cracow.pl','OSG.MIT.us','LCG.Glasgow.uk','OSG.CIT.us','OSG.BNL.us','LCG.Brunel.uk','LCG.QMUL.uk'])
-  job.setOutputSandbox ( [ "*.log"] )
-  job.setOutputData([rootFile+".root"],nameDir,"CERN-DST-EOS")
-  #set customised library
-  if cliParams.lib is not "":
-    print('Using Marlin customised library: %s'%cliParams.lib)
-    job.setInputSandbox(cliParams.lib)
+    dirac = DiracILC(False)
+    job = UserJob()
+    job.setJobGroup(nameJobGroup)
+    job.setName(nameTag)
+    job.setBannedSites(['LCG.IN2P3-CC.fr','OSG.UConn.us','LCG.Cracow.pl','OSG.MIT.us','LCG.Glasgow.uk','OSG.CIT.us','OSG.BNL.us','LCG.Brunel.uk','LCG.QMUL.uk'])
+    job.setOutputSandbox ( [ "*.log"] )
+    job.setOutputData([rootFile+".root"],nameDir,"CERN-DST-EOS")
+    #set customised library
+    if cliParams.lib is not "":
+        print('Using Marlin customised library: %s'%cliParams.lib)
+        job.setInputSandbox(cliParams.lib)
 
-  if "ove" in particle :
-    over = OverlayInput()
-    #Overlay.NBunchtrain in clicReconstruction.xml
-    over.setBXOverlay(30)
-    #Overlay3TeV.NumberBackground in clicReconstruction.xml
-    over.setGGToHadInt(3.2)
-    over.setNumberOfSignalEventsPerJob( 100 )
-    over.setBackgroundType("gghad")
-    over.setDetectorModel(detectorModel)
-    over.setEnergy("3000")
-    over.setMachine("clic_opt")
-  
-  ma = Marlin()
-  ma.setVersion(marlinVersion)
+    if "ove" in particle :
+        over = OverlayInput()
+        #Overlay.NBunchtrain in clicReconstruction.xml
+        over.setBXOverlay(30)
+        #Overlay3TeV.NumberBackground in clicReconstruction.xml
+        over.setGGToHadInt(3.2)
+        over.setNumberOfSignalEventsPerJob( 100 )
+        over.setBackgroundType("gghad")
+        over.setDetectorModel(detectorModel)
+        over.setEnergy("3000")
+        over.setMachine("clic_opt")
 
-  ma.setInputFile("LFN:/ilc/prod/clic/3tev/tt/CLIC_o3_v14/SIM/000%s/00%s/tt_sim_%s_%s.slcio"%(sampleNum,str(inputFolder_ind),sampleNum,str(input_ind)))
-  ma.setDetectorModel(detectorModel)
-  ma.setSteeringFile(nameSteeringMarlin)
-  ma.setNumberOfEvents(nEvts)
+    ma = Marlin()
+    ma.setVersion(marlinVersion)
 
-  if "ove" in particle :
-    ma.setExtraCLIArguments( " --Config.Overlay=3TeV " )  
-    res=job.append(over)
-  else:
-    res=job.append(ma)
-  if not res['OK']:
-     print res['Message']
-     exit()
-  if "ove" in particle :
-    res=job.append(ma)
+    ma.setInputFile("LFN:/ilc/prod/clic/3tev/tt/CLIC_o3_v14/SIM/000%s/00%s/tt_sim_%s_%s.slcio"%(sampleNum,str(inputFolder_ind),sampleNum,str(input_ind)))
+    ma.setDetectorModel(detectorModel)
+    ma.setSteeringFile(nameSteeringMarlin)
+    ma.setNumberOfEvents(nEvts)
 
-  job.dontPromptMe()
-  print job.submit(dirac)
-      
+    if "ove" in particle :
+        ma.setExtraCLIArguments( " --Config.Overlay=3TeV " )
+        res=job.append(over)
+    else:
+        res=job.append(ma)
+    if not res['OK']:
+        print res['Message']
+        exit()
+    if "ove" in particle :
+        res=job.append(ma)
+
+    job.dontPromptMe()
+    print job.submit(dirac)

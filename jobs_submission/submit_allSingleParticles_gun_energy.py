@@ -1,6 +1,6 @@
 #!/bin/python
 
-#set environment          
+#set environment
 import os
 import sys, getopt
 
@@ -32,8 +32,8 @@ gunEnergy = cliParams.energy
 nameTag = particle+'_'+gunEnergy+'GeV'
 
 clicConfig = cliParams.release
-ddsimVersion = clicConfig+'_gcc62' 
-marlinVersion = clicConfig+'_gcc62' 
+ddsimVersion = clicConfig+'_gcc62'
+marlinVersion = clicConfig+'_gcc62'
 detectorModel =  cliParams.detector
 baseSteeringDDSim = 'local_files/clic_steer.py'
 baseSteeringMarlin = 'local_files/clicReconstruction.xml'
@@ -50,30 +50,30 @@ print('Output files can be found in %s'%nameDir)
 
 gunParticle = "mu-"
 if particle == 'electrons':
-  gunParticle = "e-"
+    gunParticle = "e-"
 elif particle == 'pions':
-  gunParticle = "pi-"
+    gunParticle = "pi-"
 print('Particle used for the gun is %s'%gunParticle)
 
 #####################################################################
 
 with open(baseSteeringMarlin) as f:
     open(nameSteeringMarlin,"w").write(f.read().replace(templateOutRoot,rootFile))
- 
+
 #####################################################################
 
-from ILCDIRAC.Interfaces.API.DiracILC import DiracILC #job receiver class   
-dirac = DiracILC(False)      
+from ILCDIRAC.Interfaces.API.DiracILC import DiracILC #job receiver class
+dirac = DiracILC(False)
 from ILCDIRAC.Interfaces.API.NewInterface.UserJob import UserJob
-from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient 
+from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
 from ILCDIRAC.Interfaces.API.NewInterface.Applications import DDSim
 from ILCDIRAC.Interfaces.API.NewInterface.Applications import Marlin
-   
-#####################################################################      
 
-#job definition   
+#####################################################################
 
-job = UserJob() #use UserJob unless recommended differently      
+#job definition
+
+job = UserJob() #use UserJob unless recommended differently
 job.setJobGroup(nameJobGroup)
 job.setCPUTime(86400)
 job.setName(nameTag)
@@ -82,14 +82,14 @@ job.setInputSandbox([nameSteeringMarlin])
 
 #set customised library
 if cliParams.lib is not "":
-  print('Using Marlin customised library: %s'%cliParams.lib)
-  job.setInputSandbox(cliParams.lib)
+    print('Using Marlin customised library: %s'%cliParams.lib)
+    job.setInputSandbox(cliParams.lib)
 
-job.setOutputSandbox(["*.log"]) 
-job.setOutputData([rootFile+".root"],nameDir,"CERN-DST-EOS")   
+job.setOutputSandbox(["*.log"])
+job.setOutputData([rootFile+".root"],nameDir,"CERN-DST-EOS")
 job.setSplitEvents(nEvts,nJobs)
-   
-#####################################################################      
+
+#####################################################################
 
 #ddsim
 
@@ -117,15 +117,14 @@ ma.setDetectorModel(detectorModel)
 ma.getInputFromApp(ddsim)
 ma.setProcessorsToUse([])
 ma.setSteeringFile(nameSteeringMarlin)
-res = job.append(ma) 
+res = job.append(ma)
 
 if not res['OK']:
     print res['Message']
     sys.exit(2)
 
-#####################################################################      
+#####################################################################
 
-#submit          
+#submit
 job.dontPromptMe()
 print job.submit(dirac)
-

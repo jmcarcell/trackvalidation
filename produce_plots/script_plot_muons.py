@@ -20,7 +20,7 @@ LOG_X = "False False"
 
 listFilein = ""
 for filein in FILENAMES:
-  listFilein = listFilein + PATHFILESIN + filein + " "
+    listFilein = listFilein + PATHFILESIN + filein + " "
 
 command_plot = "python plotting.py --filesin %s --folderout %s --histonames %s --varAxes %s --sample %s --features %s"%(listFilein,PATHFILESOUT,HISTONAMES,AXISTITLES,SAMPLE,FEATURES)
 command_plot += " --logXaxis %s --rangeYaxis %s:%s %s:%s"%(LOG_X,MIN_Y,MAX_Y,MIN_Y,MAX_Y)
@@ -45,7 +45,7 @@ LOG_X = "True False"
 
 listFilein = ""
 for filein in FILENAMES:
-  listFilein = listFilein + PATHFILESIN + filein + " "
+    listFilein = listFilein + PATHFILESIN + filein + " "
 
 command_plot = "python plotting.py --filesin %s --folderout %s --histonames %s --varAxes %s --sample %s --features %s "%(listFilein,PATHFILESOUT,HISTONAMES,AXISTITLES,SAMPLE,FEATURES)
 command_plot += " --logXaxis %s --rangeYaxis %s:%s %s:%s"%(LOG_X,MIN_Y,MAX_Y,MIN_Y,MAX_Y)
@@ -53,4 +53,3 @@ command_plot += " --rangeXaxis %s:%s %s:%s"%("0.09","250","0","180")
 
 print(command_plot)
 os.system(command_plot)
-

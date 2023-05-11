@@ -1,6 +1,6 @@
 #!/bin/python
 
-#set environment          
+#set environment
 import os
 from os import listdir
 import sys, getopt
@@ -34,32 +34,32 @@ particle = cliParams.particle
 gunPt = cliParams.pt
 nameTag = particle+'_'+gunPt+'GeV_fixedPt'
 if 'muon' in particle :
-  gunPdg = "13"
+    gunPdg = "13"
 elif 'ele' in particle:
-  gunPdg = "11"
+    gunPdg = "11"
 elif 'pion' in particle:
-  gunPdg = "211"
+    gunPdg = "211"
 else:
-  print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
+    print('ERROR in submit_allSingleParticles_slcio_fixedPt.py >> Particle not in the list!')
 
 clicConfig = cliParams.release
-marlinVersion = clicConfig+'_gcc62' 
+marlinVersion = clicConfig+'_gcc62'
 detectorModel =  cliParams.detector
 baseSteeringMarlin = os.path.join(os.getcwd(), 'local_files/templates/clicReconstruction.xml')
 nameSteeringMarlin = "local_files/clicReconstruction_final.xml"
 
 nJobs = cliParams.njobs #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
-nEvts = cliParams.nev #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py 
+nEvts = cliParams.nev #according to what was simulated with submit_allSingleParticles_ddsim_fixedPt.py
 nameJobGroup = cliParams.group
 
 templateOutRoot = "histograms"
 nameDir = 'CLIC/'+detectorModel+'/'+clicConfig+'/'+nameJobGroup+'/files_'+nameTag
 print('Output files can be found in %s'%nameDir)
- 
+
 pathSLCIO = cliParams.sim_folder+'files_'+particle+'_'+gunPt+'GeV_fixedPt_ddsim'
 subpathSLCIO = pathSLCIO[pathSLCIO.find("/ilc/"):]
 
-#####################################################################     
+#####################################################################
 
 from ILCDIRAC.Interfaces.API.DiracILC import DiracILC
 dirac = DiracILC(False)
@@ -67,7 +67,7 @@ from ILCDIRAC.Interfaces.API.NewInterface.UserJob import UserJob
 from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
 from ILCDIRAC.Interfaces.API.NewInterface.Applications import Marlin
 
-#####################################################################     
+#####################################################################
 #job definition
 i = 0
 
@@ -90,7 +90,7 @@ job.setSplitDoNotAlterOutputFilename()
 job.setSplitInputData(lfns=inputFiles, numberOfFilesPerJob=1)
 job.setSplitParameter('rootFile', rootFiles)
 
-#####################################################################     
+#####################################################################
 #marlin
 
 ma = Marlin()
@@ -100,18 +100,18 @@ ma.setDetectorModel(detectorModel)
 ma.setExtraCLIArguments('--MyAIDAProcessor.FileName=%(rootFile)s')
 #set customised library
 if cliParams.lib is not "":
-  print('Using Marlin customised library: %s'%cliParams.lib)
-  job.setInputSandbox(cliParams.lib)
+    print('Using Marlin customised library: %s'%cliParams.lib)
+    job.setInputSandbox(cliParams.lib)
 
 ma.setNumberOfEvents(nEvts)
 ma.setSteeringFile(os.path.basename(baseSteeringMarlin))
 res = job.append(ma)
 
 if not res['OK']:
-  print res['Message']
-  sys.exit(2)
+    print res['Message']
+    sys.exit(2)
 
-#####################################################################     
+#####################################################################
 #submit
 
 job.dontPromptMe()

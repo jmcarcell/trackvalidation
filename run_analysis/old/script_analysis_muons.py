@@ -27,20 +27,20 @@ LISTVAR_FIXED_PT       = "theta:83:7:90:False phi:180:-180:180:False"
 CUTS_FIXED_PT          = "vertexR:0:0.0001:nHitsMC:3:1000 vertexR:0:0.0001:nHitsMC:3:1000"
 
 for filein, fileout in zip(FILENAMES,ROOTNAMES):
-  filein = PATHFILESIN + filein
-  fileout = PATHFILESOUT + fileout
-  command_analysis = ""
-  if "GeV" in filein : 
-    command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_PT,CUTS_FIXED_PT)
-  elif "deg" in filein :
-    command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_THETA,CUTS_FIXED_THETA)
-  else :
-    print("Not sure which variable list to use. Please double check the name of the file.")
-    continue
+    filein = PATHFILESIN + filein
+    fileout = PATHFILESOUT + fileout
+    command_analysis = ""
+    if "GeV" in filein :
+        command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_PT,CUTS_FIXED_PT)
+    elif "deg" in filein :
+        command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_THETA,CUTS_FIXED_THETA)
+    else :
+        print("Not sure which variable list to use. Please double check the name of the file.")
+        continue
 
-  command_analysis += " %s"%(ANALYSIS_FLAGS)
-  print(command_analysis)
-  os.system(command_analysis)
+    command_analysis += " %s"%(ANALYSIS_FLAGS)
+    print(command_analysis)
+    os.system(command_analysis)
 
 #comparison and fakerate
 ANALYSIS_FLAGS = "--compareRecoSim --fakerate"
@@ -49,17 +49,17 @@ CUTS_FIXED_THETA       = "nHits:3:1000 nHits:3:1000"
 CUTS_FIXED_PT          = "nHits:3:1000 nHits:3:1000"
 
 for filein, fileout in zip(FILENAMES,ROOTNAMES):
-  filein = PATHFILESIN + filein
-  fileout = PATHFILESOUT + fileout
-  command_analysis = ""
-  if "GeV" in filein :
-    command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_PT,CUTS_FIXED_PT)
-  elif "deg" in filein :
-    command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_THETA,CUTS_FIXED_THETA)
-  else :
-    print("Not sure which variable list to use. Please double check the name of the file.")
-    continue
+    filein = PATHFILESIN + filein
+    fileout = PATHFILESOUT + fileout
+    command_analysis = ""
+    if "GeV" in filein :
+        command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_PT,CUTS_FIXED_PT)
+    elif "deg" in filein :
+        command_analysis = "python analysis.py --filein %s --fileout %s --listVariables %s --listSelections %s"%(filein,fileout,LISTVAR_FIXED_THETA,CUTS_FIXED_THETA)
+    else :
+        print("Not sure which variable list to use. Please double check the name of the file.")
+        continue
 
-  command_analysis += " %s"%(ANALYSIS_FLAGS)
-  print(command_analysis)
-  os.system(command_analysis)
+    command_analysis += " %s"%(ANALYSIS_FLAGS)
+    print(command_analysis)
+    os.system(command_analysis)

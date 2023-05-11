@@ -19,7 +19,7 @@ print(args)
 
 NAMEINFILE  = args.filein
 NAMEOUTFILE = args.fileout
-REPLACEARGS = {"#RELEASE#": args.release.replace('_', '\_'), "#PATHPLOTS#": args.path, "#DATE#": args.date, 
+REPLACEARGS = {"#RELEASE#": args.release.replace('_', '\_'), "#PATHPLOTS#": args.path, "#DATE#": args.date,
                "#AUTHORNAME#": args.authorname.replace('_', '\_'), "#AUTHORINSTITUTE#": args.authorinstitute.replace('_', '\_'),
                "#MINHITS_SINGLE#": args.minHits_singlePart, "#MINHITS_COMPLEX#": args.minHits_complex,
                "#RELEASE2#": args.release2.replace('_', '\_'), "#PATHPLOTS2#": args.path2}
@@ -32,7 +32,7 @@ f.close()
 #Copy file and replace
 newdata = filedata
 for original,new in REPLACEARGS.iteritems():
-  newdata = newdata.replace(original, new)
+    newdata = newdata.replace(original, new)
 
 #Write new file
 f = open(NAMEOUTFILE,'w')

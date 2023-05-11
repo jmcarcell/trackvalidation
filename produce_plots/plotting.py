@@ -6,11 +6,11 @@ import json
 import argparse
 
 def list_with_negatives(value):
-  values = value.split(" ")
-  print(values)
-  return values
+    values = value.split(" ")
+    print(values)
+    return values
 
-gROOT.Macro("CLICdpStyle.C") 
+gROOT.Macro("CLICdpStyle.C")
 parser = argparse.ArgumentParser(description='Produce root files with tracking analysis plots')
 parser.add_argument('--filesin', nargs='+', help='List of root file used as input')
 parser.add_argument('--features', nargs='+', help='List of features used for this input file as label:color:markerStyle (ex. "p_{T} = 1 GeV:1:20:False")')
@@ -35,11 +35,11 @@ LABELS = []
 COLORS = []
 MARKERS = []
 for feature in args.features:
-  feat = feature.split(":")
-  #print(feat)
-  LABELS.append(feat[0])
-  COLORS.append(int(feat[1]))
-  MARKERS.append(int(feat[2]))
+    feat = feature.split(":")
+    #print(feat)
+    LABELS.append(feat[0])
+    COLORS.append(int(feat[1]))
+    MARKERS.append(int(feat[2]))
 
 SAMPLE = args.sample
 HISTONAMES = args.histonames
@@ -50,88 +50,88 @@ AXISYLOG  = args.logYaxis
 MINYAXIS = []
 MAXYAXIS = []
 for axisY in args.rangeYaxis :
-  for rangeY in axisY:
-    #print(rangeY)
-    if rangeY is not "":
-      axis = rangeY.split(":")
-      MINYAXIS.append(float(axis[0]))
-      MAXYAXIS.append(float(axis[1]))
+    for rangeY in axisY:
+        #print(rangeY)
+        if rangeY is not "":
+            axis = rangeY.split(":")
+            MINYAXIS.append(float(axis[0]))
+            MAXYAXIS.append(float(axis[1]))
 
 MINXAXIS = []
 MAXXAXIS = []
 for axisX in args.rangeXaxis :
-  for rangeX in axisX :
-    #print(axis)
-    if rangeX is not "":
-      axis = rangeX.split(":")
-      MINXAXIS.append(float(axis[0]))
-      MAXXAXIS.append(float(axis[1]))
+    for rangeX in axisX :
+        #print(axis)
+        if rangeX is not "":
+            axis = rangeX.split(":")
+            MINXAXIS.append(float(axis[0]))
+            MAXXAXIS.append(float(axis[1]))
 
 def main():
-  for i_histo in range(0,len(HISTONAMES)) :
-    if VERBOSE : 
-      print("> Plotting %s histogram:"%HISTONAMES[i_histo])
-      print("  Axis titles = %s"%(AXISTITLE[i_histo]))
-      print("  X axis: min = %.2f, max = %.2f, isLog = %s"%(MINXAXIS[i_histo],MAXXAXIS[i_histo],AXISXLOG[i_histo]))
-      print("  Y axis: min = %.2f, max = %.2f, isLog = %s"%(MINYAXIS[i_histo],MAXYAXIS[i_histo],AXISYLOG[i_histo]))
-    c = TCanvas("c","c")
-    gROOT.SetBatch(True);
+    for i_histo in range(0,len(HISTONAMES)) :
+        if VERBOSE :
+            print("> Plotting %s histogram:"%HISTONAMES[i_histo])
+            print("  Axis titles = %s"%(AXISTITLE[i_histo]))
+            print("  X axis: min = %.2f, max = %.2f, isLog = %s"%(MINXAXIS[i_histo],MAXXAXIS[i_histo],AXISXLOG[i_histo]))
+            print("  Y axis: min = %.2f, max = %.2f, isLog = %s"%(MINYAXIS[i_histo],MAXYAXIS[i_histo],AXISYLOG[i_histo]))
+        c = TCanvas("c","c")
+        gROOT.SetBatch(True);
 
-    c.SetGrid()
-    if json.loads(AXISXLOG[i_histo].lower()):
-      c.SetLogx()
-    if json.loads(AXISYLOG[i_histo].lower()):
-      c.SetLogy()
+        c.SetGrid()
+        if json.loads(AXISXLOG[i_histo].lower()):
+            c.SetLogx()
+        if json.loads(AXISYLOG[i_histo].lower()):
+            c.SetLogy()
 
-    leg = TLegend(0.63,0.30,0.85,0.45)
-    leg.SetTextSize(0.03)
-    if SAMPLE == "muon" :
-      if "fake" in HISTONAMES[i_histo] : leg = TLegend(0.63,0.60,0.85,0.75)
-      leg.SetHeader("Single #mu^{-}")
-    elif SAMPLE == "ele" :
-      leg.SetHeader("Single e^{-}")
-    elif SAMPLE == "pion" :
-      leg.SetHeader("Single #pi^{-}")
-    elif SAMPLE == "ttbar3TeV" :
-      leg = TLegend(0.23,0.20,0.85,0.35)
-      leg.SetHeader("t#bar{t}, E_{CM} = 3 TeV")
-    elif SAMPLE == "ttbar380GeV" :
-      leg.SetHeader("t#bar{t}, E_{CM} = 380 GeV")
+        leg = TLegend(0.63,0.30,0.85,0.45)
+        leg.SetTextSize(0.03)
+        if SAMPLE == "muon" :
+            if "fake" in HISTONAMES[i_histo] : leg = TLegend(0.63,0.60,0.85,0.75)
+            leg.SetHeader("Single #mu^{-}")
+        elif SAMPLE == "ele" :
+            leg.SetHeader("Single e^{-}")
+        elif SAMPLE == "pion" :
+            leg.SetHeader("Single #pi^{-}")
+        elif SAMPLE == "ttbar3TeV" :
+            leg = TLegend(0.23,0.20,0.85,0.35)
+            leg.SetHeader("t#bar{t}, E_{CM} = 3 TeV")
+        elif SAMPLE == "ttbar380GeV" :
+            leg.SetHeader("t#bar{t}, E_{CM} = 380 GeV")
 
-    if VERBOSE : print("  Input files used:")
-    for i_gr in range(0,len(INPUTFILES)):
-      if VERBOSE : print("  %s"%(INPUTFILES[i_gr]))
-      inputTFile = TFile(INPUTFILES[i_gr])
-      graph = inputTFile.Get(HISTONAMES[i_histo])
-      graph.SetTitle(AXISTITLE[i_histo])
-      graph.SetMarkerStyle(MARKERS[i_gr])
-      graph.SetMarkerSize(1.3)
-      graph.SetMarkerColor(COLORS[i_gr])
-      graph.SetLineColor(COLORS[i_gr])
+        if VERBOSE : print("  Input files used:")
+        for i_gr in range(0,len(INPUTFILES)):
+            if VERBOSE : print("  %s"%(INPUTFILES[i_gr]))
+            inputTFile = TFile(INPUTFILES[i_gr])
+            graph = inputTFile.Get(HISTONAMES[i_histo])
+            graph.SetTitle(AXISTITLE[i_histo])
+            graph.SetMarkerStyle(MARKERS[i_gr])
+            graph.SetMarkerSize(1.3)
+            graph.SetMarkerColor(COLORS[i_gr])
+            graph.SetLineColor(COLORS[i_gr])
 
-      if i_gr == 0 : 
-        graph.Draw()
+            if i_gr == 0 :
+                graph.Draw()
+                gPad.Update()
+                graph_copy = graph.GetPaintedGraph()
+                graph_copy.GetXaxis().SetTitleOffset(1.2)
+                graph_copy.SetMinimum(MINYAXIS[i_histo])
+                graph_copy.SetMaximum(MAXYAXIS[i_histo])
+                graph_copy.GetXaxis().SetRangeUser(MINXAXIS[i_histo],MAXXAXIS[i_histo]);
+            else :
+                graph.Draw("same")
+
+            leg.AddEntry(graph, LABELS[i_gr], "ep")
+            leg.Draw()
+
         gPad.Update()
-        graph_copy = graph.GetPaintedGraph()
-        graph_copy.GetXaxis().SetTitleOffset(1.2)
-        graph_copy.SetMinimum(MINYAXIS[i_histo])
-        graph_copy.SetMaximum(MAXYAXIS[i_histo])
-        graph_copy.GetXaxis().SetRangeUser(MINXAXIS[i_histo],MAXXAXIS[i_histo]);
-      else : 
-        graph.Draw("same")
+        text = TLatex();
+        text.SetTextSize(0.035);
+        text.DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
 
-      leg.AddEntry(graph, LABELS[i_gr], "ep")
-      leg.Draw()
-    
-    gPad.Update()
-    text = TLatex();
-    text.SetTextSize(0.035);
-    text.DrawTextNDC(0.175, 0.939349, "CLICdp work in progress");
-    
-    c.Draw()
-    nameOutputPlot = OUTPUTFOLDER+HISTONAMES[i_histo]
-    c.SaveAs(nameOutputPlot+".eps","eps")
-    c.SaveAs(nameOutputPlot+".png","png")
+        c.Draw()
+        nameOutputPlot = OUTPUTFOLDER+HISTONAMES[i_histo]
+        c.SaveAs(nameOutputPlot+".eps","eps")
+        c.SaveAs(nameOutputPlot+".png","png")
 
 if __name__ == "__main__":
     main()

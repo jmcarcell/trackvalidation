@@ -1,8 +1,8 @@
 #!/bin/python
 import sys, getopt
 
-#####################################################################     
-#set general parameters 
+#####################################################################
+#set general parameters
 
 nJobs = 10
 nEvts = int(sys.argv[4])
@@ -19,8 +19,8 @@ templateOutFile = 'sim.slcio'
 nameDir = 'CLIC/2019/CLICo3v14/'+clicConfig+'/'+nameJobGroup+'/sim/files_'+nameTag
 path = '/eos/experiment/clicdp/grid/ilc/user/e/eleogran/CLIC/2019/CLICo3v14/ILCSoft-2019-02-20/'+nameJobGroup+'/sim/files_fixedPt_'+gunPdg+'_'+gunPt+'GeV_'+gunTheta+'deg'
 
-#####################################################################     
-#set environment 
+#####################################################################
+#set environment
 import os
 from os import listdir
 
@@ -33,7 +33,7 @@ from ILCDIRAC.Interfaces.API.NewInterface.UserJob import UserJob
 from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
 from ILCDIRAC.Interfaces.API.NewInterface.Applications import DDSim
 
-#####################################################################     
+#####################################################################
 #job definition
 i = 0
 
@@ -50,11 +50,11 @@ for f in listdir(path):
     job.setName(nameTag)
     job.setBannedSites(['LCG.UKI-LT2-IC-HEP.uk','LCG.KEK.jp','LCG.IN2P3-CC.fr','LCG.Tau.il','Weizmann.il','LCG.Weizmann.il','OSG.MIT.us','OSG.FNAL_FERMIGRID.us','OSG.GridUNESP_CENTRAL.br','OSG.SPRACE.br'])
     job.setInputSandbox([baseSteeringDDSim])
-    job.setOutputSandbox(["*.log"]) 
-    job.setOutputData([outputFile],nameDir,"CERN-DST-EOS")   
-    #job.setSplitEvents(nEvts,nJobs) 
+    job.setOutputSandbox(["*.log"])
+    job.setOutputData([outputFile],nameDir,"CERN-DST-EOS")
+    #job.setSplitEvents(nEvts,nJobs)
 
-#####################################################################     
+#####################################################################
 #ddsim
 
     ddsim = DDSim()
@@ -71,9 +71,8 @@ for f in listdir(path):
         print res['Message']
         sys.exit(2)
 
-#####################################################################     
+#####################################################################
 #submit
-    
+
     job.dontPromptMe()
     print job.submit(dirac)
-        
