@@ -125,7 +125,13 @@ def calculate_efficiency(inputTree, cut, treeId, variable = "theta", nbins = 100
 
     heff.SetName(heffName)
     heff.SetDirectory(0)
-    heff.Write()
+    # heff.Write()
+    hreconstructed.SetName(heffName+"_reconstructed")
+    hreconstructed.SetDirectory(0)
+    hreconstructed.Write()
+    hreconstructable.SetName(heffName+"_reconstructable")
+    hreconstructable.SetDirectory(0)
+    hreconstructable.Write()
     return
 
 def save_distribution(treeId, inputTree, cut, variable = "theta", nbins = 100, minbin = 0.0, maxbin = 100, isLog = False):
@@ -227,7 +233,13 @@ def calculate_fakerate(inputTree, cut, treeId_var, treeId_pur, purityMax = "0.75
 
     hfake.SetName(hfakeName)
     hfake.SetDirectory(0)
-    hfake.Write()
+    # hfake.Write()
+    hReco.SetName(hfakeName+"_reco")
+    hReco.SetDirectory(0)
+    hReco.Write()
+    hFake.SetName(hfakeName+"_fake")
+    hFake.SetDirectory(0)
+    hFake.Write()
     return
 
 def calculate_duplicates(inputTree, minHits, treeId, variable = "theta", nbins = 100, minbin = 0.0, maxbin = 100, isLog = False):
@@ -255,7 +267,13 @@ def calculate_duplicates(inputTree, minHits, treeId, variable = "theta", nbins =
 
     hdupl.SetName(hduplName)
     hdupl.SetDirectory(0)
-    hdupl.Write()
+    # hdupl.Write()
+    hDupl.SetName(hduplName+"_dupl")
+    hDupl.SetDirectory(0)
+    hDupl.Write()
+    hReco.SetName(hduplName+"_reco")
+    hReco.SetDirectory(0)
+    hReco.Write()
     return
 
 def main():
